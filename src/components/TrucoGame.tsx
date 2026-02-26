@@ -32,6 +32,11 @@ export default function TrucoGame() {
             const data = await res.json()
             setGameState(data)
             setLoading(false)
+
+            // if two players joined and cards not yet dealt, auto-deal
+            if (data.players?.length === 2 && (!data.hands || Object.keys(data.hands).length === 0)) {
+                dealCards()
+            }
         } catch (e) {
             console.error(e)
         }
@@ -95,6 +100,11 @@ export default function TrucoGame() {
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] font-mono text-zinc-600 uppercase">Players: {gameState?.players?.length || 0}/2</span>
+                        {gameState?.turn && (
+                            <span className="text-[10px] font-mono uppercase tracking-tighter">
+                                {gameState.turn === myPlayerId ? '🟢 Tu turno' : '⚪️ Turno otro'}
+                            </span>
+                        )}
                         <button onClick={dealCards} title="Repartir" className="p-1 hover:bg-zinc-800 rounded transition-colors">
                             <RotateCcw size={16} className="text-zinc-500 hover:text-yellow-500" />
                         </button>
@@ -134,6 +144,7 @@ export default function TrucoGame() {
                 </div>
             </div>
 
+            {/* render based on join / players count */}
             {!gameState?.players?.includes(myPlayerId) ? (
                 <div className="flex-1 flex flex-col items-center justify-center gap-4">
                     <div className="relative">
@@ -148,6 +159,18 @@ export default function TrucoGame() {
                     <button onClick={joinGame} className="cyber-button bg-yellow-600/20 !text-yellow-500 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]">
                         SENTARSE A LA MESA
                     </button>
+                </div>
+            ) : gameState.players?.length < 2 ? (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4">
+                    <Users size={40} className="text-zinc-500 opacity-20" />
+                    <p className="text-zinc-500 text-sm font-mono uppercase tracking-tighter">
+                        Esperando que otro jugador se una...
+                    </p>
+                    {gameState.turn && (
+                        <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-tighter">
+                            {gameState.turn === myPlayerId ? 'Tu turno cuando se reparta' : 'Turno del otro cuando se reparta'}
+                        </p>
+                    )}
                 </div>
             ) : (
                 <div className="flex-1 flex flex-col gap-6">
