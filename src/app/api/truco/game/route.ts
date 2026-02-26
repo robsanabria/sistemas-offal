@@ -17,12 +17,17 @@ function createDeck() {
 }
 
 export async function GET() {
-    const state = await kv.get(GAME_KEY) || { players: [], hands: {}, table: [], turn: null, score: { nosotros: 0, ellos: 0 } }
+    let state: any = await kv.get(GAME_KEY) || { players: [], hands: {}, table: [], turn: null, score: { nosotros: 0, ellos: 0 } }
+    // sanitize players: remove falsy entries, dedupe and limit to 2
+    state.players = Array.isArray(state.players) ? Array.from(new Set(state.players.filter(Boolean))).slice(0, 2) : []
+    // ensure score shape
+    if (!state.score) state.score = { nosotros: 0, ellos: 0 }
+    await kv.set(GAME_KEY, state)
     return NextResponse.json(state)
 }
 
 export async function POST(req: Request) {
-    const body = await req.json()
+    const body = await req.json().catch(() => ({}))
     const { action, playerId, cardId, team, delta } = body
 
     let state: any = await kv.get(GAME_KEY) || { players: [], hands: {}, table: [], turn: null, score: { nosotros: 0, ellos: 0 } }
@@ -30,10 +35,17 @@ export async function POST(req: Request) {
     if (!state.score) state.score = { nosotros: 0, ellos: 0 }
 
     if (action === 'join') {
-        if (!state.players.includes(playerId) && state.players.length < 2) {
-            state.players.push(playerId)
-            if (state.players.length === 1) state.turn = playerId
+        // ignore invalid player ids
+        if (!playerId || typeof playerId !== 'string') {
+            return NextResponse.json(state)
         }
+        // sanitize existing players and dedupe
+        const players = Array.isArray(state.players) ? Array.from(new Set(state.players.filter(Boolean))) : []
+        if (!players.includes(playerId) && players.length < 2) {
+            players.push(playerId)
+        }
+        state.players = players.slice(0, 2)
+        if (!state.turn && state.players.length > 0) state.turn = state.players[0]
     }
 
     if (action === 'deal') {
@@ -43,6 +55,10 @@ export async function POST(req: Request) {
             state.hands[p] = deck.splice(0, 3)
         })
         state.turn = state.players[0]
+    }
+
+    if (action === 'reset') {
+        state = { players: [], hands: {}, table: [], turn: null, score: { nosotros: 0, ellos: 0 } }
     }
 
     if (action === 'playCard') {

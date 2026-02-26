@@ -13,18 +13,24 @@ interface Card {
 export default function TrucoGame() {
     const [gameState, setGameState] = useState<any>(null)
     const [loading, setLoading] = useState(true)
-    const [myPlayerId, setMyPlayerId] = useState<string | null>(null)
+    // generate stable id on first render so joins always send a valid id
+    const [myPlayerId] = useState<string>(() => Math.random().toString(36).substring(7))
+    const [clientIp, setClientIp] = useState<string | null>(null)
 
     useEffect(() => {
-        // Generate a simple ID for the session
-        if (!myPlayerId) {
-            const id = Math.random().toString(36).substring(7)
-            setMyPlayerId(id)
-        }
+        // fetch initial state and poll regularly
         fetchState()
         const interval = setInterval(fetchState, 3000)
         return () => clearInterval(interval)
-    }, [myPlayerId])
+    }, [])
+
+    // fetch public IP for display (best-effort)
+    useEffect(() => {
+        fetch('https://api.ipify.org?format=json')
+            .then(r => r.json())
+            .then(j => setClientIp(j.ip))
+            .catch(() => setClientIp(null))
+    }, [])
 
     const fetchState = async () => {
         try {
@@ -43,12 +49,15 @@ export default function TrucoGame() {
     }
 
     const joinGame = async () => {
+        if (!myPlayerId) return
+        setLoading(true)
         await fetch('/api/truco/game', {
             method: 'POST',
             body: JSON.stringify({ action: 'join', playerId: myPlayerId }),
             headers: { 'Content-Type': 'application/json' }
         })
-        fetchState()
+        await fetchState()
+        setLoading(false)
     }
 
     const dealCards = async () => {
@@ -58,6 +67,17 @@ export default function TrucoGame() {
             headers: { 'Content-Type': 'application/json' }
         })
         fetchState()
+    }
+
+    const resetGame = async () => {
+        setLoading(true)
+        await fetch('/api/truco/game', {
+            method: 'POST',
+            body: JSON.stringify({ action: 'reset' }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        await fetchState()
+        setLoading(false)
     }
 
     const playCard = async (cardId: string) => {
@@ -105,8 +125,18 @@ export default function TrucoGame() {
                                 {gameState.turn === myPlayerId ? '🟢 Tu turno' : '⚪️ Turno otro'}
                             </span>
                         )}
+
+                        <div className="text-[10px] text-zinc-500 font-mono ml-2 text-right">
+                            <div>Tu ID: {myPlayerId}</div>
+                            <div>{clientIp ? `IP: ${clientIp}` : 'IP: -'}</div>
+                        </div>
+
                         <button onClick={dealCards} title="Repartir" className="p-1 hover:bg-zinc-800 rounded transition-colors">
                             <RotateCcw size={16} className="text-zinc-500 hover:text-yellow-500" />
+                        </button>
+
+                        <button onClick={resetGame} title="Resetear partida" className="p-1 hover:bg-zinc-800 rounded transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6"/><path d="M3 22v-6h6"/><path d="M21 8A9 9 0 0 0 6 19.9"/><path d="M3 14A9 9 0 0 0 18 3.1"/></svg>
                         </button>
                     </div>
                 </div>
@@ -171,6 +201,14 @@ export default function TrucoGame() {
                             {gameState.turn === myPlayerId ? 'Tu turno cuando se reparta' : 'Turno del otro cuando se reparta'}
                         </p>
                     )}
+                    <div className="mt-4 text-[12px] text-zinc-300 font-mono">
+                        <div className="uppercase text-[9px] text-zinc-500 mb-1">Jugadores sentados</div>
+                        <ul className="list-disc list-inside">
+                            {(gameState.players || []).map((p: string) => (
+                                <li key={p} className="text-[12px]">{p} {p === myPlayerId && <span className="text-[10px] text-cyan-400">(Tu)</span>}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             ) : (
                 <div className="flex-1 flex flex-col gap-6">
