@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function AndreaCounter() {
     const [days, setDays] = useState<number | null>(null)
     const [loading, setLoading] = useState(true)
+    const [missingDates, setMissingDates] = useState<string[]>([])
 
     useEffect(() => {
         fetch('/api/counters/andrea')
@@ -15,6 +16,12 @@ export default function AndreaCounter() {
                 setDays(data.days)
                 setLoading(false)
             })
+
+        // load saved missing dates from localStorage
+        const saved = localStorage.getItem('andreaMissingDates')
+        if (saved) {
+            try { setMissingDates(JSON.parse(saved)) } catch {}        
+        }
     }, [])
 
     const updateCounter = async (delta: number | null, reset: boolean = false) => {
@@ -27,6 +34,20 @@ export default function AndreaCounter() {
         const data = await res.json()
         setDays(data.days)
         setLoading(false)
+    }
+
+    const addMissingDate = (date: string) => {
+        const updated = [...missingDates, date]
+        setMissingDates(updated)
+        try {
+            localStorage.setItem('andreaMissingDates', JSON.stringify(updated))
+        } catch {}
+    }
+
+    const handleReset = async () => {
+        const today = new Date().toLocaleDateString('es-AR')
+        await updateCounter(null, true)
+        addMissingDate(today)
     }
 
     return (
@@ -78,13 +99,24 @@ export default function AndreaCounter() {
             </div>
 
             <button
-                onClick={() => updateCounter(null, true)}
+                onClick={handleReset}
                 disabled={loading}
                 className="cyber-button flex items-center gap-2 mt-2 text-xs bg-red-500/20 !text-red-500 border border-red-500/50 hover:bg-red-500/40"
             >
                 <RefreshCcw size={14} className={loading ? 'animate-spin' : ''} />
                 RESETEAR (FALTÓ HOY)
             </button>
+
+            {missingDates.length > 0 && (
+                <div className="mt-4 text-left w-full max-w-xs">
+                    <span className="block text-[10px] text-zinc-400 uppercase font-mono mb-1">Fechas de falta:</span>
+                    <ul className="list-disc list-inside text-[12px] text-zinc-300 font-mono">
+                        {missingDates.map((d, idx) => (
+                            <li key={idx}>{d}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <p className="text-[10px] text-zinc-500 mt-2 font-mono uppercase tracking-tighter">
                 Status: {days === 0 ? "⚠️ ALERTA: ANDREA FALTO" : "✅ SE ENCUENTRA OPERATIVA"}

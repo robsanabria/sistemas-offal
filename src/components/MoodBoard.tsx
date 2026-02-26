@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { Smile, User } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-const EMOJIS = ['😎', '💻', '🥩', '☕', '🚀', '😴', '🤡', '🔥', '🛵', '💼']
-const TEAM = ['Roberto', 'Nicolas', 'Andrea', 'Juan', 'Tobias', 'Matias', 'Norber', 'Eze']
+const EMOJIS = ['😎', '💻', '🥩', '☕', '🚀', '😴', '🤡', '🔥', '🛵', '💼', '😂', '😡', '😱', '😇', '🤖']
+const TEAM = ['Roberto', 'Nicolas', 'Andrea', 'Juan', 'Tobias', 'Matias', 'Norber', 'Eze', 'Miguel', 'Luis']
 
 export default function MoodBoard() {
     const [moods, setMoods] = useState<Record<string, string>>({})
