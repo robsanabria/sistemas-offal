@@ -8,6 +8,7 @@ import MoodBoard from '@/components/MoodBoard'
 import PrankButton from '@/components/PrankButton'
 import Whiteboard from '@/components/Whiteboard'
 import PointsBoard from '@/components/PointsBoard'
+import Buscaminas from '@/components/Buscaminas'
 import { Monitor, Beef, Terminal as TerminalIcon, ExternalLink, UtensilsCrossed } from 'lucide-react'
 
 export default function Home() {
@@ -84,6 +85,13 @@ export default function Home() {
           </div>
           <div className="lg:col-span-2">
             <SimpsonsQuote />
+          </div>
+        </div>
+
+        {/* Buscaminas Section - Home only */}
+        <div className="grid grid-cols-1 gap-6">
+          <div className="lg:col-span-1">
+            <Buscaminas />
           </div>
         </div>
 
