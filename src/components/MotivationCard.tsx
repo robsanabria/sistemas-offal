@@ -17,7 +17,12 @@ const OFFICE_MANTRAS = [
     "Amigoooooo",
     "La paja motoneta",
     "AAaa que cobraba",
-    "Eso no va a pasar."
+    "Eso no va a pasar.",
+    "Andó",
+    "Pendrivers",
+    "Chinchulandia",
+    "Chinchudata",
+    "Lo que hay que ver, es la producción de Sandra"
 ]
 
 export default function MotivationCard() {
