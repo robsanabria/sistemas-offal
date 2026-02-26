@@ -16,11 +16,17 @@ export async function GET() {
     }
 }
 
-export async function POST() {
+export async function POST(request: Request) {
     try {
-        // Pick a random person from the team
-        const randomIndex = Math.floor(Math.random() * DEFAULT_TEAM.length)
-        const newMaker = DEFAULT_TEAM[randomIndex]
+        let newMaker: string
+        const body = await request.json().catch(() => ({}))
+        if (body && typeof body.force === 'string' && DEFAULT_TEAM.includes(body.force)) {
+            newMaker = body.force
+        } else {
+            // Pick a random person from the team
+            const randomIndex = Math.floor(Math.random() * DEFAULT_TEAM.length)
+            newMaker = DEFAULT_TEAM[randomIndex]
+        }
 
         await kv.set(KEYS.COFFEE_MAKER, newMaker)
         return NextResponse.json({ maker: newMaker })

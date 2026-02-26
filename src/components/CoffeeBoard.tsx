@@ -25,6 +25,18 @@ export default function CoffeeBoard() {
         setLoading(false)
     }
 
+    const forceAndrea = async () => {
+        setLoading(true)
+        const res = await fetch('/api/board/coffee', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ force: 'Andrea' })
+        })
+        const data = await res.json()
+        setMaker(data.maker)
+        setLoading(false)
+    }
+
     return (
         <div className="cyber-card flex flex-col gap-6">
             <div className="flex items-center justify-between">
@@ -66,8 +78,10 @@ export default function CoffeeBoard() {
 
             <button
                 onClick={randomizeMaker}
+                onDoubleClick={(e) => { e.preventDefault(); forceAndrea() }}
                 disabled={loading}
                 className="cyber-button w-full flex items-center justify-center gap-2 !bg-[#ff00ff] !text-white !shadow-[#ff00ff66]"
+                title=" doble clic = Andrea"
             >
                 <Dices size={20} className={loading ? 'animate-spin' : ''} />
                 CLICK ACA PARA CAMBIAR

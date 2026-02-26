@@ -26,7 +26,7 @@ export default function MotivationCard() {
     }, [])
 
     // image for monthly visitor
-    const VISIT_IMAGE = '/conAbel.jpg'
+    const VISIT_IMAGE = '/conAbel.jpeg' // actual file extension in public folder
 
     return (
         <div className="cyber-card relative overflow-hidden group">
@@ -59,7 +59,7 @@ export default function MotivationCard() {
             <div className="mt-8 pt-6 border-t border-zinc-800">
                 <h4 className="font-bold uppercase tracking-widest text-sm text-cyan-400 mb-2">Visita del mes</h4>
                 <div className="w-full flex justify-center">
-                    <img src={VISIT_IMAGE} alt="Visita del mes" className="max-w-full max-h-48 object-contain rounded-lg shadow-lg" />
+                    <img src={VISIT_IMAGE} alt="La visita del mes: Abel" className="max-w-full max-h-48 object-contain rounded-lg shadow-lg" />
                 </div>
             </div>
         </div>
