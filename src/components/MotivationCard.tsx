@@ -9,7 +9,10 @@ const OFFICE_MANTRAS = [
     "Miiiiija.",
     "Es como una milanesa pero sin empanar.",
     "Maaaati",
-    "Plaata ariel"
+    "Plaata ariel",
+    "eLubeer",
+    "Abuelo con miedo, se encierra con dos trabas",
+    "Que te pensas? QUe el hombre es un indigena?"
 ]
 
 export default function MotivationCard() {
