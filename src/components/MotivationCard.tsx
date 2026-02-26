@@ -12,7 +12,9 @@ const OFFICE_MANTRAS = [
     "Plaata ariel",
     "eLubeer",
     "Abuelo con miedo, se encierra con dos trabas",
-    "Que te pensas? QUe el hombre es un indigena?"
+    "Que te pensas? QUe el hombre es un indigena?",
+    "Essto es chequeado, vomitado y recien levantado.",
+    "Amigoooooo"
 ]
 
 export default function MotivationCard() {
@@ -22,6 +24,9 @@ export default function MotivationCard() {
         const randomMantra = OFFICE_MANTRAS[Math.floor(Math.random() * OFFICE_MANTRAS.length)]
         setMantra(randomMantra)
     }, [])
+
+    // image for monthly visitor
+    const VISIT_IMAGE = '/conAbel.jpg'
 
     return (
         <div className="cyber-card relative overflow-hidden group">
@@ -48,6 +53,14 @@ export default function MotivationCard() {
             <div className="mt-6 flex items-center gap-2">
                 <div className="h-[1px] flex-1 bg-zinc-800" />
                 <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-tighter">Sistemicos Offal Mantra</span>
+            </div>
+
+            {/* Visita del mes */}
+            <div className="mt-8 pt-6 border-t border-zinc-800">
+                <h4 className="font-bold uppercase tracking-widest text-sm text-cyan-400 mb-2">Visita del mes</h4>
+                <div className="w-full flex justify-center">
+                    <img src={VISIT_IMAGE} alt="Visita del mes" className="max-w-full max-h-48 object-contain rounded-lg shadow-lg" />
+                </div>
             </div>
         </div>
     )
