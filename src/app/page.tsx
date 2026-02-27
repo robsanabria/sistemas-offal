@@ -55,16 +55,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md text-sm"
                 >
-                  📱 Lo de Negaro (Pizzas)
-                </a>
-
-                <a
-                  href="https://wa.me/?text=Hola%20(abrir%20WhatsApp%20para%20elegir%20contacto)"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-500/80 hover:bg-emerald-600 text-white font-semibold rounded-md text-sm"
-                >
-                  📱 Otro WhatsApp
+                  📱 Lo de Genaro (Pizzas)
                 </a>
               </div>
             </div>
