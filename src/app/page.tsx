@@ -1,4 +1,5 @@
 import AndreaCounter from '@/components/AndreaCounter'
+import RobertoCounter from '@/components/RobertoCounter'
 import SpeedCounter from '@/components/SpeedCounter'
 import CoffeeBoard from '@/components/CoffeeBoard'
 import TrucoGame from '@/components/TrucoGame'
@@ -63,8 +64,9 @@ export default function Home() {
         </div>
 
         {/* Main Dashboard - 3 columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <AndreaCounter />
+          <RobertoCounter />
           <SpeedCounter />
           <CoffeeBoard />
         </div>
