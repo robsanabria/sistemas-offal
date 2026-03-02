@@ -39,6 +39,7 @@ export default function Home() {
           <div className="lg:col-span-1">
             <PrankButton />
           </div>
+          
           <div className="lg:col-span-1">
             <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all group active:scale-95">
               <UtensilsCrossed size={32} className="text-emerald-500 group-hover:scale-110 transition-transform" />
@@ -49,14 +50,23 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2 mt-2 w-full px-4">
+              <div className="flex flex-col sm:flex-row gap-2 mt-3 w-full px-4">
+                <a
+                  href="https://drive.google.com/file/d/1pY-32F394BrKHYoZgwg7rbbh_CIz7Yns/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-md text-sm"
+                >
+                  📖 Ver Menú
+                </a>
+
                 <a
                   href="https://wa.me/5491166968656?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Pizzas"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md text-sm"
+                  className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md text-sm"
                 >
-                  📱 Lo de Genaro (Pizzas)
+                  🍕 Pedir Pizza
                 </a>
               </div>
             </div>
