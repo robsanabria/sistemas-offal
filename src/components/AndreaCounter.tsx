@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, RefreshCcw, Plus, Minus } from 'lucide-react'
+import { Calendar, RefreshCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function AndreaCounter() {
@@ -58,15 +58,7 @@ export default function AndreaCounter() {
             </div>
 
             <div className="flex items-center gap-6">
-                <button
-                    onClick={() => updateCounter(-1)}
-                    disabled={loading || (days ?? 0) <= 0}
-                    className="p-2 rounded-full border border-zinc-700 hover:border-red-500 text-zinc-500 hover:text-red-500 transition-colors"
-                >
-                    <Minus size={20} />
-                </button>
-
-                <div className="relative min-w-[80px]">
+                <div className="relative min-w-[120px]">
                     <AnimatePresence mode="wait">
                         {loading ? (
                             <motion.div
@@ -88,14 +80,6 @@ export default function AndreaCounter() {
                         )}
                     </AnimatePresence>
                 </div>
-
-                <button
-                    onClick={() => updateCounter(1)}
-                    disabled={loading}
-                    className="p-2 rounded-full border border-zinc-700 hover:border-green-500 text-zinc-500 hover:text-green-500 transition-colors"
-                >
-                    <Plus size={20} />
-                </button>
             </div>
 
             <button
