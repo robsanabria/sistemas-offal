@@ -22,7 +22,9 @@ const OFFICE_MANTRAS = [
     "Pendrivers",
     "Chinchulandia",
     "Chinchudata",
-    "Lo que hay que ver, es la producción de Sandra"
+    "Lo que hay que ver, es la producción de Sandra",
+    "Se me cerro el ani",
+    "Como se llama la hija de Twins?"
 ]
 
 export default function MotivationCard() {
