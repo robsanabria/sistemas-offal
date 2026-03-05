@@ -11,19 +11,40 @@ export default function PrankButton() {
     const handlePrank = () => {
         setClicked(true)
 
-        // Use a direct trigger which is more likely to work with browser policies
+        // Lista de sonidos dentro de la carpeta `public/` (rutas servidas desde '/')
+        const sounds = [
+            '/boca-boca-boca-la-faraona.mp3',
+            '/buenas-tardes-grupo.mp3',
+            '/como-llueve.mp3',
+            '/estoy-cansado-jefe.mp3',
+            '/gogogogogogo.mp3',
+            '/gol-messi-vs-getafe-narrat-per-puyal-full-hd-1080p-audiotrimmer.mp3',
+            '/homero-gimiendo.mp3',
+            '/ponele-voluntad.mp3',
+            '/que-es-eso-bob-esponja.mp3',
+            '/revivan-el-server-homero.mp3',
+            '/y2mate_1lLaYg7.mp3'
+        ]
+
+        const idx = Math.floor(Math.random() * sounds.length)
+        const src = sounds[idx]
+
         try {
-            const audio = new Audio("https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=88e3c329-873d-4c74-8968-385073041c5c")
+            // Pausar cualquier audio previo
+            if (audioRef.current) {
+                try { audioRef.current.pause() } catch (e) { /* ignore */ }
+                audioRef.current = null
+            }
+
+            const audio = new Audio(src)
             audio.volume = 1.0
-            audio.play().catch(e => {
-                console.error("Audio block:", e)
-                // If it fails, we show a small toast or similar in a real app
-            })
+            audioRef.current = audio
+            audio.play().catch(e => console.error('Audio play blocked or failed:', e))
         } catch (err) {
-            console.error("Audio setup error:", err)
+            console.error('Audio setup error:', err)
         }
 
-        // Reset after some time
+        // Reset visual state after a short delay
         setTimeout(() => setClicked(false), 5000)
     }
 
@@ -64,12 +85,7 @@ export default function PrankButton() {
                 </div>
             </div>
 
-            {/* Prank Audio - Placeholder URL: Gemido de WhatsApp/Office Prank */}
-            <audio
-                ref={audioRef}
-                src="https://www.myinstants.com/media/sounds/gemido-de-whatsapp-whatsapp-moan.mp3"
-                preload="auto"
-            />
+            {/* El audio se crea dinámicamente en handlePrank para evitar problemas de autoplay */}
 
             {clicked && (
                 <motion.div
