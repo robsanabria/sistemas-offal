@@ -23,7 +23,10 @@ export default function PrankButton() {
             '/ponele-voluntad.mp3',
             '/que-es-eso-bob-esponja.mp3',
             '/revivan-el-server-homero.mp3',
-            '/y2mate_1lLaYg7.mp3'
+            '/y2mate_1lLaYg7.mp3',
+            '/nuevo-sonido-1.mp3',
+            '/nuevo-sonido-2.mp3',
+            '/nuevo-sonido-3.mp3'
         ]
 
         const idx = Math.floor(Math.random() * sounds.length)
