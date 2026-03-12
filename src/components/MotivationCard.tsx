@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Quote, Sparkles } from 'lucide-react'
+import { Quote, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const OFFICE_MANTRAS = [
@@ -35,9 +35,16 @@ export default function MotivationCard() {
         setMantra(randomMantra)
     }, [])
 
-    // image for monthly visitor
-    const VISIT_IMAGE = '/conAbel.jpeg' // actual file extension in public folder
+    // images for monthly visitor carousel (served from /public)
+    const VISIT_IMAGES = [
+        '/conAbel.jpeg',
+        '/658ad0a2-7c16-4182-b78e-aab7d49499a2.jpg'
+    ]
+    const [visitIndex, setVisitIndex] = useState(0)
     const [zoomed, setZoomed] = useState(false)
+
+    const prevVisit = () => setVisitIndex((i) => (i - 1 + VISIT_IMAGES.length) % VISIT_IMAGES.length)
+    const nextVisit = () => setVisitIndex((i) => (i + 1) % VISIT_IMAGES.length)
 
     return (
         <div className="cyber-card relative overflow-hidden group">
@@ -69,13 +76,40 @@ export default function MotivationCard() {
             {/* Visita del mes */}
             <div className="mt-8 pt-6 border-t border-zinc-800">
                 <h4 className="font-bold uppercase tracking-widest text-sm text-cyan-400 mb-2">Visita del mes</h4>
-                <div className="w-full flex justify-center">
+                <div className="w-full flex justify-center relative">
+                    <button
+                        aria-label="Anterior"
+                        onClick={prevVisit}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/40 rounded-full"
+                    >
+                        <ChevronLeft size={18} className="text-white" />
+                    </button>
+
                     <img
-                        src={VISIT_IMAGE}
-                        alt="La visita del mes: Abel"
+                        src={VISIT_IMAGES[visitIndex]}
+                        alt={`La visita del mes ${visitIndex + 1}`}
                         className="max-w-full max-h-48 object-contain rounded-lg shadow-lg cursor-zoom-in"
                         onClick={() => setZoomed(true)}
                     />
+
+                    <button
+                        aria-label="Siguiente"
+                        onClick={nextVisit}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/40 rounded-full"
+                    >
+                        <ChevronRight size={18} className="text-white" />
+                    </button>
+
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                        {VISIT_IMAGES.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setVisitIndex(idx)}
+                                className={`w-2 h-2 rounded-full ${idx === visitIndex ? 'bg-cyan-400' : 'bg-zinc-700/50'}`}
+                                aria-label={`Ir a imagen ${idx + 1}`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -84,7 +118,7 @@ export default function MotivationCard() {
                     className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 cursor-zoom-out"
                     onClick={() => setZoomed(false)}
                 >
-                    <img src={VISIT_IMAGE} alt="La visita del mes ampliada" className="max-w-full max-h-full" />
+                    <img src={VISIT_IMAGES[visitIndex]} alt="La visita del mes ampliada" className="max-w-full max-h-full" />
                 </div>
             )}
         </div>
