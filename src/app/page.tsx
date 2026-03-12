@@ -52,7 +52,7 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-2 mt-3 w-full px-4">
                 <a
-                  href="https://drive.google.com/file/d/1pY-32F394BrKHYoZgwg7rbbh_CIz7Yns/view"
+                  href="https://drive.google.com/file/d/1KLZy91uvjKiMFHKYDmM8h5gEljxs35d5/view"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-md text-sm"
