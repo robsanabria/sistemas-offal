@@ -13,20 +13,35 @@ export default function PrankButton() {
 
         // Lista de sonidos dentro de la carpeta `public/` (rutas servidas desde '/')
         const sounds = [
+            '/aaa-se-ha-detectado-un-boliviano.mp3',
+            '/ahh-despacito-2.mp3',
+            '/ahi-lo-tenes-al-pelotudo_TlDTm41.mp3',
+            '/ay-despacito.mp3',
             '/boca-boca-boca-la-faraona.mp3',
             '/buenas-tardes-grupo.mp3',
             '/como-llueve.mp3',
             '/estoy-cansado-jefe.mp3',
+            '/estoy-como-loquita.mp3',
+            '/eu-bata-1_VwbftjF.mp3',
             '/gogogogogogo.mp3',
             '/gol-messi-vs-getafe-narrat-per-puyal-full-hd-1080p-audiotrimmer.mp3',
             '/homero-gimiendo.mp3',
-            '/ponele-voluntad.mp3',
-            '/que-es-eso-bob-esponja.mp3',
-            '/revivan-el-server-homero.mp3',
-            '/y2mate_1lLaYg7.mp3',
+            '/hoy-no-hay-choripan-porque-hay-lluvia-y2save.mp3',
+            '/naaaa-ta-re-loco-full.mp3',
+            '/no-hay-plata.mp3',
             '/nuevo-sonido-1.mp3',
             '/nuevo-sonido-2.mp3',
-            '/nuevo-sonido-3.mp3'
+            '/nuevo-sonido-3.mp3',
+            '/ojhemaflk-omsawt-online-audio-converter.mp3',
+            '/paaraaaaa.mp3',
+            '/ponele-voluntad.mp3',
+            '/por-favor-necesito-pito-me-muero.mp3',
+            '/que-es-eso-bob-esponja.mp3',
+            '/revivan-el-server-homero.mp3',
+            '/tlabaja.mp3',
+            '/tlabaja-chino.mp3',
+            '/y2mate_1lLaYg7.mp3',
+            '/y2mate_9l5QdzQ.mp3'
         ]
 
         const idx = Math.floor(Math.random() * sounds.length)

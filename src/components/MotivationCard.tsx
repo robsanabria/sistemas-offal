@@ -37,8 +37,11 @@ export default function MotivationCard() {
 
     // images for monthly visitor carousel (served from /public)
     const VISIT_IMAGES = [
+        '/05ac4b22-b5e6-42ca-aca5-5e2b0997dadf.jpg',
+        '/658ad0a2-7c16-4182-b78e-aab7d49499a2.jpg',
         '/conAbel.jpeg',
-        '/658ad0a2-7c16-4182-b78e-aab7d49499a2.jpg'
+        '/fb49da52-7c3a-4746-ba6f-3669f82ac4f6.jpg',
+        '/cow.png'
     ]
     const [visitIndex, setVisitIndex] = useState(0)
     const [zoomed, setZoomed] = useState(false)
