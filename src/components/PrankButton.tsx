@@ -10,8 +10,7 @@ export default function PrankButton() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const sounds = [
-        const sounds = [
-        '/aaa-se-ha-detectado-un-boliviano.mp3',
+           '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
         '/ahh-despacito-2.mp3',
         '/ahi-lo-tenes-al-pelotudo_TlDTm41.mp3',
@@ -80,7 +79,6 @@ export default function PrankButton() {
         '/y2mate_9l5QdzQ.mp3',
         '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
     ]
-    
 
     const getLabel = (s: string) =>
         s.replace(/\//g, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '').slice(0, 10)
