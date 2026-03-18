@@ -9,154 +9,227 @@ export default function PrankButton() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const sounds = [
-        '/ay-despacito.mp3',
-        '/eu-bata.mp3',
-        '/gogogo-meme.mp3',
-        '/justicia-por-el-padre.mp3',
-        '/oh-my-god-meme.mp3',
+        '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
-        '/peter-capusoto-la-comida-sanajaja-mp3cut.mp3',
+        '/ahh-despacito-2.mp3',
+        '/ahi-lo-tenes-al-pelotudo_TlDTm41.mp3',
+        '/alto-guiso.mp3',
+        '/atrapada-ayuda.mp3',
+        '/ay-despacito (3).mp3',
+        '/ay-despacito.mp3',
+        '/bgc-dramatic-music-tiktok-drama-effect-audio-tiktok-new-trend_LYggtlV.mp3',
+        '/boca-boca-boca-la-faraona.mp3',
+        '/buenas-tardes-grupo.mp3',
+        '/buenos-dias-estrellitas.mp3',
+        '/capusotto-me-da-uno-de-esos-coso.mp3',
+        '/como-llueve.mp3',
+        '/creeeo-que-se-equivoco.mp3',
+        '/esta-chequeado.mp3',
+        '/estoy-cansado-jefe.mp3',
+        '/estoy-como-loquita.mp3',
+        '/eu-bata-1_VwbftjF.mp3',
+        '/eu-bata.mp3',
+        '/fiesta-lalala-.mp3',
+        '/garganta-profunda.mp3',
+        '/gogogo-meme.mp3',
+        '/gogogogogogo.mp3',
+        '/gogogogo_E2sBNDZ.mp3',
+        '/gol-messi-vs-getafe-narrat-per-puyal-full-hd-1080p-audiotrimmer.mp3',
+        '/hermoso-hermoso-.mp3',
+        '/homero-gimiendo.mp3',
+        '/hoy-no-hay-choripan-porque-hay-lluvia-y2save.mp3',
+        '/impacto-bendita.mp3',
+        '/justicia-por-el-padre.mp3',
+        '/le-gustaba-el-fshh-el-chupi-.mp3',
+        '/Lo que hay que ver es la producción de Sandra.mp3',
+        '/lo-dejo-a-tu-criterio-karina-jelinek-.mp3',
+        '/mala-onda-mala-onda.mp3',
+        '/michael-jackson-hee-hee.mp3',
+        '/naaaa-ta-re-loco-full.mp3',
+        '/no-hay-plata.mp3',
+        '/nuevo-sonido-1.mp3',
+        '/nuevo-sonido-2.mp3',
+        '/nuevo-sonido-3.mp3',
+        '/oh-my-god-meme.mp3',
+        '/oh-no-no-no-tik-tok-song-sound-effect.mp3',
+        '/ojhemaflk-omsawt-online-audio-converter.mp3',
+        '/paaraaaaa.mp3',
+        '/peter-capusotto-la-comida-sanajaja-mp3cut.mp3',
+        '/podes-ser-tan-pelotudo-viejo.mp3',
         '/ponele-voluntad.mp3',
+        '/por-favor-necesito-pito-me-muero.mp3',
         '/prendo-el-velador-pum-cortocircuito.mp3',
         '/putooo-capusotto.mp3',
+        '/que-dificil-me-la-pusiste-diablo.mp3',
+        '/que-dios-le-re-bendiga-.mp3',
+        '/que-es-eso-bob-esponja.mp3',
+        '/que-falta-de-comprension-que-teneees-.mp3',
         '/que-miras-bobo.mp3',
         '/revivan-el-server-homero.mp3',
+        '/se-lava-las-manos-.mp3',
         '/tengo-dolares-capusotto.mp3',
-        '/y2mate_9l5QdzQ.mp3'
+        '/tienen-que-cerrar-el-estadio.mp3',
+        '/tlabaja-chino.mp3',
+        '/tlabaja.mp3',
+        '/tmpsbchnr37.mp3',
+        '/todas-divinas-de-que-viven-oriana-junco.mp3',
+        '/y2mate_1lLaYg7.mp3',
+        '/y2mate_9l5QdzQ (1).mp3',
+        '/y2mate_9l5QdzQ.mp3',
+        '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
     ]
-
-    const getLabel = (s: string) =>
-        s
-            .replace(/\//g, '')
-            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
-            .slice(0, 10)
 
     const playSound = (src: string) => {
         try {
+            if (
+                audioRef.current &&
+                !audioRef.current.paused &&
+                audioRef.current.src &&
+                audioRef.current.src.includes(src)
+            ) return
+
             if (audioRef.current) {
-                audioRef.current.pause()
-                audioRef.current.currentTime = 0
+                try {
+                    if (!audioRef.current.src.includes(src)) {
+                        audioRef.current.pause()
+                        audioRef.current.currentTime = 0
+                        audioRef.current = null
+                    }
+                } catch {}
             }
 
             const audio = new Audio(encodeURI(src))
             audio.volume = 1.0
 
             audio.onended = () => {
-                if (audioRef.current === audio) {
-                    audioRef.current = null
-                }
+                try {
+                    if (audioRef.current === audio) audioRef.current = null
+                } catch {}
             }
 
             audioRef.current = audio
             audio.play().catch(() => {})
-        } catch (err) {
-            console.error(err)
-        }
+        } catch {}
     }
 
     const handlePrank = () => {
         setClicked(true)
-
-        const random = sounds[Math.floor(Math.random() * sounds.length)]
-        playSound(random)
-
-        setTimeout(() => setClicked(false), 2000)
+        const idx = Math.floor(Math.random() * sounds.length)
+        playSound(sounds[idx])
+        setTimeout(() => setClicked(false), 5000)
     }
 
-    const icons = [Volume2, Skull, AlertTriangle]
+    const getLabel = (s: string) =>
+        s
+            .replace(/\//g, '')
+            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+            .slice(0, 12)
 
     return (
-        <div className="cyber-card border-red-500/20 bg-red-500/5 overflow-hidden relative group p-4 rounded-xl">
+        <div className="cyber-card border-red-500/20 bg-red-500/2 overflow-hidden relative group">
 
-            {/* HEADER */}
-            <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase">
                 <AlertTriangle size={14} className="animate-pulse" />
-                <span>STRICTLY RESTRICTED AREA</span>
+                <span>Strictly Restricted Area</span>
             </div>
 
-            {/* BOTON CENTRAL */}
             <div className="flex flex-col items-center">
 
                 <motion.button
-                    whileHover={{ scale: 1.08 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handlePrank}
-                    className={`
-                        w-32 h-32 rounded-full border-4 flex items-center justify-center
-                        shadow-[0_0_25px_rgba(255,0,0,0.3)]
-                        transition-all duration-300
-                        ${clicked
-                            ? 'bg-red-600 border-white'
-                            : 'bg-zinc-900 border-red-600 hover:border-red-400'}
-                    `}
+                    className={`w-32 h-32 rounded-full border-4 flex items-center justify-center ${
+                        clicked ? 'bg-red-600 border-white' : 'bg-zinc-900 border-red-600'
+                    }`}
                 >
-                    {clicked ? (
-                        <Skull size={48} className="text-white animate-bounce" />
-                    ) : (
-                        <Volume2 size={40} className="text-red-500" />
-                    )}
+                    {clicked ? <Skull size={48} /> : <Volume2 size={32} />}
                 </motion.button>
 
-                {/* BOTONERA */}
-                <div className="mt-6 w-full max-h-60 overflow-y-auto pr-1">
-                    <div className="grid grid-cols-4 gap-2">
+                {/* 🔥 BOTONERA MINI */}
+                <div className="mt-6 w-full">
 
-                        {sounds.map((s) => {
-                            const Icon = icons[Math.floor(Math.random() * icons.length)]
-
-                            return (
-                                <button
-                                    key={s}
-                                    onClick={() => playSound(s)}
-                                    className="
-                                        relative
-                                        aspect-square
-                                        rounded-md
-                                        bg-zinc-900
-                                        border border-zinc-700
-                                        hover:bg-red-600/20
-                                        hover:border-red-500
-                                        active:scale-95
-                                        active:bg-red-600/40
-                                        active:shadow-inner
-                                        transition
-                                        flex items-center justify-center
-                                        group
-                                        shadow-[0_0_8px_rgba(0,0,0,0.4)]
-                                        hover:shadow-[0_0_12px_rgba(255,0,0,0.3)]
-                                    "
-                                >
-                                    {/* ICONO */}
-                                    <Icon className="w-5 h-5 text-zinc-400 group-hover:text-red-400 transition" />
-
-                                    {/* LABEL */}
-                                    <span className="
-                                        absolute bottom-1 left-1 right-1
-                                        text-[8px]
-                                        text-zinc-500
-                                        truncate
-                                        text-center
-                                        opacity-80
-                                    ">
-                                        {getLabel(s)}
-                                    </span>
-                                </button>
-                            )
-                        })}
-
+                    <div className="grid grid-cols-4 gap-1">
+                        {[
+                            '/ay-despacito.mp3',
+                            '/eu-bata.mp3',
+                            '/gogogo-meme.mp3',
+                            '/justicia-por-el-padre.mp3',
+                            '/oh-my-god-meme.mp3',
+                            '/agarrate-los-pantalones.mp3'
+                        ].map((s) => (
+                            <button
+                                key={s}
+                                onClick={() => playSound(s)}
+                                className="
+                                    px-1 py-1
+                                    text-[9px]
+                                    bg-zinc-900/70
+                                    border border-zinc-800
+                                    rounded-sm
+                                    hover:bg-zinc-800
+                                    active:scale-95
+                                    active:translate-y-[1px]
+                                    transition
+                                    truncate
+                                "
+                            >
+                                {getLabel(s)}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
-            </div>
+                {/* 🔥 GRILLA COMPLETA */}
+       <div className="mt-6 w-full">
 
-            {/* EFECTO OVERLAY */}
-            {clicked && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.15 }}
-                    className="absolute inset-0 bg-red-500 animate-ping pointer-events-none"
-                />
-            )}
+    <div className="max-h-56 overflow-y-auto pr-1">
+        <div className="grid grid-cols-4 gap-2">
+
+            {sounds.map((s) => (
+                <button
+                    key={s}
+                    onClick={() => playSound(s)}
+                    className="
+                        relative
+                        aspect-square
+                        rounded-md
+                        bg-zinc-900
+                        border border-zinc-700
+                        hover:bg-red-600/20
+                        active:scale-95
+                        active:bg-red-600/40
+                        transition
+                        flex items-center justify-center
+                        group
+                    "
+                >
+                    {/* ICONO SVG */}
+                    <svg
+                        className="w-5 h-5 text-zinc-400 group-hover:text-red-400 transition"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M3 10v4h4l5 5V5L7 10H3z" />
+                    </svg>
+
+                    {/* LABEL CHIQUITO */}
+                    <span className="
+                        absolute bottom-1 left-1 right-1
+                        text-[8px]
+                        text-zinc-500
+                        truncate
+                        text-center
+                        opacity-70
+                    ">
+                        {getLabel(s)}
+                    </span>
+
+                </button>
+            ))}
+
         </div>
+    </div>
+</div>
     )
 }
