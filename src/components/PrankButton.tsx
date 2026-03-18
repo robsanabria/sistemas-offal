@@ -10,13 +10,12 @@ export default function PrankButton() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const sounds = [
-           '/aaa-se-ha-detectado-un-boliviano.mp3',
+        '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
         '/ahh-despacito-2.mp3',
         '/ahi-lo-tenes-al-pelotudo_TlDTm41.mp3',
         '/alto-guiso.mp3',
         '/atrapada-ayuda.mp3',
-        '/ay-despacito (3).mp3',
         '/ay-despacito.mp3',
         '/bgc-dramatic-music-tiktok-drama-effect-audio-tiktok-new-trend_LYggtlV.mp3',
         '/boca-boca-boca-la-faraona.mp3',
@@ -48,9 +47,6 @@ export default function PrankButton() {
         '/michael-jackson-hee-hee.mp3',
         '/naaaa-ta-re-loco-full.mp3',
         '/no-hay-plata.mp3',
-        '/nuevo-sonido-1.mp3',
-        '/nuevo-sonido-2.mp3',
-        '/nuevo-sonido-3.mp3',
         '/oh-my-god-meme.mp3',
         '/oh-no-no-no-tik-tok-song-sound-effect.mp3',
         '/ojhemaflk-omsawt-online-audio-converter.mp3',
@@ -71,7 +67,6 @@ export default function PrankButton() {
         '/tengo-dolares-capusotto.mp3',
         '/tienen-que-cerrar-el-estadio.mp3',
         '/tlabaja-chino.mp3',
-        '/tlabaja.mp3',
         '/tmpsbchnr37.mp3',
         '/todas-divinas-de-que-viven-oriana-junco.mp3',
         '/y2mate_1lLaYg7.mp3',
