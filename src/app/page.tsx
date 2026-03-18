@@ -36,9 +36,11 @@ export default function Home() {
           <div className="lg:col-span-3">
             <MotivationCard />
           </div>
-          <div className="lg:col-span-1">
-            <PrankButton />
-          </div>
+          <div className="lg:col-span-2 flex justify-center">
+  <div className="w-full max-w-2xl">
+    <PrankButton />
+  </div>
+</div>
           
           <div className="lg:col-span-1">
             <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all group active:scale-95">
