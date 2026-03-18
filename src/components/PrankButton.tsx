@@ -8,7 +8,7 @@ export default function PrankButton() {
     const [clicked, setClicked] = useState(false)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
-    const sounds = [
+   const sounds = [
         '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
         '/ahh-despacito-2.mp3',
@@ -79,157 +79,137 @@ export default function PrankButton() {
         '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
     ]
 
+    const getLabel = (s: string) =>
+        s
+            .replace(/\//g, '')
+            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+            .slice(0, 10)
+
     const playSound = (src: string) => {
         try {
-            if (
-                audioRef.current &&
-                !audioRef.current.paused &&
-                audioRef.current.src &&
-                audioRef.current.src.includes(src)
-            ) return
-
             if (audioRef.current) {
-                try {
-                    if (!audioRef.current.src.includes(src)) {
-                        audioRef.current.pause()
-                        audioRef.current.currentTime = 0
-                        audioRef.current = null
-                    }
-                } catch {}
+                audioRef.current.pause()
+                audioRef.current.currentTime = 0
             }
 
             const audio = new Audio(encodeURI(src))
             audio.volume = 1.0
 
             audio.onended = () => {
-                try {
-                    if (audioRef.current === audio) audioRef.current = null
-                } catch {}
+                if (audioRef.current === audio) {
+                    audioRef.current = null
+                }
             }
 
             audioRef.current = audio
             audio.play().catch(() => {})
-        } catch {}
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const handlePrank = () => {
         setClicked(true)
-        const idx = Math.floor(Math.random() * sounds.length)
-        playSound(sounds[idx])
-        setTimeout(() => setClicked(false), 5000)
+        const random = sounds[Math.floor(Math.random() * sounds.length)]
+        playSound(random)
+        setTimeout(() => setClicked(false), 2000)
     }
 
-    const getLabel = (s: string) =>
-        s
-            .replace(/\//g, '')
-            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
-            .slice(0, 12)
-
     return (
-        <div className="cyber-card border-red-500/20 bg-red-500/2 overflow-hidden relative group">
+        <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-hidden">
 
-            <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase">
+            {/* HEADER */}
+            <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase tracking-wider">
                 <AlertTriangle size={14} className="animate-pulse" />
-                <span>Strictly Restricted Area</span>
+                <span>STRICTLY RESTRICTED AREA</span>
             </div>
 
+            {/* BOTON CENTRAL */}
             <div className="flex flex-col items-center">
 
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handlePrank}
-                    className={`w-32 h-32 rounded-full border-4 flex items-center justify-center ${
-                        clicked ? 'bg-red-600 border-white' : 'bg-zinc-900 border-red-600'
-                    }`}
+                    className={`
+                        w-32 h-32 rounded-full border-4 flex items-center justify-center
+                        shadow-[0_0_25px_rgba(255,0,0,0.25)]
+                        transition-all duration-300
+                        ${clicked
+                            ? 'bg-red-600 border-white'
+                            : 'bg-zinc-900 border-red-600 hover:border-red-400'}
+                    `}
                 >
-                    {clicked ? <Skull size={48} /> : <Volume2 size={32} />}
+                    {clicked ? (
+                        <Skull size={48} className="text-white animate-bounce" />
+                    ) : (
+                        <Volume2 size={40} className="text-red-500" />
+                    )}
                 </motion.button>
 
-                {/* 🔥 BOTONERA MINI */}
-                <div className="mt-6 w-full">
+                {/* BOTONERA PAD */}
+                <div className="mt-6 w-full max-h-64 overflow-y-auto pr-1">
+                    <div className="grid grid-cols-4 gap-2">
 
-                    <div className="grid grid-cols-4 gap-1">
-                        {[
-                            '/ay-despacito.mp3',
-                            '/eu-bata.mp3',
-                            '/gogogo-meme.mp3',
-                            '/justicia-por-el-padre.mp3',
-                            '/oh-my-god-meme.mp3',
-                            '/agarrate-los-pantalones.mp3'
-                        ].map((s) => (
+                        {sounds.map((s) => (
                             <button
                                 key={s}
                                 onClick={() => playSound(s)}
                                 className="
-                                    px-1 py-1
-                                    text-[9px]
-                                    bg-zinc-900/70
-                                    border border-zinc-800
-                                    rounded-sm
-                                    hover:bg-zinc-800
+                                    relative
+                                    aspect-square
+                                    rounded-lg
+                                    bg-zinc-900
+                                    border border-zinc-700
+                                    hover:border-red-500
+                                    hover:bg-red-600/20
                                     active:scale-95
-                                    active:translate-y-[1px]
+                                    active:bg-red-600/40
+                                    active:shadow-inner
                                     transition
-                                    truncate
+                                    flex items-center justify-center
+                                    group
+                                    shadow-[0_0_10px_rgba(0,0,0,0.5)]
+                                    hover:shadow-[0_0_12px_rgba(255,0,0,0.4)]
                                 "
                             >
-                                {getLabel(s)}
+                                {/* ICONO */}
+                                <svg
+                                    className="w-5 h-5 text-zinc-400 group-hover:text-red-400 transition"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M3 10v4h4l5 5V5L7 10H3z" />
+                                </svg>
+
+                                {/* LABEL */}
+                                <span className="
+                                    absolute bottom-1 left-1 right-1
+                                    text-[8px]
+                                    text-zinc-500
+                                    truncate
+                                    text-center
+                                    opacity-80
+                                ">
+                                    {getLabel(s)}
+                                </span>
                             </button>
                         ))}
+
                     </div>
                 </div>
 
-                {/* 🔥 GRILLA COMPLETA */}
-       <div className="mt-6 w-full">
+            </div>
 
-    <div className="max-h-56 overflow-y-auto pr-1">
-        <div className="grid grid-cols-4 gap-2">
-
-            {sounds.map((s) => (
-                <button
-                    key={s}
-                    onClick={() => playSound(s)}
-                    className="
-                        relative
-                        aspect-square
-                        rounded-md
-                        bg-zinc-900
-                        border border-zinc-700
-                        hover:bg-red-600/20
-                        active:scale-95
-                        active:bg-red-600/40
-                        transition
-                        flex items-center justify-center
-                        group
-                    "
-                >
-                    {/* ICONO SVG */}
-                    <svg
-                        className="w-5 h-5 text-zinc-400 group-hover:text-red-400 transition"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path d="M3 10v4h4l5 5V5L7 10H3z" />
-                    </svg>
-
-                    {/* LABEL CHIQUITO */}
-                    <span className="
-                        absolute bottom-1 left-1 right-1
-                        text-[8px]
-                        text-zinc-500
-                        truncate
-                        text-center
-                        opacity-70
-                    ">
-                        {getLabel(s)}
-                    </span>
-
-                </button>
-            ))}
+            {/* EFECTO */}
+            {clicked && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.15 }}
+                    className="absolute inset-0 bg-red-500 animate-ping pointer-events-none"
+                />
+            )}
 
         </div>
-    </div>
-</div>
     )
 }
