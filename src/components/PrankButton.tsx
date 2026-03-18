@@ -155,6 +155,57 @@ export default function PrankButton() {
                         "Este botón no hace nada. No lo presiones."
                     </p>
                 </div>
+
+                {/* Sección de botones individuales rápidos */}
+                <div className="mt-6 w-full">
+                    <h4 className="text-[10px] font-mono text-zinc-500 uppercase mb-2">Sonidos rápidos</h4>
+                    <div className="grid grid-cols-3 gap-2">
+                        {[
+                            '/ay-despacito.mp3',
+                            '/eu-bata.mp3',
+                            '/gogogo-meme.mp3',
+                            '/justicia-por-el-padre.mp3',
+                            '/oh-my-god-meme.mp3',
+                            '/agarrate-los-pantalones.mp3'
+                        ].map((s) => (
+                            <button
+                                key={s}
+                                title={s}
+                                onClick={() => {
+                                    try {
+                                        // Evitar reproducir dos instancias iguales
+                                        if (audioRef.current && !audioRef.current.paused && audioRef.current.src && audioRef.current.src.includes(s)) {
+                                            return
+                                        }
+
+                                        if (audioRef.current) {
+                                            try {
+                                                if (!audioRef.current.src.includes(s)) {
+                                                    audioRef.current.pause()
+                                                    audioRef.current.currentTime = 0
+                                                    audioRef.current = null
+                                                }
+                                            } catch (e) { /* ignore */ }
+                                        }
+
+                                        const audio = new Audio(encodeURI(s))
+                                        audio.volume = 1.0
+                                        audio.onended = () => {
+                                            try { if (audioRef.current === audio) audioRef.current = null } catch (e) { }
+                                        }
+                                        audioRef.current = audio
+                                        audio.play().catch(e => console.error('Audio play blocked or failed:', e))
+                                    } catch (err) {
+                                        console.error('Audio play error:', err)
+                                    }
+                                }}
+                                className="px-2 py-2 text-[12px] font-semibold bg-zinc-900/60 border border-zinc-800 rounded hover:bg-zinc-800/80 transition-colors"
+                            >
+                                {s.replace(/\//g, '')}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             {/* El audio se crea dinámicamente en handlePrank para evitar problemas de autoplay */}
