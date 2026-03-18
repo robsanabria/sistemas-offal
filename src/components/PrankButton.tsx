@@ -8,7 +8,6 @@ export default function PrankButton() {
     const [clicked, setClicked] = useState(false)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
-    // 🔊 Lista global de sonidos
     const sounds = [
         '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
@@ -80,7 +79,6 @@ export default function PrankButton() {
         '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
     ]
 
-    // 🔊 Reproductor reutilizable
     const playSound = (src: string) => {
         try {
             if (
@@ -122,7 +120,10 @@ export default function PrankButton() {
     }
 
     const getLabel = (s: string) =>
-        s.replace(/\//g, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+        s
+            .replace(/\//g, '')
+            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+            .slice(0, 12)
 
     return (
         <div className="cyber-card border-red-500/20 bg-red-500/2 overflow-hidden relative group">
@@ -134,7 +135,6 @@ export default function PrankButton() {
 
             <div className="flex flex-col items-center">
 
-                {/* BOTÓN PRINCIPAL */}
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
@@ -146,11 +146,10 @@ export default function PrankButton() {
                     {clicked ? <Skull size={48} /> : <Volume2 size={32} />}
                 </motion.button>
 
-                {/* 🔹 BOTONES RÁPIDOS (se mantienen) */}
+                {/* 🔥 BOTONERA MINI */}
                 <div className="mt-6 w-full">
-                    <h4 className="text-[10px] text-zinc-500 mb-2">Rápidos</h4>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-4 gap-1">
                         {[
                             '/ay-despacito.mp3',
                             '/eu-bata.mp3',
@@ -162,7 +161,18 @@ export default function PrankButton() {
                             <button
                                 key={s}
                                 onClick={() => playSound(s)}
-                                className="px-2 py-2 text-[11px] bg-zinc-900 border rounded"
+                                className="
+                                    px-1 py-1
+                                    text-[9px]
+                                    bg-zinc-900/70
+                                    border border-zinc-800
+                                    rounded-sm
+                                    hover:bg-zinc-800
+                                    active:scale-95
+                                    active:translate-y-[1px]
+                                    transition
+                                    truncate
+                                "
                             >
                                 {getLabel(s)}
                             </button>
@@ -170,17 +180,27 @@ export default function PrankButton() {
                     </div>
                 </div>
 
-                {/* 🔥 NUEVA GRILLA SCROLLEABLE */}
+                {/* 🔥 GRILLA COMPLETA */}
                 <div className="mt-6 w-full">
-                    <h4 className="text-[10px] text-zinc-500 mb-2">Todos los sonidos</h4>
 
                     <div className="max-h-40 overflow-y-auto">
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-4 gap-1">
                             {sounds.map((s) => (
                                 <button
                                     key={s}
                                     onClick={() => playSound(s)}
-                                    className="px-2 py-2 text-[10px] bg-zinc-900/60 border rounded truncate"
+                                    className="
+                                        px-1 py-1
+                                        text-[9px]
+                                        bg-zinc-900/60
+                                        border border-zinc-800
+                                        rounded-sm
+                                        hover:bg-zinc-800
+                                        active:scale-95
+                                        active:translate-y-[1px]
+                                        transition
+                                        truncate
+                                    "
                                 >
                                     {getLabel(s)}
                                 </button>
@@ -188,6 +208,7 @@ export default function PrankButton() {
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     )
