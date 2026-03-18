@@ -6,9 +6,11 @@ import { motion } from 'framer-motion'
 
 export default function PrankButton() {
     const [clicked, setClicked] = useState(false)
+    const [activePad, setActivePad] = useState<string | null>(null)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
-   const sounds = [
+    const sounds = [
+        const sounds = [
         '/aaa-se-ha-detectado-un-boliviano.mp3',
         '/agarrate-los-pantalones.mp3',
         '/ahh-despacito-2.mp3',
@@ -78,12 +80,10 @@ export default function PrankButton() {
         '/y2mate_9l5QdzQ.mp3',
         '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
     ]
+    
 
     const getLabel = (s: string) =>
-        s
-            .replace(/\//g, '')
-            .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
-            .slice(0, 10)
+        s.replace(/\//g, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '').slice(0, 10)
 
     const playSound = (src: string) => {
         try {
@@ -93,9 +93,12 @@ export default function PrankButton() {
             }
 
             const audio = new Audio(encodeURI(src))
-            audio.volume = 1.0
+            audio.volume = 1
+
+            setActivePad(src)
 
             audio.onended = () => {
+                setActivePad(null)
                 if (audioRef.current === audio) {
                     audioRef.current = null
                 }
@@ -112,7 +115,7 @@ export default function PrankButton() {
         setClicked(true)
         const random = sounds[Math.floor(Math.random() * sounds.length)]
         playSound(random)
-        setTimeout(() => setClicked(false), 2000)
+        setTimeout(() => setClicked(false), 500)
     }
 
     return (
@@ -133,11 +136,10 @@ export default function PrankButton() {
                     onClick={handlePrank}
                     className={`
                         w-32 h-32 rounded-full border-4 flex items-center justify-center
-                        shadow-[0_0_25px_rgba(255,0,0,0.25)]
                         transition-all duration-300
                         ${clicked
-                            ? 'bg-red-600 border-white'
-                            : 'bg-zinc-900 border-red-600 hover:border-red-400'}
+                            ? 'bg-red-600 border-white shadow-[0_0_40px_rgba(255,0,0,0.8)]'
+                            : 'bg-zinc-900 border-red-600 hover:border-red-400 shadow-[0_0_25px_rgba(255,0,0,0.25)]'}
                     `}
                 >
                     {clicked ? (
@@ -147,61 +149,47 @@ export default function PrankButton() {
                     )}
                 </motion.button>
 
-                {/* BOTONERA PAD */}
-                <div className="mt-6 w-full max-h-64 overflow-y-auto pr-1">
-                    <div className="grid grid-cols-4 gap-2">
+                {/* 🎛️ DJ PAD GRID */}
+                <div className="mt-6 w-full max-h-72 overflow-y-auto pr-2">
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
 
-                        {sounds.map((s) => (
-                            <button
-                                key={s}
-                                onClick={() => playSound(s)}
-                                className="
-                                    relative
-                                    aspect-square
-                                    rounded-lg
-                                    bg-zinc-900
-                                    border border-zinc-700
-                                    hover:border-red-500
-                                    hover:bg-red-600/20
-                                    active:scale-95
-                                    active:bg-red-600/40
-                                    active:shadow-inner
-                                    transition
-                                    flex items-center justify-center
-                                    group
-                                    shadow-[0_0_10px_rgba(0,0,0,0.5)]
-                                    hover:shadow-[0_0_12px_rgba(255,0,0,0.4)]
-                                "
-                            >
-                                {/* ICONO */}
-                                <svg
-                                    className="w-5 h-5 text-zinc-400 group-hover:text-red-400 transition"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
+                        {sounds.map((s) => {
+                            const isActive = activePad === s
+
+                            return (
+                                <button
+                                    key={s}
+                                    onClick={() => playSound(s)}
+                                    className="flex flex-col items-center gap-1 group"
                                 >
-                                    <path d="M3 10v4h4l5 5V5L7 10H3z" />
-                                </svg>
+                                    <div
+                                        className={`
+                                            relative w-16 h-16 rounded-full
+                                            bg-gradient-to-b from-red-500 to-red-800
+                                            shadow-lg transition-all duration-150
 
-                                {/* LABEL */}
-                                <span className="
-                                    absolute bottom-1 left-1 right-1
-                                    text-[8px]
-                                    text-zinc-500
-                                    truncate
-                                    text-center
-                                    opacity-80
-                                ">
-                                    {getLabel(s)}
-                                </span>
-                            </button>
-                        ))}
+                                            ${isActive
+                                                ? 'scale-90 shadow-inner ring-4 ring-white/30 animate-pulse'
+                                                : 'hover:shadow-[0_0_20px_rgba(255,0,0,0.6)]'}
+
+                                            before:absolute before:inset-1 before:rounded-full before:bg-black/30
+                                            after:absolute after:top-2 after:left-2 after:right-2 after:h-2 after:bg-white/20 after:rounded-full
+                                        `}
+                                    />
+
+                                    <span className="text-[9px] text-zinc-400 text-center max-w-[60px] truncate">
+                                        {getLabel(s)}
+                                    </span>
+                                </button>
+                            )
+                        })}
 
                     </div>
                 </div>
 
             </div>
 
-            {/* EFECTO */}
+            {/* EFECTO GLOBAL */}
             {clicked && (
                 <motion.div
                     initial={{ opacity: 0 }}
