@@ -72,7 +72,8 @@ export default function PrankButton() {
         '/y2mate_1lLaYg7.mp3',
         '/y2mate_9l5QdzQ (1).mp3',
         '/y2mate_9l5QdzQ.mp3',
-        '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3'
+        '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3',
+        'ricardo-fort-miameeeeeeeeeeeeee.mp3'
     ]
 
     const getLabel = (s: string) =>
