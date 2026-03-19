@@ -113,86 +113,124 @@ export default function PrankButton() {
         setTimeout(() => setClicked(false), 500)
     }
 
-    return (
-        <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-hidden">
+   return (
+  <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-hidden">
 
-            {/* HEADER */}
-            <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase tracking-wider">
-                <AlertTriangle size={14} className="animate-pulse" />
-                <span>STRICTLY RESTRICTED AREA</span>
-            </div>
+    {/* HEADER */}
+    <div className="flex items-center gap-2 text-red-500 mb-4 font-mono text-[10px] uppercase tracking-wider">
+      <AlertTriangle size={14} className="animate-pulse" />
+      <span>STRICTLY RESTRICTED AREA</span>
+    </div>
 
-            {/* BOTON CENTRAL */}
-            <div className="flex flex-col items-center">
+    {/* CONTENIDO */}
+    <div className="flex flex-col items-center">
 
-                <motion.button
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handlePrank}
-                    className={`
-                        w-32 h-32 rounded-full border-4 flex items-center justify-center
-                        transition-all duration-300
-                        ${clicked
-                            ? 'bg-red-600 border-white shadow-[0_0_40px_rgba(255,0,0,0.8)]'
-                            : 'bg-zinc-900 border-red-600 hover:border-red-400 shadow-[0_0_25px_rgba(255,0,0,0.25)]'}
-                    `}
-                >
-                    {clicked ? (
-                        <Skull size={48} className="text-white animate-bounce" />
-                    ) : (
-                        <Volume2 size={40} className="text-red-500" />
-                    )}
-                </motion.button>
+      {/* 🔴 BOTON CENTRAL PRO */}
+      <motion.div
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.92 }}
+        onClick={handlePrank}
+        className="relative flex items-center justify-center cursor-pointer"
+      >
 
-                {/* 🎛️ DJ PAD GRID */}
-                <div className="mt-6 w-full max-h-72 overflow-y-auto pr-2">
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
+        {/* ONDAS */}
+        {clicked && (
+          <>
+            <span className="absolute w-40 h-40 rounded-full border border-red-500/40 animate-ping" />
+            <span className="absolute w-40 h-40 rounded-full border border-red-500/20 animate-ping [animation-delay:250ms]" />
+          </>
+        )}
 
-                        {sounds.map((s) => {
-                            const isActive = activePad === s
+        {/* BOTON */}
+        <div
+          className={`
+            relative w-36 h-36 rounded-full flex items-center justify-center
+            transition-all duration-300
 
-                            return (
-                                <button
-                                    key={s}
-                                    onClick={() => playSound(s)}
-                                    className="flex flex-col items-center gap-1 group"
-                                >
-                                    <div
-                                        className={`
-                                            relative w-16 h-16 rounded-full
-                                            bg-gradient-to-b from-red-500 to-red-800
-                                            shadow-lg transition-all duration-150
+            ${clicked
+              ? `
+                bg-gradient-to-b from-red-500 to-red-800
+                shadow-[inset_0_0_30px_rgba(0,0,0,0.9),0_0_40px_rgba(255,0,0,0.9)]
+                scale-95
+              `
+              : `
+                bg-gradient-to-b from-zinc-800 to-zinc-950
+                border border-red-600/40
+                shadow-[0_15px_40px_rgba(0,0,0,0.9),0_0_25px_rgba(255,0,0,0.25)]
+                hover:shadow-[0_0_40px_rgba(255,0,0,0.6)]
+              `
+            }
 
-                                            ${isActive
-                                                ? 'scale-90 shadow-inner ring-4 ring-white/30 animate-pulse'
-                                                : 'hover:shadow-[0_0_20px_rgba(255,0,0,0.6)]'}
+            before:absolute before:inset-2 before:rounded-full before:bg-black/40
+            after:absolute after:top-3 after:left-6 after:right-6 after:h-3 after:bg-white/10 after:rounded-full
+          `}
+        >
+          {clicked ? (
+            <Skull size={50} className="text-white animate-bounce z-10" />
+          ) : (
+            <Volume2 size={46} className="text-red-500 z-10" />
+          )}
+        </div>
+      </motion.div>
 
-                                            before:absolute before:inset-1 before:rounded-full before:bg-black/30
-                                            after:absolute after:top-2 after:left-2 after:right-2 after:h-2 after:bg-white/20 after:rounded-full
-                                        `}
-                                    />
+      {/* 🎛️ DJ PAD GRID */}
+      <div className="mt-8 w-full max-h-72 overflow-y-auto pr-2">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
 
-                                    <span className="text-[9px] text-zinc-400 text-center max-w-[60px] truncate">
-                                        {getLabel(s)}
-                                    </span>
-                                </button>
-                            )
-                        })}
+          {sounds.map((s) => {
+            const isActive = activePad === s
 
-                    </div>
-                </div>
+            return (
+              <button
+                key={s}
+                onClick={() => playSound(s)}
+                className="flex flex-col items-center gap-2 group"
+              >
+                <div
+                  className={`
+                    relative w-16 h-16 rounded-full
+                    transition-all duration-150
 
-            </div>
+                    ${isActive
+                      ? `
+                        bg-gradient-to-b from-red-400 to-red-700
+                        scale-90
+                        shadow-[inset_0_0_15px_rgba(0,0,0,0.9),0_0_25px_rgba(255,0,0,0.8)]
+                        ring-2 ring-white/40
+                      `
+                      : `
+                        bg-gradient-to-b from-zinc-700 to-zinc-900
+                        shadow-[0_8px_20px_rgba(0,0,0,0.8)]
+                        group-hover:shadow-[0_0_20px_rgba(255,0,0,0.5)]
+                      `
+                    }
 
-            {/* EFECTO GLOBAL */}
-            {clicked && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.15 }}
-                    className="absolute inset-0 bg-red-500 animate-ping pointer-events-none"
+                    before:absolute before:inset-1 before:rounded-full before:bg-black/40
+                    after:absolute after:top-2 after:left-3 after:right-3 after:h-2 after:bg-white/10 after:rounded-full
+                  `}
                 />
-            )}
+
+                <span className="text-[9px] text-zinc-400 text-center max-w-[70px] truncate group-hover:text-red-400 transition">
+                  {getLabel(s)}
+                </span>
+              </button>
+            )
+          })}
 
         </div>
-    )
+      </div>
+
+    </div>
+
+    {/* EFECTO GLOBAL */}
+    {clicked && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        className="absolute inset-0 bg-red-500 pointer-events-none"
+      />
+    )}
+
+  </div>
+)
 }
