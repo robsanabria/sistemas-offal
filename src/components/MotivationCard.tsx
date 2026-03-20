@@ -24,7 +24,10 @@ const OFFICE_MANTRAS = [
     "Chinchudata",
     "Lo que hay que ver, es la producción de Sandra",
     "Se me cerro el ani",
-    "Como se llama la hija de Twins?"
+    "Como se llama la hija de Twins?",
+    "Susana Tinelli",
+    "Fui a pedir wifi y casi me pegan un tiro",
+    "Lo que hay que ver es la producción de Sandra",
 ]
 
 export default function MotivationCard() {
