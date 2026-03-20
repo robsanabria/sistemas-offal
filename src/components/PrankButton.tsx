@@ -85,6 +85,7 @@ export default function PrankButton() {
         '/MAMA-CORTASTES-TODA-LA-LOOZ.mp3',
         '/Justin-Bieber-es-de-piscis.mp3',
         '/andrea-no-te-duermas.mp3',
+        '/andrea-no-te-duermas-2.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
