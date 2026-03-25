@@ -108,7 +108,7 @@ export default function Home() {
               </div>
 
               <a
-                href="https://varoso.github.io/homers-web-page/"
+                href="https://skavenger.byethost8.com/homerswebpage/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center justify-center gap-2 py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md text-sm"
