@@ -33,15 +33,13 @@ export default function Home() {
           </p>
         </header>
 
-        {/* 🔥 BLOQUE PRINCIPAL (PROTAGONISTA) */}
+        {/* 🔥 BLOQUE PRINCIPAL */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
 
-          {/* Motivación */}
           <div className="lg:col-span-2">
             <MotivationCard />
           </div>
 
-          {/* PRANK GRANDE */}
           <div className="lg:col-span-3 flex justify-center">
             <div className="w-full max-w-2xl">
               <PrankButton />
@@ -50,10 +48,11 @@ export default function Home() {
 
         </div>
 
-        {/* ⚡ ACCIONES RÁPIDAS (Menú bien ubicado) */}
+        {/* ⚡ ACCIONES RÁPIDAS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <div className="md:col-span-2 lg:col-span-1">
+          {/* 🍽️ BUFFET */}
+          <div>
             <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all group active:scale-95">
 
               <UtensilsCrossed size={32} className="text-emerald-500 group-hover:scale-110 transition-transform" />
@@ -89,6 +88,34 @@ export default function Home() {
                 </a>
 
               </div>
+            </div>
+          </div>
+
+          {/* 🍩 HOMERO */}
+          <div>
+            <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all group active:scale-95">
+
+              <span className="text-4xl group-hover:scale-110 transition-transform">🍩</span>
+
+              <div className="text-center">
+                <span className="text-[10px] font-mono text-yellow-500/50 uppercase block">
+                  Homers Web Page
+                </span>
+
+                <span className="text-sm font-black text-white italic uppercase tracking-tighter flex items-center gap-1 justify-center">
+                  Ir a la mejor web del mundillo <ExternalLink size={12} />
+                </span>
+              </div>
+
+              <a
+                href="https://varoso.github.io/homers-web-page/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center justify-center gap-2 py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md text-sm"
+              >
+                🚀 Entrar
+              </a>
+
             </div>
           </div>
 
