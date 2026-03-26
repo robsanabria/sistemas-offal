@@ -35,7 +35,6 @@ export default function Home() {
 
         {/* 🔥 BLOQUE PRINCIPAL */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-
           <div className="lg:col-span-2">
             <MotivationCard />
           </div>
@@ -45,7 +44,6 @@ export default function Home() {
               <PrankButton />
             </div>
           </div>
-
         </div>
 
         {/* ⚡ ACCIONES RÁPIDAS */}
@@ -91,44 +89,45 @@ export default function Home() {
             </div>
           </div>
 
-{/* 🍩 HOMERO */}
-<div>
-  <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all group active:scale-95">
+          {/* 🍩 HOMERO */}
+          <div>
+            <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all group active:scale-95">
 
-    <span className="text-4xl group-hover:scale-110 transition-transform">🍩</span>
+              <span className="text-4xl group-hover:scale-110 transition-transform">🍩</span>
 
-    <div className="text-center">
-      <span className="text-[10px] font-mono text-yellow-500/50 uppercase block">
-        Homers Web Page
-      </span>
+              <div className="text-center">
+                <span className="text-[10px] font-mono text-yellow-500/50 uppercase block">
+                  Homers Web Page
+                </span>
 
-      <span className="text-sm font-black text-white italic uppercase tracking-tighter flex items-center gap-1 justify-center">
-        Zona peligrosa <ExternalLink size={12} />
-      </span>
-    </div>
+                <span className="text-sm font-black text-white italic uppercase tracking-tighter flex items-center gap-1 justify-center">
+                  Zona peligrosa <ExternalLink size={12} />
+                </span>
+              </div>
 
-    <div className="flex flex-col gap-2 mt-3 w-full px-4">
+              <div className="flex flex-col gap-2 mt-3 w-full px-4">
 
-      <a
-        href="https://skavenger.byethost8.com/homerswebpage/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md text-sm"
-      >
-        🚀 Entrar
-      </a>
+                <a
+                  href="https://skavenger.byethost8.com/homerswebpage/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md text-sm"
+                >
+                  🚀 Entrar
+                </a>
 
-      <a
-        href="/confesion"
-        className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-md text-sm animate-pulse"
-      >
-        🚨 DENUNCIAR A UN COMPAÑERO
-      </a>
+                <a
+                  href="/confesion"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-md text-sm animate-pulse"
+                >
+                  🚨 DENUNCIAR A UN COMPAÑERO
+                </a>
 
-    </div>
+              </div>
+            </div>
+          </div>
 
-  </div>
-</div>
+        </div> {/* ✅ ESTE CIERRE FALTABA */}
 
         {/* Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
