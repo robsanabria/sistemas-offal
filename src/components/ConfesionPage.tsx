@@ -1,160 +1,127 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 export default function ConfesionPage() {
-  const [step, setStep] = useState<'inicio' | 'resultado'>('inicio')
-  const [mensaje, setMensaje] = useState('')
+  const [respuesta, setRespuesta] = useState<string | null>(null)
   const router = useRouter()
 
-  const playSirena = () => {
-    const audio = new Audio('/sirena.mp3') // 👉 después te explico esto
-    audio.play()
-  }
+  // 🔊 audio automático (opcional)
+  useEffect(() => {
+    const audio = new Audio('/sirena.mp3') // poné el mp3 en /public
+    audio.volume = 0.3
+    audio.play().catch(() => {})
+  }, [])
 
-  const handleSi = () => {
-    setMensaje('Has elegido "Sí". Gracias por confesar. 🚔')
-    setStep('resultado')
-  }
+  const handleSubmit = () => {
+    if (!respuesta) return
 
-  const handleNo = () => {
-    playSirena()
-    setMensaje('Has elegido "No"... lo que significa que cometiste un crimen pero no quieres confesar 😡🚨')
-    setStep('resultado')
+    if (respuesta === 'si') {
+      alert('Has elegido "Sí". Gracias por confesar. 🚔')
+    } else {
+      alert('Has elegido "No"... lo que significa que cometiste un crimen pero no quieres confesar 😡🚨')
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-300 flex flex-col items-center justify-center text-black font-mono p-6">
+    <div className="min-h-screen bg-[#c0c0c0] flex items-center justify-center font-sans">
 
-      {/* CABECERA */}
-      <div className="bg-blue-700 text-white w-full max-w-2xl text-center p-4 border-4 border-black shadow-lg">
-        <h1 className="text-2xl font-bold uppercase">
-          🚔 Departamento de Policía de Springfield 🚔
-        </h1>
-      </div>
+      {/* VENTANA TIPO WINDOWS */}
+      <div className="w-[420px] border-2 border-black bg-[#d4d0c8] shadow-[4px_4px_0px_black]">
 
-      {/* CONTENIDO */}
-      <div className="bg-white w-full max-w-2xl border-4 border-black p-6 text-center shadow-lg">
-
-        {/* 🐷 GORGORI SVG ANIMADO */}
-        <div className="mb-4 flex flex-col items-center">
-
-          <svg width="160" height="160" viewBox="0 0 200 200">
-
-            {/* Cara */}
-            <circle cx="100" cy="100" r="80" fill="#FFD90F" stroke="black" strokeWidth="3"/>
-
-            {/* OJO IZQ */}
-            <g>
-              <circle cx="75" cy="80" r="18" fill="white" stroke="black" strokeWidth="2"/>
-              
-              <motion.ellipse
-                cx="75"
-                cy="80"
-                rx="18"
-                ry="18"
-                fill="white"
-                animate={{ ry: [18, 2, 18] }}
-                transition={{
-                  duration: 0.2,
-                  repeat: Infinity,
-                  repeatDelay: 3
-                }}
-              />
-
-              <circle cx="75" cy="85" r="6" fill="black"/>
-            </g>
-
-            {/* OJO DER */}
-            <g>
-              <circle cx="125" cy="80" r="18" fill="white" stroke="black" strokeWidth="2"/>
-              
-              <motion.ellipse
-                cx="125"
-                cy="80"
-                rx="18"
-                ry="18"
-                fill="white"
-                animate={{ ry: [18, 2, 18] }}
-                transition={{
-                  duration: 0.2,
-                  repeat: Infinity,
-                  repeatDelay: 3
-                }}
-              />
-
-              <circle cx="125" cy="85" r="6" fill="black"/>
-            </g>
-
-            {/* Nariz */}
-            <ellipse cx="100" cy="110" rx="25" ry="18" fill="#F4A6A6" stroke="black" strokeWidth="2"/>
-            <circle cx="92" cy="110" r="3" fill="black"/>
-            <circle cx="108" cy="110" r="3" fill="black"/>
-
-            {/* Boca */}
-            <path d="M70 135 Q100 160 130 135" stroke="black" strokeWidth="3" fill="none"/>
-
-            {/* Sombrero */}
-            <rect x="40" y="30" width="120" height="30" fill="#3B82F6" stroke="black" strokeWidth="2"/>
-            <rect x="60" y="10" width="80" height="30" fill="#2563EB" stroke="black" strokeWidth="2"/>
-            <circle cx="100" cy="40" r="6" fill="gold" stroke="black"/>
-
-          </svg>
-
-          <p className="text-sm mt-2">Jefe Gorgori te está mirando...</p>
+        {/* HEADER */}
+        <div className="bg-[#000080] text-white px-2 py-1 text-sm font-bold">
+          Springfield Police Department
         </div>
 
-        {step === 'inicio' && (
-          <>
-            <p className="text-lg font-bold mb-6">
-              Si cometiste un crimen y quieres confesar,
-              haz clic en "Sí".<br /><br />
-              De lo contrario, haz clic en "No".
-            </p>
+        {/* CONTENIDO */}
+        <div className="p-6 flex flex-col items-center gap-4 text-center">
 
-            <div className="flex justify-center gap-6">
-              <button
-                onClick={handleSi}
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 text-xl border-2 border-black"
-              >
-                ✅ SÍ
-              </button>
+          {/* SVG GORGORI */}
+          <div className="relative">
+            <svg width="140" height="140" viewBox="0 0 200 200">
+              {/* cara */}
+              <rect x="40" y="60" width="120" height="100" fill="#FFD90F" stroke="black"/>
 
-              <button
-                onClick={handleNo}
-                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 text-xl border-2 border-black"
-              >
-                ❌ NO
-              </button>
-            </div>
-          </>
-        )}
+              {/* gorra */}
+              <rect x="30" y="30" width="140" height="40" fill="#3b6ea5" stroke="black"/>
+              
+              {/* ojos */}
+              <motion.circle
+                cx="80"
+                cy="100"
+                r="12"
+                fill="white"
+                animate={{ scaleY: [1, 0.1, 1] }}
+                transition={{ repeat: Infinity, duration: 3 }}
+              />
+              <motion.circle
+                cx="120"
+                cy="100"
+                r="12"
+                fill="white"
+                animate={{ scaleY: [1, 0.1, 1] }}
+                transition={{ repeat: Infinity, duration: 3, delay: 0.2 }}
+              />
 
-        {step === 'resultado' && (
-          <>
-            <p className="text-xl font-bold mb-6">
-              {mensaje}
-            </p>
+              {/* pupilas */}
+              <circle cx="80" cy="100" r="5" fill="black"/>
+              <circle cx="120" cy="100" r="5" fill="black"/>
 
-            <button
-              onClick={() => setStep('inicio')}
-              className="bg-yellow-400 hover:bg-yellow-500 px-4 py-2 border-2 border-black"
-            >
-              🔄 Intentar de nuevo
-            </button>
-          </>
-        )}
+              {/* boca */}
+              <line x1="80" y1="130" x2="120" y2="130" stroke="black" strokeWidth="3"/>
+            </svg>
+          </div>
 
+          {/* TEXTO */}
+          <p className="text-sm">
+            If you committed a crime and want to confess, click "Yes".
+            <br />
+            Otherwise, click "No".
+          </p>
+
+          {/* RADIOS (CLAVE para parecerse al original) */}
+          <div className="flex gap-6 mt-2">
+            <label className="flex items-center gap-1 text-sm">
+              <input
+                type="radio"
+                name="respuesta"
+                value="si"
+                onChange={(e) => setRespuesta(e.target.value)}
+              />
+              Yes
+            </label>
+
+            <label className="flex items-center gap-1 text-sm">
+              <input
+                type="radio"
+                name="respuesta"
+                value="no"
+                onChange={(e) => setRespuesta(e.target.value)}
+              />
+              No
+            </label>
+          </div>
+
+          {/* BOTÓN */}
+          <button
+            onClick={handleSubmit}
+            className="mt-3 px-4 py-1 border border-black bg-[#e0e0e0] active:translate-x-[2px] active:translate-y-[2px]"
+          >
+            OK
+          </button>
+
+        </div>
       </div>
 
       {/* VOLVER */}
       <button
         onClick={() => router.back()}
-        className="mt-6 bg-black text-white px-4 py-2 border-2 border-white"
+        className="absolute bottom-6 left-6 text-xs underline"
       >
-        ⬅ Volver atrás
+        ← Back
       </button>
 
     </div>
