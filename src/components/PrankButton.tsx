@@ -89,6 +89,7 @@ export default function PrankButton() {
         '/ay-por-favor.mpg.mp3',
         '/no-se-inunda-mas.mp3',
         '/andrea-cafe.mp3',
+        '/diosito.mp3',
         
   ]
 
