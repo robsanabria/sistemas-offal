@@ -98,6 +98,7 @@ export default function PrankButton() {
         '/nadialacachorra.mp3',
         '/moria_uV2J33z.mp3',
         '/eldecorado-moria.mp3',
+        "/que-asco-moria.mp3",
         
   ]
 
