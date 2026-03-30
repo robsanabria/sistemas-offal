@@ -112,6 +112,9 @@ export default function PrankButton() {
             '/jovani-quisieraserunamosca.mp3',
             '/voy-a-esperar.mp3',
             '/trambolico.mp3',
+            '/y-yo-vole.mp3',
+            '/10milguarani.mp3',
+            '/meagarrodemipeli.mp3',
         
   ]
 
