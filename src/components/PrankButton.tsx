@@ -90,6 +90,14 @@ export default function PrankButton() {
         '/no-se-inunda-mas.mp3',
         '/andrea-cafe.mp3',
         '/diosito.mp3',
+        '/miradequienteburlaste.mp3',
+        '/ha-ha-nelson-burla.mp3',
+        '/grito-de-soraya.mp3',
+        '/que-haces-besando-a-la-lisiada.mp3',
+        '/aristoteles-moria.mp3',
+        '/nadialacachorra.mp3',
+        '/moria_uV2J33z.mp3',
+        '/eldecorado-moria.mp3',
         
   ]
 
