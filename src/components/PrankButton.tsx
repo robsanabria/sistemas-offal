@@ -98,7 +98,20 @@ export default function PrankButton() {
         '/nadialacachorra.mp3',
         '/moria_uV2J33z.mp3',
         '/eldecorado-moria.mp3',
-        "/que-asco-moria.mp3",
+        '/que-asco-moria.mp3',
+        '/nelson-callese.mp3',
+        '/zi-zeñoda.mp3',
+        '/pappo-porfavor.mp3',
+        '/pappo-trabajohonesto.mp3',
+         '/lachabona-estilo.mp3',
+         '/imaginate-lachabona.mp3',
+         '/lachabona-atodoringtone.mp3',
+         '/me-gusta-el-arte.mp3',
+            '/voy-a-esperar.mp3',
+            '/jovani-desayunaconhuevo.mp3',
+            '/jovani-quisieraserunamosca.mp3',
+            '/voy-a-esperar.mp3',
+            '/trambolico.mp3',
         
   ]
 
