@@ -116,7 +116,7 @@ export default function PrankButton() {
           '/10milguarani.mp3',
           '/megarrodemipelo.mp3',
           '/faaah.mp3',
-          '/lalocumbia.mp3',
+          '/lalocumbia-enserio.mp3',
           '/pagalaprata.mp3',
           '/nunca.mp3',
           '/ciruja.mp3',
