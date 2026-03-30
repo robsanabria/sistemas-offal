@@ -10,6 +10,7 @@ import PrankButton from '@/components/PrankButton'
 import Whiteboard from '@/components/Whiteboard'
 import PointsBoard from '@/components/PointsBoard'
 import Buscaminas from '@/components/Buscaminas'
+import TextToSpeech from '@/components/TextToSpeech'
 import { Beef, Terminal as TerminalIcon, ExternalLink, UtensilsCrossed } from 'lucide-react'
 
 export default function Home() {
@@ -129,6 +130,7 @@ export default function Home() {
           <RobertoCounter />
           <SpeedCounter />
           <CoffeeBoard />
+          <TextToSpeech />
         </div>
 
         {/* Whiteboard + Points */}
