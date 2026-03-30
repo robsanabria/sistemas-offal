@@ -114,7 +114,14 @@ export default function PrankButton() {
           '/y-yo-vole.mp3',
           '/10milguarani.mp3',
           '/megarrodemipelo.mp3',
-        
+          '/faaah.mp3',
+          '/lalocumbia-enserio.mp3',
+          '/lalocumbia.mp3',
+          '/pagalaprata.mp3',
+          '/nunca.mp3',
+          '/ciruja.mp3',
+          '/puto-feo-asi.mp3',
+          '/tarao-e.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
