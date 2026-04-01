@@ -69,7 +69,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-2 mt-3 w-full px-4">
 
                 <a
-                  href="https://drive.google.com/file/d/1KLZy91uvjKiMFHKYDmM8h5gEljxs35d5/view"
+                  href="https://cdn-1.humand.co/files/file-9723--3ceb4dbe-1b7d-415e-a9d9-13dcc47643ff.pdf?token=0pI75ViDW8HpN6O_1iM6VD-9BJHUTe1OvaQLK_pOu5M&expires=1775427083"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-md text-sm"
