@@ -45,6 +45,7 @@ export default function MotivationCard() {
         '/fb49da52-7c3a-4746-ba6f-3669f82ac4f6.jpg',
         '/conAbel.jpeg',
         '/100626621_123695632676472_1536639118396620800_n.jpg'
+        '/broli.jpeg',
     ]
     const [visitIndex, setVisitIndex] = useState(0)
     const [zoomed, setZoomed] = useState(false)
