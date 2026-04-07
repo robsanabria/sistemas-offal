@@ -122,6 +122,7 @@ export default function PrankButton() {
           '/ciruja.mp3',
           '/puto-feo-asi.mp3',
           '/tarao-e.mp3',
+          '/quevasatirar.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
