@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import { ExternalLink } from 'lucide-react'
 
 type Action = {
   id: string
@@ -37,18 +36,9 @@ export default function ActionPanel() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((a) => (
-          <div key={a.id} className="cyber-card p-3 flex items-center gap-3 hover:shadow-lg transition-shadow">
-            <div className="text-2xl">{a.emoji}</div>
-            <div className="flex-1">
-              <a href={a.href} target={a.external ? '_blank' : undefined} rel={a.external ? 'noopener noreferrer' : undefined} className="block text-sm font-semibold text-white">
-                {a.title} {a.external && <ExternalLink size={12} className="inline-block ml-1 text-zinc-400" />}
-              </a>
-              {a.desc && <div className="text-[12px] text-zinc-500">{a.desc}</div>}
-            </div>
-          </div>
-        ))}
+      {/* Accesos principales eliminados por solicitud del usuario */}
+      <div className="py-6">
+        <p className="text-sm text-zinc-500">La lista de accesos directos se ha ocultado para dar prioridad a la botonera central.</p>
       </div>
     </section>
   )
