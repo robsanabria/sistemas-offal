@@ -1,6 +1,3 @@
-import AndreaCounter from '@/components/AndreaCounter'
-import RobertoCounter from '@/components/RobertoCounter'
-import SpeedCounter from '@/components/SpeedCounter'
 import CoffeeBoard from '@/components/CoffeeBoard'
 import TrucoGame from '@/components/TrucoGame'
 import SimpsonsQuote from '@/components/SimpsonsQuote'
@@ -21,11 +18,6 @@ export default function Home() {
 
         {/* Hero */}
         <header className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/30 bg-green-500/5 text-green-400 text-xs font-mono uppercase tracking-widest mb-4">
-            <Beef size={14} />
-            <span>OFICINA DE SISTEMAS - OFFAL - COBURZA, ARG</span>
-          </div>
-
           <h1 className="text-6xl md:text-8xl font-black tracking-tighter">
             SISTEMICOS <span className="gradient-text">OFFAL</span>
           </h1>
@@ -36,28 +28,26 @@ export default function Home() {
         </header>
 
         {/* 🔥 BLOQUE PRINCIPAL */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-2">
-            <MotivationCard />
+        <div className="space-y-6">
+          <div className="w-full max-w-4xl mx-auto">
+            <ActionPanel />
           </div>
 
-          <div className="lg:col-span-3 flex justify-center">
-            <div className="w-full max-w-2xl">
-              <PrankButton />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-2">
+              <MotivationCard />
+            </div>
+
+            <div className="lg:col-span-3 flex justify-center">
+              <div className="w-full max-w-2xl">
+                <PrankButton />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ⚡ ACCIONES RÁPIDAS */}
-        <div>
-          <ActionPanel />
-        </div>
-
-        {/* Dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <AndreaCounter />
-          <RobertoCounter />
-          <SpeedCounter />
+        {/* Dashboard (simplified) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <CoffeeBoard />
           <TextToSpeech />
         </div>
@@ -76,21 +66,6 @@ export default function Home() {
         <section>
           <MoodBoard />
         </section>
-
-        {/* Fun */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1">
-            <TrucoGame />
-          </div>
-          <div className="lg:col-span-2">
-            <SimpsonsQuote />
-          </div>
-        </div>
-
-        {/* Buscaminas */}
-        <div className="grid grid-cols-1 gap-6">
-          <Buscaminas />
-        </div>
 
         {/* Footer */}
         <footer className="pt-12 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4">
