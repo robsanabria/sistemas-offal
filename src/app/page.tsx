@@ -5,6 +5,7 @@ import CoffeeBoard from '@/components/CoffeeBoard'
 import TrucoGame from '@/components/TrucoGame'
 import SimpsonsQuote from '@/components/SimpsonsQuote'
 import MotivationCard from '@/components/MotivationCard'
+import ActionPanel from '@/components/ActionPanel'
 import MoodBoard from '@/components/MoodBoard'
 import PrankButton from '@/components/PrankButton'
 import Whiteboard from '@/components/Whiteboard'
@@ -48,81 +49,9 @@ export default function Home() {
         </div>
 
         {/* ⚡ ACCIONES RÁPIDAS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {/* 🍽️ BUFFET */}
-          <div>
-            <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all group active:scale-95">
-
-              <UtensilsCrossed size={32} className="text-emerald-500 group-hover:scale-110 transition-transform" />
-
-              <div className="text-center">
-                <span className="text-[10px] font-mono text-emerald-500/50 uppercase block">
-                  Buffet Box
-                </span>
-
-                <span className="text-sm font-black text-white italic uppercase tracking-tighter flex items-center gap-1 justify-center">
-                  Menú del Mes <ExternalLink size={12} />
-                </span>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-2 mt-3 w-full px-4">
-
-                <a
-                  href="https://cdn-1.humand.co/files/file-9723--3ceb4dbe-1b7d-415e-a9d9-13dcc47643ff.pdf?token=0pI75ViDW8HpN6O_1iM6VD-9BJHUTe1OvaQLK_pOu5M&expires=1775427083"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-md text-sm"
-                >
-                  📖 Ver Menú
-                </a>
-
-                <a
-                  href="https://wa.me/5491166968656?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Pizzas"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md text-sm"
-                >
-                  🍕 Pedir Pizza
-                </a>
-
-              </div>
-            </div>
-          </div>
-
-          {/* 🍩 HOMERO */}
-          <div>
-            <div className="cyber-card h-full flex flex-col items-center justify-center gap-3 border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all group active:scale-95">
-
-              <span className="text-4xl group-hover:scale-110 transition-transform">🍩</span>
-
-              <div className="text-center">
-                <span className="text-[10px] font-mono text-yellow-500/50 uppercase block">
-                  Homers Web Page
-                </span>
-
-                <span className="text-sm font-black text-white italic uppercase tracking-tighter flex items-center gap-1 justify-center">
-                  Zona peligrosa <ExternalLink size={12} />
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-2 mt-3 w-full px-4">
-
-                <a
-                  href="https://skavenger.byethost8.com/homerswebpage/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md text-sm"
-                >
-                  🚀 Entrar
-                </a>
-
-
-              </div>
-            </div>
-          </div>
-
-        </div> {/* ✅ ESTE CIERRE FALTABA */}
+        <div>
+          <ActionPanel />
+        </div>
 
         {/* Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

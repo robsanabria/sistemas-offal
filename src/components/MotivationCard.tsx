@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Quote, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const OFFICE_MANTRAS = [
     "Planta de influencers.",
@@ -28,11 +28,12 @@ const OFFICE_MANTRAS = [
     "Susana Tinelli",
     "Fui a pedir wifi y casi me pegan un tiro",
     "Lo que hay que ver es la producción de Sandra",
-    "Ciscos"
+    "Ciscos",
 ]
 
 export default function MotivationCard() {
     const [mantra, setMantra] = useState('')
+    const shouldReduceMotion = useReducedMotion()
 
     useEffect(() => {
         const randomMantra = OFFICE_MANTRAS[Math.floor(Math.random() * OFFICE_MANTRAS.length)]
@@ -54,8 +55,19 @@ export default function MotivationCard() {
     const prevVisit = () => setVisitIndex((i) => (i - 1 + VISIT_IMAGES.length) % VISIT_IMAGES.length)
     const nextVisit = () => setVisitIndex((i) => (i + 1) % VISIT_IMAGES.length)
 
+    // keyboard navigation for carousel and closing zoom
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowLeft') prevVisit()
+            if (e.key === 'ArrowRight') nextVisit()
+            if (e.key === 'Escape') setZoomed(false)
+        }
+        window.addEventListener('keydown', handler)
+        return () => window.removeEventListener('keydown', handler)
+    }, [VISIT_IMAGES.length])
+
     return (
-        <div className="cyber-card relative overflow-hidden group">
+        <div className="cyber-card relative overflow-hidden group" role="region" aria-label="Tarjeta de motivación">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
                 <Sparkles size={80} className="text-cyan-400" />
             </div>
@@ -68,8 +80,9 @@ export default function MotivationCard() {
             <AnimatePresence mode="wait">
                 <motion.p
                     key={mantra}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.28 }}
                     className="text-xl md:text-2xl font-serif italic text-zinc-100 leading-relaxed"
                 >
                     "{mantra}"
@@ -88,7 +101,7 @@ export default function MotivationCard() {
                     <button
                         aria-label="Anterior"
                         onClick={prevVisit}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/40 rounded-full"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/40 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2"
                     >
                         <ChevronLeft size={18} className="text-white" />
                     </button>
@@ -98,23 +111,31 @@ export default function MotivationCard() {
                         alt={`La visita del mes ${visitIndex + 1}`}
                         className="max-w-full max-h-48 object-contain rounded-lg shadow-lg cursor-zoom-in"
                         onClick={() => setZoomed(true)}
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') setZoomed(true)
+                        }}
                     />
 
                     <button
                         aria-label="Siguiente"
                         onClick={nextVisit}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/40 rounded-full"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/40 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2"
                     >
                         <ChevronRight size={18} className="text-white" />
                     </button>
 
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-3 z-20">
                         {VISIT_IMAGES.map((_, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setVisitIndex(idx)}
-                                className={`w-2 h-2 rounded-full ${idx === visitIndex ? 'bg-cyan-400' : 'bg-zinc-700/50'}`}
+                                className={`w-3 h-3 rounded-full ${idx === visitIndex ? 'bg-cyan-400' : 'bg-zinc-700/50'}`}
                                 aria-label={`Ir a imagen ${idx + 1}`}
+                                aria-current={idx === visitIndex}
                             />
                         ))}
                     </div>
