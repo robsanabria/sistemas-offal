@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Search, ExternalLink } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 
 type Action = {
   id: string
@@ -25,33 +25,15 @@ export default function ActionPanel() {
   const [actions] = useState<Action[]>(DEFAULT_ACTIONS)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault()
-        inputRef.current?.focus()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [])
-
 
   const filtered = actions.filter((a) => a.title.toLowerCase().includes(query.toLowerCase()) || (a.desc || '').toLowerCase().includes(query.toLowerCase()))
 
   return (
     <section aria-label="Acciones rápidas" className="space-y-4">
       <div className="flex items-center gap-3">
-        <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar herramienta o acción (Ctrl+K)"
-            className="w-full pl-10 pr-3 py-2 bg-zinc-900/40 border border-zinc-800 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            aria-label="Buscar acciones"
-          />
+        <div className="flex-1">
+          <h4 className="text-sm font-semibold">Botonera</h4>
+          <p className="text-[12px] text-zinc-500">Accesos principales</p>
         </div>
       </div>
 

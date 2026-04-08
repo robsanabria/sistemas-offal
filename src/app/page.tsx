@@ -40,9 +40,9 @@ export default function Home() {
               <div className="w-full max-w-3xl">
                 <div className="cyber-card p-6 flex flex-col items-center justify-center">
                   <div className="text-xs text-zinc-400 font-mono uppercase mb-2">Acceso rápido</div>
-                  <div className="transform scale-110 md:scale-125">
-                    <PrankButton />
-                  </div>
+                    <div className="p-2 flex items-center justify-center">
+                      <PrankButton />
+                    </div>
                 </div>
               </div>
             </div>
