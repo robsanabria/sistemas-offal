@@ -28,6 +28,7 @@ const OFFICE_MANTRAS = [
     "Susana Tinelli",
     "Fui a pedir wifi y casi me pegan un tiro",
     "Lo que hay que ver es la producción de Sandra",
+    "Ciscos"
 ]
 
 export default function MotivationCard() {
