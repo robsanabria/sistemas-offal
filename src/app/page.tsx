@@ -1,5 +1,7 @@
+import AndreaCounter from '@/components/AndreaCounter'
+import RobertoCounter from '@/components/RobertoCounter'
+import SpeedCounter from '@/components/SpeedCounter'
 import CoffeeBoard from '@/components/CoffeeBoard'
-import TrucoGame from '@/components/TrucoGame'
 import SimpsonsQuote from '@/components/SimpsonsQuote'
 import MotivationCard from '@/components/MotivationCard'
 import ActionPanel from '@/components/ActionPanel'
@@ -33,21 +35,32 @@ export default function Home() {
             <ActionPanel />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div className="lg:col-span-2">
-              <MotivationCard />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+            <div className="lg:col-span-3 flex items-center justify-center">
+              <div className="w-full max-w-3xl">
+                <div className="cyber-card p-6 flex flex-col items-center justify-center">
+                  <div className="text-xs text-zinc-400 font-mono uppercase mb-2">Acceso rápido</div>
+                  <div className="transform scale-110 md:scale-125">
+                    <PrankButton />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="lg:col-span-3 flex justify-center">
-              <div className="w-full max-w-2xl">
-                <PrankButton />
+            <div className="lg:col-span-2 space-y-4">
+              <MotivationCard />
+              <div className="cyber-card p-4">
+                <SimpsonsQuote />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Dashboard (simplified) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Dashboard (contadores) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AndreaCounter />
+          <RobertoCounter />
+          <SpeedCounter />
           <CoffeeBoard />
           <TextToSpeech />
         </div>

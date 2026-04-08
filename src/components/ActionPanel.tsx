@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Search, Star, ExternalLink } from 'lucide-react'
+import { Search, ExternalLink } from 'lucide-react'
 
 type Action = {
   id: string
@@ -22,18 +22,8 @@ const DEFAULT_ACTIONS: Action[] = [
 
 export default function ActionPanel() {
   const [query, setQuery] = useState('')
-  const [favorites, setFavorites] = useState<string[]>([])
   const [actions] = useState<Action[]>(DEFAULT_ACTIONS)
   const inputRef = useRef<HTMLInputElement | null>(null)
-
-  useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('offal:favorites') : null
-    if (saved) setFavorites(JSON.parse(saved))
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('offal:favorites', JSON.stringify(favorites))
-  }, [favorites])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -46,9 +36,6 @@ export default function ActionPanel() {
     return () => window.removeEventListener('keydown', handler)
   }, [])
 
-  const toggleFav = (id: string) => {
-    setFavorites((prev) => (prev.includes(id) ? prev.filter((p) => p !== id) : [id, ...prev]))
-  }
 
   const filtered = actions.filter((a) => a.title.toLowerCase().includes(query.toLowerCase()) || (a.desc || '').toLowerCase().includes(query.toLowerCase()))
 
@@ -66,24 +53,7 @@ export default function ActionPanel() {
             aria-label="Buscar acciones"
           />
         </div>
-        <div className="text-zinc-500 text-sm font-mono">Favoritos</div>
       </div>
-
-      {favorites.length > 0 && (
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          {favorites.map((id) => {
-            const act = actions.find((a) => a.id === id)
-            if (!act) return null
-            return (
-              <a key={id} href={act.href} target={act.external ? '_blank' : undefined} rel={act.external ? 'noopener noreferrer' : undefined} className="inline-flex items-center gap-2 px-3 py-2 bg-zinc-800/50 rounded-md">
-                <span className="text-lg">{act.emoji}</span>
-                <span className="text-sm font-semibold">{act.title}</span>
-                {act.external && <ExternalLink size={12} className="text-zinc-400 ml-1" />}
-              </a>
-            )
-          })}
-        </div>
-      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((a) => (
@@ -91,13 +61,10 @@ export default function ActionPanel() {
             <div className="text-2xl">{a.emoji}</div>
             <div className="flex-1">
               <a href={a.href} target={a.external ? '_blank' : undefined} rel={a.external ? 'noopener noreferrer' : undefined} className="block text-sm font-semibold text-white">
-                {a.title}
+                {a.title} {a.external && <ExternalLink size={12} className="inline-block ml-1 text-zinc-400" />}
               </a>
               {a.desc && <div className="text-[12px] text-zinc-500">{a.desc}</div>}
             </div>
-            <button onClick={() => toggleFav(a.id)} aria-pressed={favorites.includes(a.id)} className="p-2 rounded-md hover:bg-zinc-800/40 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-              <Star size={16} className={`${favorites.includes(a.id) ? 'text-amber-400' : 'text-zinc-500'}`} />
-            </button>
           </div>
         ))}
       </div>
