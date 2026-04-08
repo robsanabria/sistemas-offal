@@ -186,6 +186,18 @@ export default function PrankButton() {
     setTimeout(() => setClicked(false), 500)
   }
 
+  // keyboard: space or enter triggers main prank when focused; also P key shortcut
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'p') {
+        e.preventDefault()
+        handlePrank()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [volume, loop])
+
   return (
     <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-hidden">
 
@@ -204,30 +216,33 @@ export default function PrankButton() {
         </button>
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full">
 
         {/* BOTON CENTRAL */}
         <motion.div
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.92 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.96 }}
           onClick={handlePrank}
-          className="relative flex items-center justify-center cursor-pointer"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePrank() } }}
+          className="relative cursor-pointer flex items-center justify-center"
         >
           {clicked && (
             <>
-              <span className="absolute w-40 h-40 rounded-full border border-red-500/40 animate-ping" />
-              <span className="absolute w-40 h-40 rounded-full border border-red-500/20 animate-ping [animation-delay:250ms]" />
+              <span className="absolute inset-0 rounded-full border border-red-500/30 animate-ping" />
+              <span className="absolute inset-0 rounded-full border border-red-500/10 animate-ping delay-200" />
             </>
           )}
 
-          <div className={`relative w-36 h-36 rounded-full flex items-center justify-center transition-all duration-300
+          <div className={`relative w-32 md:w-40 lg:w-48 h-32 md:h-40 lg:h-48 rounded-full flex items-center justify-center transition-all duration-300
             ${clicked
               ? 'bg-gradient-to-b from-red-500 to-red-800 scale-95 shadow-[0_0_40px_rgba(255,0,0,0.9)]'
-              : 'bg-gradient-to-b from-zinc-800 to-zinc-950 border border-red-600/40 shadow-[0_0_25px_rgba(255,0,0,0.25)] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)]'}
+              : 'bg-gradient-to-b from-zinc-800 to-zinc-950 border border-red-600/40 shadow-[0_0_25px_rgba(255,0,0,0.25)] hover:shadow-[0_0_32px_rgba(255,0,0,0.45)]'}
           `}>
             {clicked
-              ? <Skull size={50} className="text-white animate-bounce z-10" />
-              : <Volume2 size={46} className="text-red-500 z-10" />}
+              ? <Skull size={44} className="text-white animate-bounce z-10" />
+              : <Volume2 size={40} className="text-red-500 z-10" />}
           </div>
         </motion.div>
 
@@ -235,7 +250,7 @@ export default function PrankButton() {
         {expanded && (
           <div className="w-full mt-6 cyber-card bg-zinc-900/60 border border-red-500/10 p-3 space-y-3">
             <div>
-              <span className="text-xs text-zinc-400">Volume</span>
+              <label className="text-xs text-zinc-400 block mb-1">Volumen</label>
               <input
                 type="range"
                 min="0"
@@ -243,6 +258,7 @@ export default function PrankButton() {
                 step="0.01"
                 value={volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
+                aria-label="Volumen de sonidos"
                 className="w-full"
               />
             </div>
@@ -251,6 +267,7 @@ export default function PrankButton() {
               <span className="text-xs text-zinc-400">Loop</span>
               <button
                 onClick={() => setLoop(!loop)}
+                aria-pressed={loop}
                 className={`px-3 py-1 rounded text-xs ${loop ? 'bg-red-600 text-white' : 'bg-zinc-700 text-zinc-300'}`}
               >
                 {loop ? 'ON' : 'OFF'}
@@ -270,7 +287,7 @@ export default function PrankButton() {
         <div className="mt-6 w-full max-h-72 overflow-y-auto pr-2">
           <div className="grid grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
 
-            {sounds.map((s) => {
+            {sounds.map((s, idx) => {
               const isActive = activePads.includes(s)
               const isMissing = missingAudios.includes(s)
 
@@ -278,28 +295,31 @@ export default function PrankButton() {
                 <button
                   key={s}
                   onClick={() => !isMissing && playSound(s)}
-                  className={`flex flex-col items-center gap-2 group ${isMissing ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); !isMissing && playSound(s) } }}
+                  aria-label={`Reproducir ${getLabel(s)}`}
+                  aria-disabled={isMissing}
+                  className={`flex flex-col items-center gap-2 group ${isMissing ? 'opacity-30 cursor-not-allowed' : 'focus:outline-none focus:ring-2 focus:ring-cyan-400'}`}
                 >
-                  <div className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-150
+                  <div className={`relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-150
                     ${isActive
-                      ? 'bg-gradient-to-b from-red-400 to-red-700 scale-90 shadow-[0_0_25px_rgba(255,0,0,0.8)] ring-2 ring-white/40'
-                      : 'bg-gradient-to-b from-zinc-700 to-zinc-900 shadow-[0_8px_20px_rgba(0,0,0,0.8)] group-hover:shadow-[0_0_20px_rgba(255,0,0,0.5)]'}
+                      ? 'bg-gradient-to-b from-red-400 to-red-700 scale-95 shadow-[0_0_18px_rgba(255,0,0,0.8)] ring-2 ring-white/20'
+                      : 'bg-gradient-to-b from-zinc-700 to-zinc-900 shadow-[0_6px_16px_rgba(0,0,0,0.8)] group-hover:shadow-[0_0_16px_rgba(255,0,0,0.35)]'}
                   `}>
 
                     <Play
-                      size={18}
+                      size={16}
                       className={`${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-red-400'}`}
                       fill="currentColor"
                     />
 
                     {isMissing && (
-                      <span className="absolute top-1 right-1 text-[8px] text-red-500">
+                      <span className="absolute top-1 right-1 text-[9px] text-red-500">
                         404
                       </span>
                     )}
                   </div>
 
-                  <span className="text-[9px] text-zinc-400 text-center max-w-[70px] truncate group-hover:text-red-400 transition">
+                  <span className="text-[10px] text-zinc-400 text-center max-w-[80px] truncate group-hover:text-red-400 transition">
                     {getLabel(s)}
                   </span>
                 </button>
@@ -307,6 +327,9 @@ export default function PrankButton() {
             })}
 
           </div>
+          {missingAudios.length > 0 && (
+            <div className="mt-3 text-sm text-amber-400 font-mono">Audios faltantes: {missingAudios.length}</div>
+          )}
         </div>
       </div>
 
