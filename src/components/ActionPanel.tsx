@@ -12,7 +12,7 @@ type Action = {
 }
 
 const DEFAULT_ACTIONS: Action[] = [
-  { id: 'menu', title: 'Ver Menú', desc: 'Buffet Box', href: 'https://cdn-1.humand.co/files/file-9723--3ceb4dbe-1b7d-415e-a9d9-13dcc47643ff.pdf?token=0pI75ViDW8HpN6O_1iM6VD-9BJHUTe1OvaQLK_pOu5M&expires=1775427083', external: true, emoji: '🍽️' },
+  { id: 'menu', title: 'Ver Menú', desc: 'Buffet Box', href: '/menuabril.pdf', external: true, emoji: '🍽️' },
   { id: 'pizza', title: 'Pedir Pizza', desc: 'WhatsApp', href: 'https://wa.me/5491166968656?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Pizzas', external: true, emoji: '🍕' },
   { id: 'homers', title: 'Homers Web', desc: 'Zona peligrosa', href: 'https://skavenger.byethost8.com/homerswebpage/', external: true, emoji: '🍩' },
   { id: 'whiteboard', title: 'Whiteboard', desc: 'Pizarra colaborativa (sección)', href: '#whiteboard', emoji: '✏️' },

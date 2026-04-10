@@ -36,16 +36,15 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-            <div className="lg:col-span-3 flex items-center justify-center">
-              <div className="w-full max-w-3xl">
-                <div className="cyber-card p-6 flex flex-col items-center justify-center">
-                  <div className="text-xs text-zinc-400 font-mono uppercase mb-2">Acceso rápido</div>
-                    <div className="p-2 flex items-center justify-center">
-                      <PrankButton />
-                    </div>
+              <div className="lg:col-span-3 flex items-center justify-center">
+                <div className="w-full max-w-4xl">
+                  <div className="mb-4 text-center">
+                    <h2 className="text-2xl font-extrabold">Pad Sonoro</h2>
+                    <p className="text-zinc-500 text-sm">Pulsa pads, usa teclas rápidas o presiona el botón central</p>
+                  </div>
+                  <PrankButton />
                 </div>
               </div>
-            </div>
 
             <div className="lg:col-span-2 space-y-4">
               <MotivationCard />

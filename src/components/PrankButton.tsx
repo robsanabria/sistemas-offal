@@ -209,7 +209,7 @@ export default function PrankButton() {
   }, [volume, loop])
 
   return (
-    <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-visible">
+    <div className="cyber-card border border-red-500/20 bg-zinc-950 p-6 rounded-xl relative overflow-visible">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
@@ -228,6 +228,38 @@ export default function PrankButton() {
 
       <div className="flex flex-col items-center w-full">
 
+        {/* Compact controls */}
+        <div className="w-full flex items-center justify-between mb-4 gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={stopAll}
+              className="px-3 py-1 bg-red-700 hover:bg-red-800 rounded text-sm font-semibold"
+            >
+              STOP ALL
+            </button>
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-sm"
+            >
+              {expanded ? 'CERRAR' : 'CONTROLES'}
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 text-sm text-zinc-400">
+            <Volume2 size={16} />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              aria-label="Volumen rápido"
+              className="w-36"
+            />
+          </div>
+        </div>
+
         {/* BOTON CENTRAL */}
         <motion.div
           whileHover={{ scale: 1.03 }}
@@ -245,14 +277,14 @@ export default function PrankButton() {
             </>
           )}
 
-          <div className={`relative w-32 md:w-40 lg:w-48 h-32 md:h-40 lg:h-48 rounded-full flex items-center justify-center transition-all duration-300
+          <div className={`relative w-44 md:w-56 lg:w-72 h-44 md:h-56 lg:h-72 rounded-full flex items-center justify-center transition-all duration-300
             ${clicked
               ? 'bg-gradient-to-b from-red-500 to-red-800 scale-95 shadow-[0_0_40px_rgba(255,0,0,0.9)]'
               : 'bg-gradient-to-b from-zinc-800 to-zinc-950 border border-red-600/40 shadow-[0_0_25px_rgba(255,0,0,0.25)] hover:shadow-[0_0_32px_rgba(255,0,0,0.45)]'}
           `}>
             {clicked
-              ? <Skull size={44} className="text-white animate-bounce z-10" />
-              : <Volume2 size={40} className="text-red-500 z-10" />}
+              ? <Skull size={56} className="text-white animate-bounce z-10" />
+              : <Volume2 size={48} className="text-red-500 z-10" />}
           </div>
         </motion.div>
 
@@ -294,8 +326,8 @@ export default function PrankButton() {
         )}
 
         {/* GRID */}
-        <div className="mt-6 w-full max-h-72 overflow-y-auto pr-2">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
+        <div className="mt-6 w-full max-h-96 overflow-y-auto pr-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-items-center">
 
             {sounds.map((s, idx) => {
               const isActive = activePads.includes(s)
@@ -310,17 +342,22 @@ export default function PrankButton() {
                   aria-disabled={isMissing}
                   className={`flex flex-col items-center gap-2 group ${isMissing ? 'opacity-30 cursor-not-allowed' : 'focus:outline-none focus:ring-2 focus:ring-cyan-400'}`}
                 >
-                  <div className={`relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-150
+                  <div className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-150
                     ${isActive
-                      ? 'bg-gradient-to-b from-red-400 to-red-700 scale-95 shadow-[0_0_18px_rgba(255,0,0,0.8)] ring-2 ring-white/20'
-                      : 'bg-gradient-to-b from-zinc-700 to-zinc-900 shadow-[0_6px_16px_rgba(0,0,0,0.8)] group-hover:shadow-[0_0_16px_rgba(255,0,0,0.35)]'}
+                      ? 'bg-gradient-to-b from-red-400 to-red-700 scale-95 shadow-[0_0_20px_rgba(255,0,0,0.85)] ring-2 ring-white/20'
+                      : 'bg-gradient-to-b from-zinc-700 to-zinc-900 shadow-[0_6px_18px_rgba(0,0,0,0.9)] group-hover:shadow-[0_0_20px_rgba(255,0,0,0.4)]'}
                   `}>
 
                     <Play
-                      size={16}
+                      size={20}
                       className={`${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-red-400'}`}
                       fill="currentColor"
                     />
+
+                    {/* keyboard hint */}
+                    {idx < 9 && (
+                      <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-[10px] px-2 py-0.5 rounded-full shadow z-20">{idx + 1}</span>
+                    )}
 
                     {isMissing && (
                       <span className="absolute top-1 right-1 text-[9px] text-red-500">
@@ -329,7 +366,7 @@ export default function PrankButton() {
                     )}
                   </div>
 
-                  <span className="text-[10px] text-zinc-400 text-center max-w-[80px] truncate group-hover:text-red-400 transition min-w-0">
+                  <span className="text-[12px] text-zinc-400 text-center max-w-[100px] truncate group-hover:text-red-400 transition min-w-0">
                     {getLabel(s)}
                   </span>
                 </button>
