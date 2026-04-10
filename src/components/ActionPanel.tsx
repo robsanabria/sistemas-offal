@@ -13,6 +13,8 @@ type Action = {
 
 const DEFAULT_ACTIONS: Action[] = [
   { id: 'menu', title: 'Ver Menú', desc: 'Buffet Box', href: '/menuabril.pdf', external: true, emoji: '🍽️' },
+  { id: 'update-windows', title: 'Actualizar Windows', desc: 'Modo pantalla completa (broma)', href: 'https://fakeupdate.net/win10ue/', external: true, emoji: '🪟' },
+  { id: 'useless', title: 'Cosas inútiles', desc: 'Hora de perder tiempo', href: 'https://theuselessweb.com/', external: true, emoji: '🫠' },
   { id: 'pizza', title: 'Pedir Pizza', desc: 'WhatsApp', href: 'https://wa.me/5491166968656?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Pizzas', external: true, emoji: '🍕' },
   { id: 'homers', title: 'Homers Web', desc: 'Zona peligrosa', href: 'https://skavenger.byethost8.com/homerswebpage/', external: true, emoji: '🍩' },
   { id: 'whiteboard', title: 'Whiteboard', desc: 'Pizarra colaborativa (sección)', href: '#whiteboard', emoji: '✏️' },
