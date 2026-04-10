@@ -69,12 +69,13 @@ body {
 
   .bg-grid {
     background:
-      radial-gradient(1200px 800px at 8% 12%, rgba(0,242,255,0.04), transparent 12%),
-      radial-gradient(1000px 600px at 92% 88%, rgba(57,255,20,0.03), transparent 12%),
-      linear-gradient(180deg, rgba(0,0,0,0.6), rgba(10,10,12,0.6)),
-      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+      radial-gradient(1200px 800px at 8% 12%, rgba(0,242,255,0.08), transparent 14%),
+      radial-gradient(1000px 600px at 92% 88%, rgba(57,255,20,0.06), transparent 14%),
+      linear-gradient(180deg, rgba(0,0,0,0.55), rgba(6,6,8,0.55)),
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
     background-size: 1400px 900px, 1200px 700px, auto, 40px 40px;
     background-attachment: fixed;
+    background-blend-mode: screen, screen, normal, normal;
     animation: bgFloat 40s linear infinite;
   }
 
