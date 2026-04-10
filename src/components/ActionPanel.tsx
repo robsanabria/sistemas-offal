@@ -32,13 +32,37 @@ export default function ActionPanel() {
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <h4 className="text-sm font-semibold">Botonera</h4>
-          <p className="text-[12px] text-zinc-500">Accesos principales</p>
         </div>
       </div>
 
-      {/* Accesos principales eliminados por solicitud del usuario */}
-      <div className="py-6">
-        <p className="text-sm text-zinc-500">La lista de accesos directos se ha ocultado para dar prioridad a la botonera central.</p>
+      {/* Render pequeño buscador y tarjetas de acciones (mejora UX) */}
+      <div>
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Buscar acción..."
+          className="w-full p-2 bg-zinc-900 border border-zinc-700 rounded text-sm"
+          aria-label="Buscar acciones"
+        />
+
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {filtered.map((a) => (
+            <a
+              key={a.id}
+              href={a.href}
+              target={a.external ? '_blank' : '_self'}
+              rel={a.external ? 'noreferrer' : undefined}
+              className="p-2 bg-zinc-800 rounded flex items-center gap-2 hover:bg-zinc-700 transition"
+            >
+              <span className="text-lg">{a.emoji}</span>
+              <div>
+                <div className="text-sm font-medium">{a.title}</div>
+                <div className="text-[11px] text-zinc-500">{a.desc}</div>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   )

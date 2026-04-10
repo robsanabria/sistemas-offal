@@ -24,6 +24,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Light theme overrides */
+[data-theme="light"] {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --accent-cyan: #06b6d4;
+  --accent-green: #16a34a;
+  --accent-magenta: #db2777;
+}
+
 @layer utilities {
   .cyber-card {
     @apply bg-zinc-900/80 border border-zinc-800 rounded-xl p-6 transition-all duration-300 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.5)];

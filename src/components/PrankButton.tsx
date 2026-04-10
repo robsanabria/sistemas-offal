@@ -191,11 +191,19 @@ export default function PrankButton() {
   // keyboard: space or enter triggers main prank when focused; also P key shortcut
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      // Ignore when user is typing in inputs, textareas, selects or contenteditable
+      if (target) {
+        const tag = target.tagName
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable) return
+      }
+
       if (e.key.toLowerCase() === 'p') {
         e.preventDefault()
         handlePrank()
       }
     }
+
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [volume, loop])
