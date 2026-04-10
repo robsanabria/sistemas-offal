@@ -209,7 +209,7 @@ export default function PrankButton() {
   }, [volume, loop])
 
   return (
-    <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-hidden">
+    <div className="cyber-card border border-red-500/20 bg-zinc-950 p-4 rounded-xl relative overflow-visible">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
@@ -295,7 +295,7 @@ export default function PrankButton() {
 
         {/* GRID */}
         <div className="mt-6 w-full max-h-72 overflow-y-auto pr-2">
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-items-center">
 
             {sounds.map((s, idx) => {
               const isActive = activePads.includes(s)
@@ -329,7 +329,7 @@ export default function PrankButton() {
                     )}
                   </div>
 
-                  <span className="text-[10px] text-zinc-400 text-center max-w-[80px] truncate group-hover:text-red-400 transition">
+                  <span className="text-[10px] text-zinc-400 text-center max-w-[80px] truncate group-hover:text-red-400 transition min-w-0">
                     {getLabel(s)}
                   </span>
                 </button>

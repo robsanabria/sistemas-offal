@@ -61,7 +61,7 @@ export default function Home() {
           <AndreaCounter />
           <RobertoCounter />
           <SpeedCounter />
-          <CoffeeBoard />
+          <div id="coffee-board"><CoffeeBoard /></div>
           <TextToSpeech />
         </div>
 
@@ -70,7 +70,7 @@ export default function Home() {
           <div className="lg:col-span-1">
             <PointsBoard />
           </div>
-          <div className="lg:col-span-2">
+          <div id="whiteboard" className="lg:col-span-2">
             <Whiteboard />
           </div>
         </div>
