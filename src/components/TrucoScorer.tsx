@@ -34,12 +34,6 @@ export default function TrucoScorer() {
     const [score, setScore] = useState({ nosotros: 0, ellos: 0 })
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        fetchScore()
-        const interval = setInterval(fetchScore, 5000) // Sync every 5s
-        return () => clearInterval(interval)
-    }, [])
-
     const fetchScore = async () => {
         try {
             const res = await fetch('/api/truco')
@@ -50,6 +44,12 @@ export default function TrucoScorer() {
             console.error(e)
         }
     }
+
+    useEffect(() => {
+        fetchScore()
+        const interval = setInterval(fetchScore, 5000) // Sync every 5s
+        return () => clearInterval(interval)
+    }, [])
 
     const updateScore = async (team: 'nosotros' | 'ellos', delta: number) => {
         const newVal = Math.max(0, Math.min(30, score[team] + delta))

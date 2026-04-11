@@ -1,13 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { AlertTriangle, Volume2, Skull, Maximize2, Minimize2, Play } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { AlertTriangle, Volume2, Play } from 'lucide-react'
 
 export default function PrankButton() {
-  const [clicked, setClicked] = useState(false)
   const [activePads, setActivePads] = useState<string[]>([])
-  const [expanded, setExpanded] = useState(false)
   const [volume, setVolume] = useState(1)
   const [loop, setLoop] = useState(false)
   const [missingAudios, setMissingAudios] = useState<string[]>([])
@@ -182,10 +179,8 @@ export default function PrankButton() {
   }
 
   const handlePrank = () => {
-    setClicked(true)
     const random = sounds[Math.floor(Math.random() * sounds.length)]
     playSound(random)
-    setTimeout(() => setClicked(false), 500)
   }
 
   // keyboard: space or enter triggers main prank when focused; also P key shortcut
@@ -209,184 +204,100 @@ export default function PrankButton() {
   }, [volume, loop])
 
   return (
-    <div className="cyber-card border border-red-500/20 bg-zinc-950 p-6 rounded-xl relative overflow-visible">
-
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-2 text-red-500 font-mono text-[10px] uppercase tracking-wider">
-          <AlertTriangle size={14} className="animate-pulse" />
-          <span>STRICTLY RESTRICTED AREA</span>
+    <div className="cyber-card flex flex-col h-full border border-cyan-500/20 bg-zinc-950/80 p-4 rounded-xl relative shadow-[0_0_30px_rgba(0,242,255,0.05)]">
+      
+      {/* HEADER CONTROLS */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-cyan-400 font-mono text-[12px] uppercase font-bold tracking-widest bg-cyan-950/40 px-3 py-1.5 rounded-md border border-cyan-500/30">
+            <Volume2 size={16} className="animate-pulse" />
+            <span>MPC-OFFAL-V2</span>
+          </div>
+          
+          <button 
+            onClick={stopAll}
+            className="flex items-center justify-center gap-1 px-4 py-1.5 bg-red-600/20 hover:bg-red-600 border border-red-500/50 rounded-md text-red-500 hover:text-white text-xs font-bold transition-all"
+          >
+            <AlertTriangle size={14} /> STOP
+          </button>
         </div>
 
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-zinc-500 hover:text-red-400 transition"
-        >
-          {expanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-        </button>
-      </div>
-
-      <div className="flex flex-col items-center w-full">
-
-        {/* Compact controls */}
-        <div className="w-full flex items-center justify-between mb-4 gap-4">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={stopAll}
-              className="px-3 py-1 bg-red-700 hover:bg-red-800 rounded text-sm font-semibold"
-            >
-              STOP ALL
-            </button>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-sm"
-            >
-              {expanded ? 'CERRAR' : 'CONTROLES'}
-            </button>
-          </div>
-
-          <div className="flex items-center gap-2 text-sm text-zinc-400">
+        <div className="flex items-center gap-4 bg-zinc-900/60 px-4 py-2 rounded-lg border border-zinc-700/50">
+          <div className="flex items-center gap-2 text-sm text-cyan-400">
             <Volume2 size={16} />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={(e) => setVolume(Number(e.target.value))}
-              aria-label="Volumen rápido"
-              className="w-36"
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.01" 
+              value={volume} 
+              onChange={(e) => setVolume(Number(e.target.value))} 
+              className="w-24 md:w-32 accent-cyan-400"
             />
           </div>
-        </div>
-
-        {/* BOTON CENTRAL */}
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.96 }}
-          onClick={handlePrank}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePrank() } }}
-          className="relative cursor-pointer flex items-center justify-center"
-        >
-          {clicked && (
-            <>
-              <span className="absolute inset-0 rounded-full border border-red-500/30 animate-ping" />
-              <span className="absolute inset-0 rounded-full border border-red-500/10 animate-ping delay-200" />
-            </>
-          )}
-
-          <div className={`relative w-44 md:w-56 lg:w-72 h-44 md:h-56 lg:h-72 rounded-full flex items-center justify-center transition-all duration-300
-            ${clicked
-              ? 'bg-gradient-to-b from-red-500 to-red-800 scale-95 shadow-[0_0_40px_rgba(255,0,0,0.9)]'
-              : 'bg-gradient-to-b from-zinc-800 to-zinc-950 border border-red-600/40 shadow-[0_0_25px_rgba(255,0,0,0.25)] hover:shadow-[0_0_32px_rgba(255,0,0,0.45)]'}
-          `}>
-            {clicked
-              ? <Skull size={56} className="text-white animate-bounce z-10" />
-              : <Volume2 size={48} className="text-red-500 z-10" />}
-          </div>
-        </motion.div>
-
-        {/* CONTROLES PRO */}
-        {expanded && (
-          <div className="w-full mt-6 cyber-card bg-zinc-900/60 border border-red-500/10 p-3 space-y-3">
-            <div>
-              <label className="text-xs text-zinc-400 block mb-1">Volumen</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={(e) => setVolume(Number(e.target.value))}
-                aria-label="Volumen de sonidos"
-                className="w-full"
-              />
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-xs text-zinc-400">Loop</span>
-              <button
-                onClick={() => setLoop(!loop)}
-                aria-pressed={loop}
-                className={`px-3 py-1 rounded text-xs ${loop ? 'bg-red-600 text-white' : 'bg-zinc-700 text-zinc-300'}`}
-              >
-                {loop ? 'ON' : 'OFF'}
-              </button>
-            </div>
-
-            <button
-              onClick={stopAll}
-              className="w-full py-2 bg-red-700 hover:bg-red-800 rounded text-sm"
-            >
-              STOP ALL 🔥
-            </button>
-          </div>
-        )}
-
-        {/* GRID */}
-        <div className="mt-6 w-full max-h-96 overflow-y-auto pr-2">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-items-center">
-
-            {sounds.map((s, idx) => {
-              const isActive = activePads.includes(s)
-              const isMissing = missingAudios.includes(s)
-
-              return (
-                <button
-                  key={s}
-                  onClick={() => !isMissing && playSound(s)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); !isMissing && playSound(s) } }}
-                  aria-label={`Reproducir ${getLabel(s)}`}
-                  aria-disabled={isMissing}
-                  className={`flex flex-col items-center gap-2 group ${isMissing ? 'opacity-30 cursor-not-allowed' : 'focus:outline-none focus:ring-2 focus:ring-cyan-400'}`}
-                >
-                  <div className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-150
-                    ${isActive
-                      ? 'bg-gradient-to-b from-red-400 to-red-700 scale-95 shadow-[0_0_20px_rgba(255,0,0,0.85)] ring-2 ring-white/20'
-                      : 'bg-gradient-to-b from-zinc-700 to-zinc-900 shadow-[0_6px_18px_rgba(0,0,0,0.9)] group-hover:shadow-[0_0_20px_rgba(255,0,0,0.4)]'}
-                  `}>
-
-                    <Play
-                      size={20}
-                      className={`${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-red-400'}`}
-                      fill="currentColor"
-                    />
-
-                    {/* keyboard hint */}
-                    {idx < 9 && (
-                      <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-[10px] px-2 py-0.5 rounded-full shadow z-20">{idx + 1}</span>
-                    )}
-
-                    {isMissing && (
-                      <span className="absolute top-1 right-1 text-[9px] text-red-500">
-                        404
-                      </span>
-                    )}
-                  </div>
-
-                  <span className="text-[12px] text-zinc-400 text-center max-w-[100px] truncate group-hover:text-red-400 transition min-w-0">
-                    {getLabel(s)}
-                  </span>
-                </button>
-              )
-            })}
-
-          </div>
-          {missingAudios.length > 0 && (
-            <div className="mt-3 text-sm text-amber-400 font-mono">Audios faltantes: {missingAudios.length}</div>
-          )}
+          
+          <button
+            onClick={() => setLoop(!loop)}
+            className={`text-xs px-2 py-1 rounded font-bold transition-all border ${loop ? 'bg-cyan-500/20 text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(0,242,255,0.4)]' : 'bg-transparent text-zinc-500 border-zinc-600 hover:border-zinc-400'}`}
+          >
+            LOOP
+          </button>
         </div>
       </div>
 
-      {clicked && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.1 }}
-          className="absolute inset-0 bg-red-500 pointer-events-none"
-        />
-      )}
+      {/* MPC PAD GRID */}
+      <div className="w-full flex-grow overflow-y-auto pr-2 custom-scrollbar">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 justify-items-center">
+          
+          {sounds.map((s, idx) => {
+            const isActive = activePads.includes(s)
+            const isMissing = missingAudios.includes(s)
+
+            return (
+              <button
+                key={s}
+                onClick={() => !isMissing && playSound(s)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); !isMissing && playSound(s) } }}
+                aria-label={`Reproducir ${getLabel(s)}`}
+                aria-disabled={isMissing}
+                className={`relative w-full aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition-all duration-75 outline-none
+                  ${isMissing 
+                    ? 'opacity-20 cursor-not-allowed bg-zinc-900 border-zinc-800' 
+                    : isActive
+                      ? 'bg-gradient-to-br from-cyan-400 to-green-400 border-2 border-white scale-[0.92] shadow-[0_0_25px_rgba(0,242,255,0.8),inset_0_0_15px_rgba(255,255,255,0.6)] z-10 text-black'
+                      : 'bg-zinc-800/80 border border-zinc-700 hover:border-cyan-500/50 hover:bg-zinc-800 hover:shadow-[0_0_15px_rgba(0,242,255,0.3)] shadow-inner text-zinc-400 hover:text-cyan-300 focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(0,242,255,0.5)]'
+                  }
+                `}
+              >
+                {/* Light Indicator Line at top of pad */}
+                <span className={`absolute top-0 left-[20%] right-[20%] h-1 rounded-b-md transition-all ${isActive ? 'bg-white shadow-[0_0_10px_white]' : 'bg-zinc-700'}`}></span>
+                
+                <Play 
+                  size={isActive ? 28 : 20} 
+                  className={`mt-1 transition-all ${isActive ? 'text-black fill-black' : isMissing ? 'text-zinc-700' : 'text-zinc-500 group-hover:text-cyan-400'}`} 
+                />
+
+                <span className={`text-[10px] sm:text-[11px] text-center px-1 font-semibold leading-tight line-clamp-2 w-full $ {isActive ? 'text-black' : ''}`}>
+                  {getLabel(s).toUpperCase()}
+                </span>
+
+                {/* keyboard hint */}
+                {idx < 9 && !isMissing && (
+                  <span className={`absolute bottom-1 right-1 text-[9px] font-bold px-1 rounded-sm ${isActive ? 'bg-black/20 text-black' : 'bg-zinc-700/50 text-zinc-500'}`}>{idx + 1}</span>
+                )}
+              </button>
+            )
+          })}
+          
+        </div>
+        
+        {missingAudios.length > 0 && (
+          <div className="mt-6 text-[10px] text-amber-500/60 font-mono text-center">
+            {missingAudios.length} AUDIOS 404 (UNAVAILABLE)
+          </div>
+        )}
+      </div>
+
     </div>
   )
 }
