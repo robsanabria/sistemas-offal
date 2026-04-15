@@ -125,6 +125,10 @@ export default function PrankButton() {
           '/quevasatirar.mp3',
           '/nico.mp3',
            '/nico2.mp3',
+           '/manteca-alonso.mp3',
+            '/perfect-fart.mp3',
+            '/despierta-ya-mujer-gsony.mp3',
+            '/gemid-troll.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
