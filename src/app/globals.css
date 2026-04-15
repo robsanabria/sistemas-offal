@@ -47,11 +47,13 @@ body {
 
 @layer utilities {
   .cyber-card {
-    @apply bg-zinc-900/80 border border-zinc-800 rounded-xl p-6 transition-all duration-300 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.5)];
+    @apply bg-zinc-950/70 border border-zinc-800/80 rounded-xl p-6 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.5)];
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .cyber-card:hover {
-    @apply border-cyan-500/50 shadow-[0_0_30px_rgba(0,242,255,0.1)] -translate-y-0.5;
+    @apply border-cyan-500/40 shadow-[0_0_20px_rgba(0,242,255,0.08)] -translate-y-[2px];
   }
 
   .cyber-button {
@@ -69,20 +71,34 @@ body {
 
   .bg-grid {
     background:
-      radial-gradient(1200px 800px at 8% 12%, rgba(0,242,255,0.08), transparent 14%),
-      radial-gradient(1000px 600px at 92% 88%, rgba(57,255,20,0.06), transparent 14%),
-      linear-gradient(180deg, rgba(0,0,0,0.55), rgba(6,6,8,0.55)),
-      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
-    background-size: 1400px 900px, 1200px 700px, auto, 40px 40px;
+      linear-gradient(to right, rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+      radial-gradient(1000px 900px at 10% 20%, rgba(0, 242, 255, 0.1), transparent 30%),
+      radial-gradient(1200px 800px at 90% 80%, rgba(57, 255, 20, 0.08), transparent 30%),
+      var(--background);
+    background-size: 
+      40px 40px,
+      40px 40px,
+      auto,
+      auto,
+      auto;
     background-attachment: fixed;
-    background-blend-mode: screen, screen, normal, normal;
-    animation: bgFloat 40s linear infinite;
+    background-blend-mode: screen, screen, screen, screen, normal;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bg-grid {
-      animation: none;
-    }
+  
+  /* Aditional hex dot pattern */
+  .bg-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
+    background-size: 24px 24px;
+    z-index: -1;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
   }
 
   .gradient-text {
