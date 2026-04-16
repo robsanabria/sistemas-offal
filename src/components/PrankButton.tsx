@@ -137,6 +137,10 @@ export default function PrankButton() {
           '/que-rica-cola.mp3',
           '/lo-siento-wilson.mp3',
           '/rizz-sound-effect.mp3',
+          '/boliviano.mp3',
+          '/paraguayo.mp3',
+          '/peruano.mp3',
+          '/transexual.mp3',
 
   ]
 
