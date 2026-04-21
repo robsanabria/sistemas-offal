@@ -141,6 +141,10 @@ export default function PrankButton() {
           '/paraguayo.mp3',
           '/peruano.mp3',
           '/transexual.mp3',
+          '/a-mi.mp3',
+          '/que-lindo-vestidito-que-tenes.mp3',
+          '/que-miseria.mp3',
+          '/tres-empanadas.mp3',
 
   ]
 
