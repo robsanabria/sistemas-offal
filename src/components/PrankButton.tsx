@@ -151,6 +151,8 @@ export default function PrankButton() {
           '/amoo-milei.mp3',
           '/toda-todaaa.mp3',
           '/anda-a-laburar.mp3',
+          '/omg-bruh-oh-hell-nah.mp3',
+          'a-lo-que-yo-vine.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
