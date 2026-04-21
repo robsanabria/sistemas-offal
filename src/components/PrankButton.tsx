@@ -148,10 +148,9 @@ export default function PrankButton() {
           '/mire.mp3',
           '/soy-mama-canosa.mp3',
           '/toma-pa-vo.mp3',
-          '/amo-milei.mp3',
-          '/toda-todaa.mp3',
+          '/amoo-milei.mp3',
+          '/toda-todaaa.mp3',
           '/anda-a-laburar.mp3',
-
   ]
 
   // 🔎 Detectar audios faltantes
