@@ -152,7 +152,8 @@ export default function PrankButton() {
           '/toda-todaaa.mp3',
           '/anda-a-laburar.mp3',
           '/omg-bruh-oh-hell-nah.mp3',
-          'a-lo-que-yo-vine.mp3',
+          '/a-lo-que-yo-vine.mp3',
+          '/leche-mucha-leche.mp3',
   ]
 
   // 🔎 Detectar audios faltantes

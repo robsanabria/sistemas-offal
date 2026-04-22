@@ -1,0 +1,814 @@
+[2026-01-27 12:13:43,188] [INFO] === HIKVISION → HUMAND WEBHOOK STARTED ===
+[2026-01-27 12:13:43,188] [INFO] DRY_RUN = True
+[2026-01-27 12:13:43,189] [INFO] SEND_INTERVAL = 60s
+[2026-01-27 12:13:44,083] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:13:44,089] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:13:44,095] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:13:44,100] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 12:13:44,106] [INFO] [EN COLA] Salida | DNI 35218138 | Facial Salida | 2026-01-27T12:11:51-03:00
+[2026-01-27 12:13:44,112] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,117] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,123] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:13:44,128] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,135] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,141] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,146] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:44,151] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:13:45,321] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:04,389] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:05,868] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:14:09,493] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,694] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,701] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,708] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,713] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,719] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,725] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,732] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,738] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,744] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,750] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,756] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,762] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 12:14:17,768] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,774] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:14:17,780] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,785] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:14:17,792] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,797] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,803] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,810] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,815] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:14:17,821] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:14:17,826] [INFO] [EN COLA] Entrada | DNI 37226119 | Facial Entrada | 2026-01-27T12:04:00-03:00
+[2026-01-27 12:14:17,831] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 12:14:17,836] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:14:17,841] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,847] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,854] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,859] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,865] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,870] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,876] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,882] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,887] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,893] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,898] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,904] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,910] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,915] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,921] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,926] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,931] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,937] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,943] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,948] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:14:17,954] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,959] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,966] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,972] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:17,978] [INFO] [IGNORADO] Dispositivo Vestuario mantenimiento
+[2026-01-27 12:14:17,984] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:17,989] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 12:14:17,997] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:18,004] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:14:18,010] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:14:18,016] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:14:18,021] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:14:18,026] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:14:18,033] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:18,040] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:14:18,047] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:33,200] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:43,162] [INFO] [WORKER] Procesando 2 eventos
+[2026-01-27 12:14:43,162] [INFO] [DRY-RUN] Salida | DNI 35218138 | 2026-01-27T12:11:51-03:00
+[2026-01-27 12:14:43,164] [INFO] [DRY-RUN] Entrada | DNI 37226119 | 2026-01-27T12:04:00-03:00
+[2026-01-27 12:14:46,702] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:14:47,124] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:14:53,345] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:14:58,240] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:15:20,730] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:15:28,259] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:15:32,096] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:15:35,899] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:15:43,235] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:36:02,953] [INFO] === HIKVISION → HUMAND WEBHOOK STARTED ===
+[2026-01-27 12:36:02,954] [INFO] DRY_RUN = False
+[2026-01-27 12:36:02,954] [INFO] SEND_INTERVAL = 60s
+[2026-01-27 12:36:11,854] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,860] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,865] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,871] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 12:36:11,876] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,881] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,885] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,890] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:11,896] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,901] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,907] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,913] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,918] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,923] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,928] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,933] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:11,939] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,944] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:36:11,950] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:36:11,956] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,961] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,967] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,972] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,978] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:36:11,983] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:11,989] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:36:11,994] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,000] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:36:12,006] [INFO] [EN COLA] Entrada | DNI 41585200 | Facial Entrada | 2026-01-27T12:21:18-03:00
+[2026-01-27 12:36:12,012] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,018] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:36:12,023] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,028] [INFO] [EN COLA] Entrada | DNI 35218138 | Facial Entrada | 2026-01-27T12:21:45-03:00
+[2026-01-27 12:36:12,034] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,039] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,045] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,050] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,055] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:12,061] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,067] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 12:36:12,073] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,078] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,084] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,089] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,095] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,100] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,105] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:36:12,111] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:36:12,118] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,123] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,129] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,135] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:36:12,140] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:36:12,145] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:36:12,150] [INFO] [EN COLA] Entrada | DNI 30481128 | Facial Entrada | 2026-01-27T12:27:21-03:00
+[2026-01-27 12:36:12,155] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,161] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,166] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:36:12,171] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:36:12,178] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:36:12,183] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:36:12,188] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:36:12,194] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:12,199] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:12,204] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:12,209] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,214] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:36:12,220] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:36:12,225] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:36:12,231] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:36:12,237] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:36:12,242] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:37:00,090] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:37:02,926] [INFO] [WORKER] Procesando 3 eventos
+[2026-01-27 12:37:03,866] [INFO] [HUMAND] Entrada DNI 41585200 → 403
+[2026-01-27 12:37:03,866] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 12:37:04,951] [INFO] [HUMAND] Entrada DNI 35218138 → 403
+[2026-01-27 12:37:04,952] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 12:37:06,538] [INFO] [HUMAND] Entrada DNI 30481128 → 403
+[2026-01-27 12:37:06,539] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 12:37:59,790] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:38:32,368] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:38:52,536] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:39:33,993] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:39:47,402] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:39:56,450] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:40:23,856] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:40:28,687] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:40:34,153] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:40:53,251] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:40:54,754] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:40:56,256] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:40:57,756] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:40:59,258] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:41:00,758] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:41:02,259] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:41:03,761] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:41:05,261] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:41:06,764] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:41:08,264] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:42:06,412] [INFO] [WORKER] Procesando 1 eventos
+[2026-01-27 12:42:07,507] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:17,815] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:27,024] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:42:28,526] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:30,026] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:31,528] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:42:33,028] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:34,529] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:42:36,031] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:42:37,532] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:42:39,033] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:42:40,534] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:42:42,037] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:42:43,538] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:45,040] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:42:46,542] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:42:48,044] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:42:50,089] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:43:02,174] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:43:17,518] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:43:53,747] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:44:00,853] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:44:02,355] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:03,857] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:05,357] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:44:06,860] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:08,362] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:44:09,863] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:44:11,364] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:44:12,866] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:44:14,366] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:44:15,868] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:44:17,369] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:18,871] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:20,372] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:44:21,874] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:44:23,341] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:44:24,843] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:44:26,343] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:44:27,844] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:44:29,346] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:44:30,848] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:44:57,957] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:45:04,213] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:15,330] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:21,708] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:45:23,209] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:34,046] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:45:35,547] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:45:37,048] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:38,549] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:40,052] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:45:41,552] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:43,054] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:45:44,555] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:45:46,057] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:45:47,558] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:45:49,058] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:45:50,561] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:45:52,062] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:53,563] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:45:55,064] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:45:56,565] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:45:58,065] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:45:59,568] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:46:01,070] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:02,571] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:46:04,072] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:46:05,572] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:46:07,074] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:46:08,575] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:10,076] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:11,576] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:46:13,078] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:14,579] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:46:16,079] [INFO] [EN COLA] Entrada | DNI 43047206 | Facial Entrada | 2026-01-27T12:45:44-03:00
+[2026-01-27 12:46:17,582] [INFO] [EN COLA] Salida | DNI 31539652 | Facial Salida | 2026-01-27T12:46:04-03:00
+[2026-01-27 12:46:19,083] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:20,584] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:46:22,084] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 12:46:32,622] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:43,557] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:46:45,058] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:46,559] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:48,060] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:49,562] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:51,064] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:52,565] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:54,066] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:55,568] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:57,070] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:46:58,572] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:00,072] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:01,573] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:03,076] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:04,578] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:06,080] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:07,581] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:09,081] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:10,583] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:47:12,083] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:13,585] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:15,085] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:47:16,588] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:18,090] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:47:19,591] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:47:21,092] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:47:22,593] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:47:24,095] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:47:25,596] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:47:27,097] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:28,566] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:30,067] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:47:31,567] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:47:33,069] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:47:34,571] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:47:36,072] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:37,573] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:47:39,074] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:47:40,576] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:47:42,078] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:47:43,579] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:45,080] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:46,581] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:47:48,082] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:49,584] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:47:51,085] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:47:52,587] [INFO] [EN COLA] Entrada | DNI 43047206 | Facial Entrada | 2026-01-27T12:45:44-03:00
+[2026-01-27 12:47:54,087] [INFO] [EN COLA] Salida | DNI 31539652 | Facial Salida | 2026-01-27T12:46:04-03:00
+[2026-01-27 12:47:55,589] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:47:57,091] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:47:58,593] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 12:48:00,095] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:01,595] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:48:03,097] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:04,597] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:06,099] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:07,600] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:09,101] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:10,603] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:12,103] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:13,605] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:15,106] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:16,608] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:18,109] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:19,610] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:21,112] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:22,614] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:24,115] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:25,616] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:48:27,117] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:48:28,618] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:30,084] [INFO] [EN COLA] Entrada | DNI 43896813 | Facial Entrada | 2026-01-27T12:47:32-03:00
+[2026-01-27 12:48:31,585] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:33,085] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:34,587] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:36,089] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:48:37,590] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:39,091] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:48:40,593] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:48:42,093] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:43,596] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:45,097] [INFO] [EN COLA] Entrada | DNI 34848736 | Facial Entrada | 2026-01-27T12:48:17-03:00
+[2026-01-27 12:48:46,597] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:48,098] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:48:49,600] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:51,117] [INFO] [IGNORADO] Dispositivo Vestuario mantenimiento
+[2026-01-27 12:48:52,603] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:54,104] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:48:55,605] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:57,106] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:48:58,607] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:49:00,109] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:01,610] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:49:03,110] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:49:04,612] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:49:06,113] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:49:07,614] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:49:09,115] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:49:10,616] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:12,117] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:13,619] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:49:15,120] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:49:16,620] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:49:18,124] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:49:19,625] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:21,125] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:49:22,627] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:49:24,128] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:49:25,629] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:49:27,130] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:28,632] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:30,132] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:49:31,634] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:33,101] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:49:34,603] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:49:36,104] [INFO] [EN COLA] Entrada | DNI 43047206 | Facial Entrada | 2026-01-27T12:45:44-03:00
+[2026-01-27 12:49:37,604] [INFO] [EN COLA] Salida | DNI 31539652 | Facial Salida | 2026-01-27T12:46:04-03:00
+[2026-01-27 12:49:39,105] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:49:40,607] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:42,108] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 12:49:43,609] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:45,111] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:46,613] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:49:48,114] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:49,615] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:51,116] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:52,617] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:54,118] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:55,619] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:57,122] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:49:58,624] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:00,125] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:01,625] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:03,126] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:04,628] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:06,130] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:07,632] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:09,133] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:10,634] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:12,135] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:50:13,637] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:50:15,138] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:16,639] [INFO] [EN COLA] Entrada | DNI 43896813 | Facial Entrada | 2026-01-27T12:47:32-03:00
+[2026-01-27 12:50:18,140] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:19,640] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:21,143] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:22,644] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:50:24,145] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:25,646] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:50:27,148] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:28,651] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:30,152] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:31,654] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:33,155] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:50:34,624] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:36,125] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:50:37,627] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:39,129] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:40,630] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:42,131] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:43,631] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:50:45,133] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 12:50:46,634] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 12:50:48,134] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:50:49,635] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:51,137] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:52,639] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 12:50:54,141] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:50:55,641] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:50:57,142] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:50:58,643] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:51:00,226] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:51:01,728] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:51:03,230] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 12:51:04,730] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:06,232] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:07,732] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:51:09,234] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 12:51:10,735] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 12:51:12,237] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 12:51:13,738] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:15,238] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:51:16,740] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:51:18,241] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 12:51:19,742] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:51:21,245] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:22,746] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:24,247] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 12:51:25,748] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:27,248] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:51:28,749] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 12:51:30,250] [INFO] [EN COLA] Entrada | DNI 43047206 | Facial Entrada | 2026-01-27T12:45:44-03:00
+[2026-01-27 12:51:31,752] [INFO] [EN COLA] Salida | DNI 31539652 | Facial Salida | 2026-01-27T12:46:04-03:00
+[2026-01-27 12:51:33,253] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:51:34,755] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:36,256] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 12:51:37,756] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:39,257] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:40,759] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 12:51:42,261] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:43,762] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:45,262] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:46,764] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:48,265] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:49,766] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:51,267] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:52,769] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:54,269] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:55,770] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:57,271] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:51:58,773] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:00,274] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:01,776] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:03,278] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:04,779] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:06,281] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:52:07,782] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 12:52:09,282] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 12:52:10,783] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:12,285] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:13,786] [INFO] [EN COLA] Entrada | DNI 34848736 | Facial Entrada | 2026-01-27T12:48:17-03:00
+[2026-01-27 12:52:15,286] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:16,788] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 12:52:18,290] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:19,790] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:21,292] [INFO] [IGNORADO] Dispositivo Vestuario mantenimiento
+[2026-01-27 12:52:22,793] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:24,295] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:25,795] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 12:52:27,296] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:28,798] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 12:52:30,299] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 13:32:25,289] [INFO] === HIKVISION → HUMAND WEBHOOK STARTED ===
+[2026-01-27 13:32:25,290] [INFO] DRY_RUN = False
+[2026-01-27 13:32:25,291] [INFO] SEND_INTERVAL = 60s
+[2026-01-27 13:32:26,440] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,446] [INFO] [EN COLA] Entrada | DNI 43896813 | Facial Entrada | 2026-01-27T12:47:32-03:00
+[2026-01-27 13:32:26,451] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,456] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,461] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,466] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:26,471] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,476] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,480] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 13:32:26,485] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 13:32:26,490] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,495] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:26,501] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,506] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,511] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,516] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:26,521] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:26,527] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,532] [INFO] [EN COLA] Entrada | DNI 47517994 | Facial Entrada | 2026-01-27T12:56:11-03:00
+[2026-01-27 13:32:26,537] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,543] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,547] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,553] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,558] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,564] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,571] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,576] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,580] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,586] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,591] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:26,596] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:26,601] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:26,607] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,612] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,618] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,623] [INFO] [EN COLA] Entrada | DNI 23877873 | Facial Entrada | 2026-01-27T13:10:36-03:00
+[2026-01-27 13:32:26,628] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,633] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,638] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:26,643] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,649] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,654] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:26,660] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,665] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,672] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,678] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,684] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,689] [INFO] [EN COLA] Salida | DNI 39333911 | Facial Salida | 2026-01-27T13:15:58-03:00
+[2026-01-27 13:32:26,695] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,700] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:26,705] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,710] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,716] [INFO] [EN COLA] Entrada | DNI 25094694 | Facial Entrada | 2026-01-27T13:20:18-03:00
+[2026-01-27 13:32:26,722] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,727] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,732] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:26,737] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,744] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,750] [INFO] [EN COLA] Entrada | DNI 28043254 | Facial Entrada | 2026-01-27T13:25:24-03:00
+[2026-01-27 13:32:26,757] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 13:32:26,763] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,769] [INFO] [EN COLA] Entrada | DNI 13336870 | Facial Entrada | 2026-01-27T13:29:53-03:00
+[2026-01-27 13:32:26,776] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 13:32:26,782] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,788] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:26,794] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,799] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:26,806] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,812] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,820] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,826] [INFO] [EN COLA] Entrada | DNI 47346292 | Facial Entrada | 2026-01-27T12:42:47-03:00
+[2026-01-27 13:32:26,832] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 13:32:26,839] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 13:32:26,847] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,853] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 13:32:26,861] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:26,868] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 13:32:26,874] [INFO] [EN COLA] Salida | DNI 31539652 | Facial Salida | 2026-01-27T12:46:04-03:00
+[2026-01-27 13:32:26,881] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:26,887] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,893] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,900] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,906] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,913] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,919] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,925] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,932] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:26,938] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:26,943] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,949] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,955] [INFO] [EN COLA] Entrada | DNI 34848736 | Facial Entrada | 2026-01-27T12:48:17-03:00
+[2026-01-27 13:32:26,963] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,969] [INFO] [IGNORADO] Dispositivo Vestuario mantenimiento
+[2026-01-27 13:32:26,974] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,980] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,986] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,993] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:26,999] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,005] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,011] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 13:32:27,016] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:27,022] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:27,028] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 13:32:27,033] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,039] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,044] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,049] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,055] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 13:32:27,060] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,067] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,072] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,077] [INFO] [IGNORADO] Dispositivo Facial Congelado
+[2026-01-27 13:32:27,082] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,088] [INFO] [IGNORADO] Dispositivo Seguridad e Higiene
+[2026-01-27 13:32:27,093] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,099] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 13:32:27,104] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,110] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,117] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,123] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,129] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,134] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,139] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,145] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:27,150] [INFO] [EN COLA] Salida | DNI 37363083 | Facial Salida | 2026-01-27T13:00:10-03:00
+[2026-01-27 13:32:27,156] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:27,161] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,166] [INFO] [EN COLA] Entrada | DNI 31931040 | Facial Entrada | 2026-01-27T13:00:27-03:00
+[2026-01-27 13:32:27,171] [INFO] [IGNORADO] Dispositivo Mantenimiento
+[2026-01-27 13:32:27,177] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,183] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,189] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,196] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 13:32:27,202] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,208] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,214] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,220] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,226] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:27,231] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:27,237] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,243] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,248] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,253] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,258] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,263] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,268] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:27,274] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,280] [INFO] [EN COLA] Entrada | DNI 31246106 | Facial Entrada | 2026-01-27T13:10:22-03:00
+[2026-01-27 13:32:27,285] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,291] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,296] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,303] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:27,309] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,314] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:27,320] [INFO] [IGNORADO] Dispositivo Facial Of. Frescos
+[2026-01-27 13:32:27,325] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,331] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:27,337] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:27,344] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,350] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,356] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 13:32:27,362] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,369] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:27,375] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:27,381] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,594] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:29,601] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,606] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,612] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 13:32:29,617] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,622] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:29,627] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:29,633] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:29,638] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,643] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 13:32:29,648] [INFO] [EN COLA] Entrada | DNI 26660190 | Facial Entrada | 2026-01-27T12:41:06-03:00
+[2026-01-27 13:32:29,653] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,658] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,663] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,669] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,674] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,680] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:29,686] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 13:32:29,692] [INFO] [EN COLA] Entrada | DNI 43047206 | Facial Entrada | 2026-01-27T12:45:44-03:00
+[2026-01-27 13:32:29,697] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 13:32:29,702] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,707] [INFO] [IGNORADO] Dispositivo Compras
+[2026-01-27 13:32:29,713] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,720] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,726] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,732] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,738] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,743] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,749] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,755] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,760] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,765] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,770] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,776] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:29,783] [INFO] [IGNORADO] Dispositivo Lavanderia
+[2026-01-27 13:32:29,788] [INFO] [IGNORADO] Dispositivo Pecera Empaque
+[2026-01-27 13:32:29,795] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,800] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,806] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 13:32:29,812] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,818] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,825] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,830] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 13:32:29,835] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,841] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 13:32:29,847] [INFO] [IGNORADO] Dispositivo Seguridad e Higiene
+[2026-01-27 13:32:29,853] [INFO] [IGNORADO] Dispositivo Vestuario mantenimiento
+[2026-01-27 13:32:29,859] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,866] [INFO] [IGNORADO] Dispositivo Balanza Camiones
+[2026-01-27 13:32:29,873] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,879] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,885] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,891] [INFO] [IGNORADO] Dispositivo Mantenimiento
+[2026-01-27 13:32:29,896] [INFO] [IGNORADO] Dispositivo Mantenimiento
+[2026-01-27 13:32:29,902] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:29,908] [INFO] [EN COLA] Entrada | DNI 42777353 | Facial Entrada | 2026-01-27T13:01:12-03:00
+[2026-01-27 13:32:29,913] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,919] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,924] [INFO] [EN COLA] Salida | DNI 26660190 | Facial Salida | 2026-01-27T13:03:31-03:00
+[2026-01-27 13:32:29,930] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:29,938] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:29,944] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,950] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,957] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:29,963] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:29,968] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:29,974] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:29,980] [INFO] [IGNORADO] Dispositivo Mantenimiento
+[2026-01-27 13:32:29,986] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:29,993] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:29,999] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:30,006] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:30,011] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:30,018] [INFO] [EN COLA] Salida | DNI 33194109 | Facial Salida | 2026-01-27T13:10:28-03:00
+[2026-01-27 13:32:30,024] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:30,029] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:30,035] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:30,041] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:32:30,069] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:30,078] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:30,084] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:30,090] [INFO] [IGNORADO] Dispositivo Calidad
+[2026-01-27 13:32:30,098] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 13:32:30,104] [WARNING] [EVENTO INVALIDO] Faltan campos
+[2026-01-27 13:32:30,109] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:30,115] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:32:30,120] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:30,126] [INFO] [EN COLA] Entrada | DNI 41211087 | Facial Entrada | 2026-01-27T13:28:45-03:00
+[2026-01-27 13:32:30,132] [INFO] [IGNORADO] Dispositivo Gerencia
+[2026-01-27 13:32:30,138] [INFO] [IGNORADO] Dispositivo Despostada
+[2026-01-27 13:32:30,143] [INFO] [IGNORADO] Dispositivo Ingreso Estacionamiento
+[2026-01-27 13:32:48,006] [INFO] [IGNORADO] Dispositivo RRHH
+[2026-01-27 13:33:00,683] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:33:25,227] [INFO] [WORKER] Procesando 19 eventos
+[2026-01-27 13:33:28,105] [INFO] [HUMAND] Entrada DNI 43896813 → 403
+[2026-01-27 13:33:28,106] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:29,353] [INFO] [HUMAND] Entrada DNI 47517994 → 403
+[2026-01-27 13:33:29,354] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:30,362] [INFO] [HUMAND] Entrada DNI 23877873 → 403
+[2026-01-27 13:33:30,364] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:31,424] [INFO] [HUMAND] Salida DNI 39333911 → 403
+[2026-01-27 13:33:31,425] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:33,330] [INFO] [HUMAND] Entrada DNI 25094694 → 403
+[2026-01-27 13:33:33,331] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:35,037] [INFO] [HUMAND] Entrada DNI 28043254 → 403
+[2026-01-27 13:33:35,038] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:38,835] [INFO] [HUMAND] Entrada DNI 13336870 → 403
+[2026-01-27 13:33:38,836] [WARNING] {"code":"ACCESS_DENIED","message":"The provided user has no access to this resource","metadata":{}}
+[2026-01-27 13:33:42,456] [INFO] [HUMAND] Entrada DNI 47346292 → 403
+[2026-01-27 13:33:48,079] [INFO] [IGNORADO] Dispositivo Oficina Mantenimiento
+[2026-01-27 13:46:46,969] [INFO] === HIKVISION → HUMAND WEBHOOK STARTED ===
+[2026-01-27 13:46:46,969] [INFO] DRY_RUN = False
+[2026-01-27 13:46:46,970] [INFO] SEND_INTERVAL = 60s
+[2026-01-27 13:46:48,043] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,049] [INFO] [EN COLA] Entrada | DNI 35394839 | Facial Entrada | 2026-01-27T13:38:17-03:00
+[2026-01-27 13:46:48,056] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:46:48,062] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,069] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:46:48,075] [INFO] [IGNORADO] Dispositivo Sistemas
+[2026-01-27 13:46:48,081] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,089] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,095] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:46:48,101] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,109] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,115] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,124] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,131] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,138] [INFO] [IGNORADO] Dispositivo Comedor
+[2026-01-27 13:46:48,156] [INFO] [IGNORADO] Dispositivo Filtro Sanitario Produccion
+[2026-01-27 13:46:48,162] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 13:46:48,170] [INFO] [EN COLA] Salida | DNI 36167153 | Facial Salida | 2026-01-27T13:46:30-03:00
+[2026-01-27 13:46:48,176] [INFO] [IGNORADO] Dispositivo Logística
+[2026-01-27 16:51:15,605] [INFO] === HIKVISION → HUMAND WEBHOOK STARTED ===
+[2026-01-27 16:51:15,606] [INFO] DRY_RUN = False
+[2026-01-27 16:51:15,606] [INFO] SEND_INTERVAL = 60s
