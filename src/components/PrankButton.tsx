@@ -154,6 +154,9 @@ export default function PrankButton() {
           '/omg-bruh-oh-hell-nah.mp3',
           '/a-lo-que-yo-vine.mp3',
           '/leche-mucha-leche.mp3',
+          '/diego-maradona-eeehhhh.mp3',
+          '/podes-ser-tan-pelotudo-viejo.mp3',
+          '/antorcha.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
