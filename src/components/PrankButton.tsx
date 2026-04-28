@@ -158,6 +158,13 @@ export default function PrankButton() {
           '/podes-ser-tan-pelotudo-viejo.mp3',
           '/antorcha.mp3',
           '/concha-de-tu-madre-no-soy-yo.mp3',
+          '/michael_aaow.mp3',
+          '/heeheeee.mp3',
+          '/michael-jackson-auw-mp3',
+          '/oooooohhhh.mp3',
+
+
+
   ]
 
   // 🔎 Detectar audios faltantes
