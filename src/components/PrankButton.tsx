@@ -157,6 +157,7 @@ export default function PrankButton() {
           '/diego-maradona-eeehhhh.mp3',
           '/podes-ser-tan-pelotudo-viejo.mp3',
           '/antorcha.mp3',
+          '/concha-de-tu-madre-no-soy-yo.mp3',
   ]
 
   // 🔎 Detectar audios faltantes
