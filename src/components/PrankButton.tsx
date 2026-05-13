@@ -166,7 +166,7 @@ export default function PrankButton() {
         '/lo-comiste-vos-gordo.mp3',
         '/hay-morrones.mp3',
          '/aplausos.mp3',
-          '/áy-miguel.mp3',
+          '/ay-miguel.mp3',
            '/latigo.mp3',
            '/nestor-comeme-bien-los-huevos.mp3',
            '/la-chabona-cachorra-de-leche.mp3',
