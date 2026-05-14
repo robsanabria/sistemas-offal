@@ -30,17 +30,21 @@ export default function SpeedCounter() {
     }
 
     return (
-        <div className="cyber-card flex flex-col items-center justify-center gap-4 text-center">
-            <div className="flex items-center gap-2 text-yellow-400 mb-2">
-                <Zap size={24} fill="currentColor" />
-                <h3 className="font-bold uppercase tracking-widest text-sm text-yellow-500">CONTADOR DE SPEEDS</h3>
+        <div className="glass-card flex flex-col items-center justify-center gap-6 text-center relative overflow-hidden group min-h-[320px]">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Zap size={80} fill="currentColor" className="text-yellow-400" />
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="space-y-1">
+                <h3 className="font-black uppercase tracking-[0.2em] text-xs text-yellow-400/80">Suministro de Energía</h3>
+                <p className="text-[10px] text-zinc-500 font-mono italic">"Protocolo Alas Activado"</p>
+            </div>
+
+            <div className="flex items-center gap-8 z-10">
                 <button
                     onClick={() => updateCount(-1)}
                     disabled={loading || (count ?? 0) <= 0}
-                    className="p-3 rounded-full border border-zinc-700 hover:border-red-500 text-zinc-500 hover:text-red-500 transition-colors"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-500 hover:text-red-400 hover:border-red-400/30 transition-all active:scale-90"
                 >
                     <Minus size={24} />
                 </button>
@@ -50,17 +54,17 @@ export default function SpeedCounter() {
                         {loading ? (
                             <motion.div
                                 key="loading"
-                                className="text-6xl font-black text-zinc-700 animate-pulse"
+                                className="text-7xl font-black text-zinc-800 animate-pulse"
                             >
                                 --
                             </motion.div>
                         ) : (
                             <motion.div
                                 key={count}
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -20, opacity: 0 }}
-                                className="text-7xl font-black text-white"
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 1.2, opacity: 0 }}
+                                className="text-8xl font-black text-white drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]"
                             >
                                 {count}
                             </motion.div>
@@ -71,15 +75,17 @@ export default function SpeedCounter() {
                 <button
                     onClick={() => updateCount(1)}
                     disabled={loading}
-                    className="p-3 rounded-full border border-zinc-700 hover:border-green-500 text-zinc-500 hover:text-green-500 transition-colors"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-500 hover:text-yellow-400 hover:border-yellow-400/30 transition-all active:scale-90"
                 >
                     <Plus size={24} />
                 </button>
             </div>
 
-            <p className="text-xs text-zinc-500 mt-2 font-mono italic">
-                “te da alas"
-            </p>
+            <div className="pt-4 w-full flex justify-center">
+                <div className="px-4 py-1.5 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-[10px] font-bold text-yellow-400 tracking-widest uppercase">
+                    Unidades Consumidas
+                </div>
+            </div>
         </div>
     )
 }

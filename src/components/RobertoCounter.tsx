@@ -58,37 +58,41 @@ export default function RobertoCounter() {
     const approxAvocados = Math.round(totalSaved / 200)
 
     return (
-        <div className="cyber-card flex flex-col items-center justify-center gap-4 text-center">
-            <div className="flex items-center gap-2 text-amber-400 mb-2">
-                <Calendar size={24} />
-                <h3 className="font-bold uppercase tracking-widest text-sm text-amber-400">Días sin comer Don Saturs</h3>
+        <div className="glass-card flex flex-col items-center justify-center gap-6 text-center relative overflow-hidden group min-h-[450px]">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Calendar size={80} />
             </div>
 
-            <div className="flex items-center gap-6">
+            <div className="space-y-1">
+                <h3 className="font-black uppercase tracking-[0.2em] text-xs text-amber-400/80">Protocolo Saturs-Free</h3>
+                <p className="text-[10px] text-zinc-500 font-mono">Días sin comer Don Saturs</p>
+            </div>
+
+            <div className="flex items-center gap-6 z-10">
                 <button
                     onClick={() => updateCounter(-1)}
                     disabled={loading || (days ?? 0) <= 0}
-                    className="p-2 rounded-full border border-zinc-700 hover:border-red-500 text-zinc-500 hover:text-red-500 transition-colors"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-500 hover:text-red-400 hover:border-red-400/30 transition-all active:scale-90"
                 >
                     <Minus size={20} />
                 </button>
 
-                <div className="relative min-w-[80px]">
+                <div className="relative min-w-[100px]">
                     <AnimatePresence mode="wait">
                         {loading ? (
                             <motion.div
                                 key="loading"
-                                className="text-6xl font-black text-zinc-700 animate-pulse"
+                                className="text-7xl font-black text-zinc-800 animate-pulse"
                             >
                                 --
                             </motion.div>
                         ) : (
                             <motion.div
                                 key={days}
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -20, opacity: 0 }}
-                                className="text-8xl font-black gradient-text"
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 1.2, opacity: 0 }}
+                                className="text-9xl font-black tracking-tighter gradient-text drop-shadow-[0_0_30px_rgba(251,191,36,0.15)]"
                             >
                                 {days}
                             </motion.div>
@@ -99,7 +103,7 @@ export default function RobertoCounter() {
                 <button
                     onClick={() => updateCounter(1)}
                     disabled={loading}
-                    className="p-2 rounded-full border border-zinc-700 hover:border-green-500 text-zinc-500 hover:text-green-500 transition-colors"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-500 hover:text-emerald-400 hover:border-emerald-400/30 transition-all active:scale-90"
                 >
                     <Plus size={20} />
                 </button>
@@ -108,38 +112,44 @@ export default function RobertoCounter() {
             <button
                 onClick={handleReset}
                 disabled={loading}
-                className="cyber-button flex items-center gap-2 mt-2 text-xs bg-red-500/20 !text-red-500 border border-red-500/50 hover:bg-red-500/40"
+                className="group relative flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-black tracking-widest hover:bg-red-500/20 hover:border-red-500/50 transition-all active:scale-95 disabled:opacity-50"
             >
-                <RefreshCcw size={14} className={loading ? 'animate-spin' : ''} />
-                RESETEAR (COMIÓ HOY)
+                <RefreshCcw size={14} className={`${loading ? 'animate-spin' : 'group-hover:rotate-180'} transition-transform duration-500`} />
+                RESETEAR SISTEMA
             </button>
 
-            {missingDates.length > 0 && (
-                <div className="mt-4 text-left w-full max-w-xs">
-                    <span className="block text-[10px] text-zinc-400 uppercase font-mono mb-1">Fechas de consumo:</span>
-                    <ul className="list-disc list-inside text-[12px] text-zinc-300 font-mono">
-                        {missingDates.map((d, idx) => (
-                            <li key={idx}>{d}</li>
+            <div className="w-full space-y-4">
+                <div className="pt-4 border-t border-white/5">
+                    <div className="text-[10px] text-zinc-500 font-mono uppercase mb-3 tracking-widest">Optimización de Salud</div>
+                    <div className="grid grid-cols-2 gap-2 text-left">
+                        {[
+                            { label: 'Kcal Ahorradas', value: totalSaved, unit: 'kcal' },
+                            { label: 'Equiv. Pollo', value: approxChickenGrams, unit: 'g' },
+                            { label: 'Equiv. Huevos', value: approxEggs, unit: 'u' },
+                            { label: 'Equiv. Arroz', value: approxRicePlates, unit: 'p' }
+                        ].map((item, i) => (
+                            <div key={i} className="px-3 py-2 bg-white/5 rounded-lg border border-white/5">
+                                <div className="text-[8px] text-zinc-600 uppercase font-bold">{item.label}</div>
+                                <div className="text-xs font-mono text-zinc-300">
+                                    <span className="text-amber-400 font-bold">{item.value}</span> {item.unit}
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
-            )}
 
-            <div className="mt-3 text-left w-full max-w-xs">
-                <span className="block text-[10px] text-zinc-400 uppercase font-mono mb-1">Ahorro aproximado:</span>
-                <ul className="text-[12px] text-zinc-300 font-mono space-y-1">
-                    <li>{totalSaved} kcal ahorradas</li>
-                    <li>≈ {approxChickenGrams} g de pollo</li>
-                    <li>≈ {approxEggs} huevos</li>
-                    <li>≈ {approxRicePlates} platos chicos de arroz</li>
-                    <li>≈ {approxBife} bife(s) chico(s)</li>
-                    <li>≈ {approxAvocados} palta(s) medianas</li>
-                </ul>
+                {missingDates.length > 0 && (
+                    <div className="pt-2">
+                        <div className="flex flex-wrap gap-1 justify-center">
+                            {missingDates.slice(-3).map((d, idx) => (
+                                <span key={idx} className="px-2 py-0.5 bg-red-500/5 rounded text-[8px] text-zinc-600 font-mono">
+                                    {d}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
-
-            <p className="text-[10px] text-zinc-500 mt-2 font-mono uppercase tracking-tighter">
-                Motivación: 5 galletitas ≈ 200-250 kcal → ahorrar ~220 kcal/día
-            </p>
         </div>
     )
 }

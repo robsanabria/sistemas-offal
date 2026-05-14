@@ -1,18 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050505;
-  --foreground: #e1e7ef;
-  --accent-cyan: #00f2ff;
-  --accent-green: #39ff14;
-  --accent-magenta: #ff00ff;
+  /* Modern Pro Slate Theme (Default) */
+  --background: #0f172a; /* Deep Slate - much better than #050505 */
+  --foreground: #f1f5f9;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --card-border: rgba(148, 163, 184, 0.1);
+  --accent-primary: #38bdf8; /* Cyan */
+  --accent-secondary: #4ade80; /* Green */
+  --accent-tertiary: #f472b6; /* Pink */
+  --selection: rgba(56, 189, 248, 0.3);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-cyan-vibrant: var(--accent-cyan);
-  --color-green-vibrant: var(--accent-green);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,109 +26,88 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
   overflow-x: hidden;
+  selection-background-color: var(--selection);
 }
 
-@keyframes bgFloat {
-  0% {
-    background-position: 0% 0%, 100% 100%, 0% 0%, 0% 0%;
-  }
-  50% {
-    background-position: 6% 4%, 94% 96%, 0% 0%, 0% 0%;
-  }
-  100% {
-    background-position: 0% 0%, 100% 100%, 0% 0%, 0% 0%;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-/* Light theme overrides */
-[data-theme="light"] {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --accent-cyan: #06b6d4;
-  --accent-green: #16a34a;
-  --accent-magenta: #db2777;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
 }
 
 @layer utilities {
-  .cyber-card {
-    @apply bg-zinc-950/70 border border-zinc-800/80 rounded-xl p-6 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.5)];
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+  .glass-card {
+    @apply backdrop-blur-xl border border-white/10 rounded-2xl p-6 transition-all duration-300;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
 
-  .cyber-card:hover {
-    @apply border-cyan-500/40 shadow-[0_0_20px_rgba(0,242,255,0.08)] -translate-y-[2px];
+  .glass-card:hover {
+    @apply border-white/20 -translate-y-1;
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(56, 189, 248, 0.1);
+  }
+
+  .cyber-card {
+    @apply glass-card; /* Alias for compatibility but improved */
+  }
+
+  .premium-button {
+    @apply relative px-6 py-2.5 rounded-xl font-semibold transition-all active:scale-95 flex items-center justify-center gap-2;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #0ea5e9 100%);
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+  }
+
+  .premium-button:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.6);
   }
 
   .cyber-button {
-    @apply relative px-6 py-2 rounded-lg font-bold transition-all active:scale-95 bg-gradient-to-r from-cyan-400 to-green-400 text-black shadow-[0_0_15px_rgba(0,242,255,0.4)];
-  }
-
-  .cyber-button:hover {
-    @apply shadow-[0_0_25px_rgba(57,255,20,0.6)];
+    @apply premium-button; /* Alias */
   }
 
   .terminal-text {
-    @apply font-mono text-green-400;
-    text-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+    @apply font-mono text-cyan-400;
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
   }
 
   .bg-grid {
-    background:
-      linear-gradient(to right, rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(57, 255, 20, 0.03) 1px, transparent 1px),
-      radial-gradient(1000px 900px at 10% 20%, rgba(0, 242, 255, 0.1), transparent 30%),
-      radial-gradient(1200px 800px at 90% 80%, rgba(57, 255, 20, 0.08), transparent 30%),
-      var(--background);
-    background-size: 
-      40px 40px,
-      40px 40px,
-      auto,
-      auto,
-      auto;
+    background-color: var(--background);
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(74, 222, 128, 0.1) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(244, 114, 182, 0.1) 0px, transparent 50%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
     background-attachment: fixed;
-    background-blend-mode: screen, screen, screen, screen, normal;
-    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-  }
-  
-  /* Aditional hex dot pattern */
-  .bg-grid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
-    background-size: 24px 24px;
-    z-index: -1;
-    mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
-    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-green-400 font-extrabold;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-emerald-400 to-indigo-400 font-black;
+  }
+
+  .nav-blur {
+    @apply sticky top-4 z-50 backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl mx-auto max-w-fit px-2 py-1.5 flex gap-1 shadow-2xl;
   }
 }
 
-/* Cyber styles tweaks for light theme */
-[data-theme="light"] .cyber-card {
-  background: rgba(255,255,255,0.9);
-  border-color: rgba(15,23,42,0.06);
-  color: var(--foreground);
-  box-shadow: 0 6px 20px rgba(2,6,23,0.06);
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-[data-theme="light"] .cyber-card:hover {
-  @apply shadow-[0_0_24px_rgba(6,182,212,0.06)];
-}
-
-[data-theme="light"] .cyber-button {
-  background: linear-gradient(90deg, #06b6d4 0%, #16a34a 100%);
-  color: #07132a;
-  box-shadow: 0 8px 24px rgba(6,182,212,0.12);
-}
-
-[data-theme="light"] .bg-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(15,23,42,0.03) 1px, transparent 0);
-  background-size: 40px 40px;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
