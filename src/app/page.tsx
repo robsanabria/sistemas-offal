@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Terminal as TerminalIcon, LayoutGrid, Music, Users, Gamepad2 } from 'lucide-react'
+import { Terminal as TerminalIcon, LayoutGrid, Music, Users, Gamepad2, Radio } from 'lucide-react'
 import AndreaCounter from '@/components/AndreaCounter'
 import RobertoCounter from '@/components/RobertoCounter'
 import SpeedCounter from '@/components/SpeedCounter'
@@ -15,8 +15,9 @@ import Whiteboard from '@/components/Whiteboard'
 import PointsBoard from '@/components/PointsBoard'
 import TextToSpeech from '@/components/TextToSpeech'
 import Buscaminas from '@/components/Buscaminas'
+import MorseCoder from '@/components/MorseCoder'
 
-type TabType = 'dashboard' | 'mpc' | 'collab' | 'games'
+type TabType = 'dashboard' | 'mpc' | 'collab' | 'games' | 'morse'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard')
@@ -44,6 +45,7 @@ export default function Home() {
             { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
             { id: 'mpc', label: 'MPC Control', icon: Music },
             { id: 'collab', label: 'Colaborativo', icon: Users },
+            { id: 'morse', label: 'Código Morse', icon: Radio },
             { id: 'games', label: 'Arcade', icon: Gamepad2 }
           ].map(tab => (
             <button
@@ -119,6 +121,13 @@ export default function Home() {
               <div className="w-full max-w-4xl">
                 <Buscaminas />
               </div>
+            </div>
+          )}
+
+          {/* TAB: CÓDIGO MORSE */}
+          {activeTab === 'morse' && (
+            <div className="animate-in slide-in-from-bottom-8 fade-in duration-500">
+              <MorseCoder />
             </div>
           )}
         </div>
