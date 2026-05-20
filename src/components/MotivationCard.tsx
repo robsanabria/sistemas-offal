@@ -29,6 +29,9 @@ const OFFICE_MANTRAS = [
     "Fui a pedir wifi y casi me pegan un tiro",
     "Lo que hay que ver es la producción de Sandra",
     "Ciscos",
+    "elexcel",
+    "laia",
+    "la monica",
 ]
 
 export default function MotivationCard() {
