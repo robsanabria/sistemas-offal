@@ -11,7 +11,7 @@ const getRedis = () => {
 
 export async function POST(request: Request) {
   try {
-    const { roomId, playerId, name } = await request.json();
+    const { roomId, playerId, name, avatar } = await request.json();
     if (!roomId || !playerId || !name) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
     const redis = getRedis();
@@ -24,11 +24,11 @@ export async function POST(request: Request) {
 
     const exists = meta.players.find((p: any) => p.id === playerId);
     if (!exists) {
-      meta.players.push({ id: playerId, name });
+      meta.players.push({ id: playerId, name, avatar: avatar ?? null });
       meta.scores[playerId] = 0;
       await redis.set(`room:${roomId}`, JSON.stringify(meta));
       // notify others
-      await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name }, ts: Date.now() }));
+      await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name, avatar: avatar ?? null }, ts: Date.now() }));
     }
 
     return NextResponse.json({ ok: true, meta });

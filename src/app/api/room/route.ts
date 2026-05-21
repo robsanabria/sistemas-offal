@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const playerId = body?.playerId as string | undefined;
   const playerName = body?.name as string | undefined;
+  const playerAvatar = body?.avatar as string | undefined;
 
   // Create a new lobby (room)
   const roomId = uuidv4();
@@ -28,10 +29,10 @@ export async function POST(request: Request) {
     // Build initial meta
     const meta: any = { word, drawerId, players: [], scores: {} };
     if (playerId && playerName) {
-      meta.players.push({ id: playerId, name: playerName });
+      meta.players.push({ id: playerId, name: playerName, avatar: playerAvatar ?? null });
       meta.scores[playerId] = 0;
       // notify join event
-      await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name: playerName }, ts: Date.now() }));
+      await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name: playerName, avatar: playerAvatar ?? null }, ts: Date.now() }));
     }
 
     // Store room meta (word and drawer) in Redis for later reference

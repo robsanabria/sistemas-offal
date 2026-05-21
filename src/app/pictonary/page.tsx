@@ -17,6 +17,9 @@ function PictonaryContent() {
   const ROUND_SECONDS = 60;
   const [messages, setMessages] = useState<string[]>([]);
   const [clientId, setClientId] = useState<string>('');
+  const [playerName, setPlayerName] = useState<string>('');
+  const [playerAvatar, setPlayerAvatar] = useState<string>('🎨');
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const joinedRef = useRef(false);
 
   // ID persistente del cliente
@@ -27,22 +30,29 @@ function PictonaryContent() {
       localStorage.setItem('clientId', cid);
     }
     setClientId(cid);
+    const storedName = localStorage.getItem('playerName');
+    const storedAvatar = localStorage.getItem('playerAvatar');
+    if (storedName) setPlayerName(storedName);
+    if (storedAvatar) setPlayerAvatar(storedAvatar);
+    if (!storedName) setShowProfileModal(true);
   }, []);
 
   // Crear o unirse a sala
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId');
     if (!clientId) return; // wait until clientId is available
+    if (!playerName) return; // wait until player provides a name
+
     const ensureJoin = async (rId: string) => {
       if (joinedRef.current) return;
       joinedRef.current = true;
       const playerId = clientId;
-      const name = `Player-${playerId.slice(0,6)}`;
+      const name = playerName || `Player-${playerId.slice(0,6)}`;
       try {
         const res = await fetch('/api/room/join', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ roomId: rId, playerId, name }),
+          body: JSON.stringify({ roomId: rId, playerId, name, avatar: playerAvatar }),
         });
         if (!res.ok) {
           console.error('Failed to join room', await res.text());
@@ -71,7 +81,13 @@ function PictonaryContent() {
     } else {
       (async () => {
         try {
-          const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name: `Player-${clientId.slice(0,6)}` }) });
+          const name = playerName || `Player-${clientId.slice(0,6)}`;
+          if (!playerName) {
+            // ask user to pick a name before creating
+            setShowProfileModal(true);
+            return;
+          }
+          const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name, avatar: playerAvatar }) });
           if (!res.ok) {
             const text = await res.text();
             console.error('API /api/room returned non-ok:', res.status, text);
@@ -93,10 +109,9 @@ function PictonaryContent() {
         }
       })();
     }
-  }, [searchParams, router, clientId]);
+  }, [searchParams, router, clientId, playerName, playerAvatar]);
 
-
-  // Poll room state periodically
+  // Poll room state helper
   const fetchRoomState = async () => {
     if (!roomId) return;
     try {
@@ -116,6 +131,7 @@ function PictonaryContent() {
       console.error('Failed fetch room state', err);
     }
   };
+
 
   useEffect(() => {
     if (!roomId) return;
@@ -188,6 +204,32 @@ function PictonaryContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-900 to-purple-900 p-4 text-white">
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white/5 p-6 rounded max-w-md w-full">
+            <h3 className="text-xl font-bold mb-2">Elegí un nickname</h3>
+            <p className="text-sm text-white/70 mb-4">Este nombre se usará en la sala.</p>
+            <input
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              placeholder="Tu nombre"
+              className="w-full px-3 py-2 rounded mb-3 bg-white/10"
+            />
+            <div className="mb-3">
+              <div className="text-sm mb-1">Elige un avatar (emoji)</div>
+              <div className="flex gap-2">
+                {['🎨','😄','🖌️','🐱','🚀'].map((a) => (
+                  <button key={a} onClick={() => setPlayerAvatar(a)} className={`p-2 rounded ${playerAvatar===a? 'bg-emerald-600':''}`}>{a}</button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => { if (playerName.trim()) { localStorage.setItem('playerName', playerName); localStorage.setItem('playerAvatar', playerAvatar); setShowProfileModal(false); } }} className="px-3 py-2 bg-emerald-500 rounded">Continuar</button>
+            </div>
+          </div>
+        </div>
+      )}
       <h1 className="text-3xl font-bold text-center mb-6">🎨 Pictonary</h1>
 
       {/* Link para compartir */}
@@ -204,7 +246,7 @@ function PictonaryContent() {
               if (!clientId) return;
               const name = `Player-${clientId.slice(0,6)}`;
               try {
-                const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name }) });
+                const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name, avatar: playerAvatar }) });
                 if (!res.ok) {
                   console.error('Failed to create room', await res.text());
                   return;
@@ -220,6 +262,7 @@ function PictonaryContent() {
                 router.replace(`/pictonary?roomId=${data.roomId}`);
                 // ensure we're joined (server already adds player on create, but call join to refresh client state)
                 await fetch('/api/room/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: data.roomId, playerId: clientId, name }) });
+                  await fetch('/api/room/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: data.roomId, playerId: clientId, name, avatar: playerAvatar }) });
               } catch (err) {
                 console.error('Error creating room', err);
               }
@@ -240,6 +283,7 @@ function PictonaryContent() {
               return (
                 <li key={p.id} className={`flex items-center justify-between px-2 py-1 rounded ${isCurrentDrawer ? 'bg-white/6' : ''}`}>
                   <div className="flex items-center gap-2">
+                    <span className="text-2xl">{p.avatar ?? '🎨'}</span>
                     <span>{p.name}</span>
                     {isCurrentDrawer && (
                       <span className="text-xs bg-amber-500 text-amber-900 px-2 py-0.5 rounded-full font-semibold">Dibujante</span>

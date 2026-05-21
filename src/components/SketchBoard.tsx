@@ -30,7 +30,12 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
         const nextCursor = json.nextCursor ?? cursorRef.current;
         for (const ev of events) {
           const { type, payload } = ev;
-          if (type === 'stroke') drawRemote(payload);
+          if (type === 'stroke') {
+            const localClientId = localStorage.getItem('clientId') ?? '';
+            // skip strokes originated from this client (we already draw them locally)
+            if (payload?.playerId && payload.playerId === localClientId) continue;
+            drawRemote(payload);
+          }
           else if (type === 'guess') {
             setMessages((prev) => [...prev, payload]);
             if (onGuess) onGuess(payload);
@@ -66,7 +71,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
       }
     };
     poll();
-    const iv = setInterval(poll, 500);
+    const iv = setInterval(poll, 700);
     return () => { mounted = false; clearInterval(iv); };
   }, [roomId, secretWord]);
 
@@ -84,6 +89,25 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     }
   };
 
+  // Setup canvas for devicePixelRatio and resize
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      const ctx = canvas.getContext('2d')!;
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    };
+    resize();
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, []);
+
   const getCanvasPos = (clientX: number, clientY: number) => {
     const rect = canvasRef.current!.getBoundingClientRect();
     return { x: clientX - rect.left, y: clientY - rect.top };
@@ -97,7 +121,8 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     ctx.moveTo(x, y);
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
-    publish({ x, y, color, size, begin: true }, 'stroke');
+    const playerId = localStorage.getItem('clientId') ?? '';
+    publish({ x, y, color, size, begin: true, playerId }, 'stroke');
     drawingRef.current = true;
   };
 
@@ -111,7 +136,8 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     const ctx = canvasRef.current!.getContext('2d')!;
     ctx.lineTo(x, y);
     ctx.stroke();
-    publish({ x, y, color, size, begin: false }, 'stroke');
+    const playerId = localStorage.getItem('clientId') ?? '';
+    publish({ x, y, color, size, begin: false, playerId }, 'stroke');
   };
 
   // mouse handlers
@@ -122,17 +148,19 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   // touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!e.touches.length) return;
+    e.preventDefault();
     const t = e.touches[0];
     startDrawing(t.clientX, t.clientY);
   };
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!e.touches.length) return;
+    e.preventDefault();
     const t = e.touches[0];
     moveDrawing(t.clientX, t.clientY);
   };
   const handleTouchEnd = () => stopDrawing();
 
-  const publish = async (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean }, type = 'stroke') => {
+  const publish = async (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean; playerId?: string }, type = 'stroke') => {
     await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -168,7 +196,8 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
             const ctx = canvasRef.current?.getContext('2d');
             if (!ctx) return; const c = canvasRef.current!; ctx.clearRect(0,0,c.width,c.height);
             // publish clear event
-            fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId, type: 'clear' }) });
+            const playerId = localStorage.getItem('clientId') ?? '';
+            fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId, type: 'clear', playerId }) });
           }} className="px-2 py-1 bg-white/10 rounded">Clear</button>
         </div>
       </div>
