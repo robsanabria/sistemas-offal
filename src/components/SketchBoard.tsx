@@ -43,6 +43,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
             if (ctx) {
               const canvas = canvasRef.current!;
               ctx.clearRect(0, 0, canvas.width, canvas.height);
+              ctx.beginPath();
             }
             if (onNewRound) onNewRound(payload);
           } else if (type === 'player_join') {
@@ -53,6 +54,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
             if (ctx) {
               const canvas = canvasRef.current!;
               ctx.clearRect(0, 0, canvas.width, canvas.height);
+              ctx.beginPath();
             }
           } else if (type === 'correct_guess') {
             setMessages((prev) => [...prev, `🏆 ${payload.playerId} adivinó: ${payload.word}`]);
@@ -68,13 +70,18 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     return () => { mounted = false; clearInterval(iv); };
   }, [roomId, secretWord]);
 
-  const drawRemote = (stroke: { x: number; y: number; color?: string; size?: number }) => {
+  const drawRemote = (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean }) => {
     const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
     ctx.strokeStyle = stroke.color ?? '#000';
     ctx.lineWidth = stroke.size ?? 4;
-    ctx.lineTo(stroke.x, stroke.y);
-    ctx.stroke();
+    if (stroke.begin) {
+      ctx.beginPath();
+      ctx.moveTo(stroke.x, stroke.y);
+    } else {
+      ctx.lineTo(stroke.x, stroke.y);
+      ctx.stroke();
+    }
   };
 
   const getCanvasPos = (clientX: number, clientY: number) => {
@@ -90,7 +97,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     ctx.moveTo(x, y);
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
-    publish({ x, y, color, size }, 'stroke');
+    publish({ x, y, color, size, begin: true }, 'stroke');
     drawingRef.current = true;
   };
 
@@ -104,7 +111,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     const ctx = canvasRef.current!.getContext('2d')!;
     ctx.lineTo(x, y);
     ctx.stroke();
-    publish({ x, y, color, size }, 'stroke');
+    publish({ x, y, color, size, begin: false }, 'stroke');
   };
 
   // mouse handlers

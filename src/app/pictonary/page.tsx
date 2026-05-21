@@ -93,35 +93,38 @@ function PictonaryContent() {
 
 
   // Poll room state periodically
+  const fetchRoomState = async () => {
+    if (!roomId) return;
+    try {
+      const revealTo = clientId;
+      const res = await fetch(`/api/room/state?roomId=${roomId}&revealTo=${revealTo}`);
+      if (!res.ok) return;
+      const json = await res.json();
+      const meta = json.meta ?? {};
+      setPlayers(meta.players ?? []);
+      setScores(meta.scores ?? {});
+      const drawerId = meta.drawerId;
+      setIsDrawer(drawerId === clientId);
+      if (meta.word && drawerId === clientId) setSecretWord(meta.word);
+      else if (drawerId !== clientId) setSecretWord(undefined);
+    } catch (err) {
+      console.error('Failed fetch room state', err);
+    }
+  };
+
   useEffect(() => {
     if (!roomId) return;
     let mounted = true;
-    const fetchState = async () => {
-      try {
-        const revealTo = clientId;
-        const res = await fetch(`/api/room/state?roomId=${roomId}&revealTo=${revealTo}`);
-        if (!res.ok) return;
-        const json = await res.json();
-        if (!mounted) return;
-        const meta = json.meta ?? {};
-        setPlayers(meta.players ?? []);
-        setScores(meta.scores ?? {});
-        const drawerId = meta.drawerId;
-        setIsDrawer(drawerId === clientId);
-        if (meta.word && drawerId === clientId) setSecretWord(meta.word);
-      } catch (err) {
-        console.error('Failed fetch room state', err);
-      }
-    };
-    fetchState();
-    const iv = setInterval(fetchState, 2000);
+    fetchRoomState();
+    const iv = setInterval(fetchRoomState, 2000);
     return () => { mounted = false; clearInterval(iv); };
-  }, [roomId]);
+  }, [roomId, clientId]);
 
   // handle events from SketchBoard
   const handleNewRound = (payload: any) => {
-    // start round timer
+    // start round timer and refresh room state immediately
     setTimeLeft(ROUND_SECONDS);
+    fetchRoomState();
   };
 
   const handlePlayerJoin = (payload: any) => {
