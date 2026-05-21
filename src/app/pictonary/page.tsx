@@ -89,7 +89,8 @@ function PictonaryContent() {
         }
       })();
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, clientId]);
+
 
   // Poll room state periodically
   useEffect(() => {
@@ -97,7 +98,7 @@ function PictonaryContent() {
     let mounted = true;
     const fetchState = async () => {
       try {
-        const revealTo = clientIdRef.current;
+        const revealTo = clientId;
         const res = await fetch(`/api/room/state?roomId=${roomId}&revealTo=${revealTo}`);
         if (!res.ok) return;
         const json = await res.json();
@@ -106,8 +107,8 @@ function PictonaryContent() {
         setPlayers(meta.players ?? []);
         setScores(meta.scores ?? {});
         const drawerId = meta.drawerId;
-        setIsDrawer(drawerId === clientIdRef.current);
-        if (meta.word && drawerId === clientIdRef.current) setSecretWord(meta.word);
+        setIsDrawer(drawerId === clientId);
+        if (meta.word && drawerId === clientId) setSecretWord(meta.word);
       } catch (err) {
         console.error('Failed fetch room state', err);
       }
@@ -152,7 +153,7 @@ function PictonaryContent() {
       }
       const json = await res.json();
       // if we are the drawer, server returns the word
-      if (json.word && json.drawerId === clientIdRef.current) {
+      if (json.word && json.drawerId === clientId) {
         setSecretWord(json.word);
         localStorage.setItem(`word:${roomId}`, json.word);
         setIsDrawer(true);
