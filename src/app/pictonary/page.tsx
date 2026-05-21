@@ -187,6 +187,37 @@ function PictonaryContent() {
             ? `${window.location.origin}/pictonary?roomId=${roomId}`
             : ''}
         </code>
+        <div className="mt-2">
+          <button
+            onClick={async () => {
+              if (!clientId) return;
+              const name = `Player-${clientId.slice(0,6)}`;
+              try {
+                const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name }) });
+                if (!res.ok) {
+                  console.error('Failed to create room', await res.text());
+                  return;
+                }
+                const data = await res.json();
+                setRoomId(data.roomId);
+                localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
+                localStorage.setItem(`word:${data.roomId}`, data.word);
+                if (data.drawerId === clientId) {
+                  setIsDrawer(true);
+                  setSecretWord(data.word);
+                }
+                router.replace(`/pictonary?roomId=${data.roomId}`);
+                // ensure we're joined (server already adds player on create, but call join to refresh client state)
+                await fetch('/api/room/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: data.roomId, playerId: clientId, name }) });
+              } catch (err) {
+                console.error('Error creating room', err);
+              }
+            }}
+            className="mt-2 px-3 py-2 bg-emerald-500 rounded text-sm hover:bg-emerald-400"
+          >
+            Crear sala / Ser dibujante
+          </button>
+        </div>
       </div>
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
