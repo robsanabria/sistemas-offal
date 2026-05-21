@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Terminal as TerminalIcon, LayoutGrid, Music, Users, Gamepad2, Radio } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Terminal as TerminalIcon, LayoutGrid, Music, Users, Gamepad2, Radio, Palette } from 'lucide-react'
 import AndreaCounter from '@/components/AndreaCounter'
 import RobertoCounter from '@/components/RobertoCounter'
 import SpeedCounter from '@/components/SpeedCounter'
@@ -17,9 +18,10 @@ import TextToSpeech from '@/components/TextToSpeech'
 import Buscaminas from '@/components/Buscaminas'
 import MorseCoder from '@/components/MorseCoder'
 
-type TabType = 'dashboard' | 'mpc' | 'collab' | 'games' | 'morse'
+type TabType = 'dashboard' | 'mpc' | 'collab' | 'pictonary' | 'games' | 'morse'
 
 export default function Home() {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<TabType>('dashboard')
 
   return (
@@ -45,6 +47,7 @@ export default function Home() {
             { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
             { id: 'mpc', label: 'MPC Control', icon: Music },
             { id: 'collab', label: 'Colaborativo', icon: Users },
+            { id: 'pictonary', label: 'Pictonary', icon: Palette },
             { id: 'morse', label: 'Código Morse', icon: Radio },
             { id: 'games', label: 'Arcade', icon: Gamepad2 }
           ].map(tab => (
@@ -124,6 +127,22 @@ export default function Home() {
             </div>
           )}
 
+          {/* TAB: PICTONARY */}
+          {activeTab === 'pictonary' && (
+            <div className="flex items-center justify-center h-72">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold mb-4">🎨 Pictonary</h2>
+                <p className="text-zinc-300 mb-4">Sala colaborativa de dibujo — abrí la sala en una nueva página.</p>
+                <button
+                  onClick={() => router.push('/pictonary')}
+                  className="px-4 py-2 bg-cyan-600 rounded hover:bg-cyan-500"
+                >
+                  Ir a Pictonary
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* TAB: CÓDIGO MORSE */}
           {activeTab === 'morse' && (
             <div className="animate-in slide-in-from-bottom-8 fade-in duration-500">
@@ -151,4 +170,4 @@ export default function Home() {
       </div>
     </main>
   )
-}
+}

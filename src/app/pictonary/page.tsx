@@ -34,9 +34,26 @@ function PictonaryContent() {
         setSecretWord(storedWord ?? undefined);
       }
     } else {
-      fetch('/api/room', { method: 'POST' })
-        .then((res) => res.json())
-        .then((data) => {
+      (async () => {
+        try {
+          const res = await fetch('/api/room', { method: 'POST' });
+          if (!res.ok) {
+            const text = await res.text();
+            console.error('API /api/room returned non-ok:', res.status, text);
+            return;
+          }
+          const text = await res.text();
+          if (!text) {
+            console.error('API /api/room returned empty body');
+            return;
+          }
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch (err) {
+            console.error('Failed to parse /api/room response as JSON:', text, err);
+            return;
+          }
           setRoomId(data.roomId);
           localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
           localStorage.setItem(`word:${data.roomId}`, data.word);
@@ -45,8 +62,10 @@ function PictonaryContent() {
             setSecretWord(data.word);
           }
           router.replace(`/pictonary?roomId=${data.roomId}`);
-        })
-        .catch((err) => console.error('Error al crear sala', err));
+        } catch (err) {
+          console.error('Error al crear sala (fetch failed):', err);
+        }
+      })();
     }
   }, [searchParams, router]);
 
