@@ -15,7 +15,7 @@ function PictonaryContent() {
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const ROUND_SECONDS = 60;
   const [messages, setMessages] = useState<string[]>([]);
-  const clientIdRef = useRef<string>('');
+  const [clientId, setClientId] = useState<string>('');
   const joinedRef = useRef(false);
 
   // ID persistente del cliente
@@ -25,16 +25,17 @@ function PictonaryContent() {
       cid = crypto.randomUUID();
       localStorage.setItem('clientId', cid);
     }
-    clientIdRef.current = cid;
+    setClientId(cid);
   }, []);
 
   // Crear o unirse a sala
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId');
+    if (!clientId) return; // wait until clientId is available
     const ensureJoin = async (rId: string) => {
       if (joinedRef.current) return;
       joinedRef.current = true;
-      const playerId = clientIdRef.current;
+      const playerId = clientId;
       const name = `Player-${playerId.slice(0,6)}`;
       try {
         const res = await fetch('/api/room/join', {
@@ -59,7 +60,7 @@ function PictonaryContent() {
       // try to rehydrate drawer/word from localStorage
       const drawerId = localStorage.getItem(`drawer:${existingRoom}`);
       const storedWord = localStorage.getItem(`word:${existingRoom}`);
-      if (drawerId && drawerId === clientIdRef.current) {
+      if (drawerId && drawerId === clientId) {
         setIsDrawer(true);
         setSecretWord(storedWord ?? undefined);
       }
@@ -67,7 +68,7 @@ function PictonaryContent() {
     } else {
       (async () => {
         try {
-          const res = await fetch('/api/room', { method: 'POST' });
+          const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name: `Player-${clientId.slice(0,6)}` }) });
           if (!res.ok) {
             const text = await res.text();
             console.error('API /api/room returned non-ok:', res.status, text);
@@ -77,7 +78,7 @@ function PictonaryContent() {
           setRoomId(data.roomId);
           localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
           localStorage.setItem(`word:${data.roomId}`, data.word);
-          if (data.drawerId === clientIdRef.current) {
+          if (data.drawerId === clientId) {
             setIsDrawer(true);
             setSecretWord(data.word);
           }

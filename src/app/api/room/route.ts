@@ -14,14 +14,28 @@ export async function POST(request: Request) {
 
   const redis = new Redis({ url, token });
 
+  // accept optional playerId/name in request to make creator the drawer
+  const body = await request.json().catch(() => ({}));
+  const playerId = body?.playerId as string | undefined;
+  const playerName = body?.name as string | undefined;
+
   // Create a new lobby (room)
   const roomId = uuidv4();
-  const drawerId = uuidv4();
+  const drawerId = playerId ?? uuidv4();
   const word = randomWord();
 
   try {
+    // Build initial meta
+    const meta: any = { word, drawerId, players: [], scores: {} };
+    if (playerId && playerName) {
+      meta.players.push({ id: playerId, name: playerName });
+      meta.scores[playerId] = 0;
+      // notify join event
+      await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name: playerName }, ts: Date.now() }));
+    }
+
     // Store room meta (word and drawer) in Redis for later reference
-    await redis.set(`room:${roomId}`, JSON.stringify({ word, drawerId }));
+    await redis.set(`room:${roomId}`, JSON.stringify(meta));
 
     // Return the room details (word only to drawer client)
     return NextResponse.json({ roomId, drawerId, word });
