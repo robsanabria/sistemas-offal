@@ -21,7 +21,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord }: SketchBoar
     });
     redisRef.current = redis;
     const channel = `pictonary:${roomId}`;
-    const unsubscribe = redis.subscribe(channel, (msg) => {
+    const unsubscribe = (redis as any).subscribe(channel, (msg: string) => {
       const { type, payload } = JSON.parse(msg as string);
       if (type === 'stroke') {
         drawRemote(payload);

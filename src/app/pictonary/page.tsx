@@ -1,28 +1,28 @@
-"use client";
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useRef } from 'react';
-import SketchBoard from '@/components/SketchBoard';
-import { v4 as uuidv4 } from 'uuid';
+'use client';
 
-export default function PictonaryPage() {
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState, useRef, Suspense } from 'react';
+import SketchBoard from '@/components/SketchBoard';
+
+function PictonaryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isDrawer, setIsDrawer] = useState(false);
   const [secretWord, setSecretWord] = useState<string | undefined>();
-
-  // Persistent client identifier
   const clientIdRef = useRef<string>('');
+
+  // ID persistente del cliente
   useEffect(() => {
     let cid = localStorage.getItem('clientId');
     if (!cid) {
-      cid = uuidv4();
+      cid = crypto.randomUUID();
       localStorage.setItem('clientId', cid);
     }
     clientIdRef.current = cid;
   }, []);
 
-  // Initialise room (create or join)
+  // Crear o unirse a sala
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId');
     if (existingRoom) {
@@ -34,33 +34,59 @@ export default function PictonaryPage() {
         setSecretWord(storedWord ?? undefined);
       }
     } else {
-      // Create a new room
       fetch('/api/room', { method: 'POST' })
         .then((res) => res.json())
         .then((data) => {
           setRoomId(data.roomId);
-          // store drawer information for this client
           localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
           localStorage.setItem(`word:${data.roomId}`, data.word);
-          // if this client is the drawer (we just created it)
           if (data.drawerId === clientIdRef.current) {
             setIsDrawer(true);
             setSecretWord(data.word);
           }
           router.replace(`/pictonary?roomId=${data.roomId}`);
         })
-        .catch((err) => console.error('Failed to create room', err));
+        .catch((err) => console.error('Error al crear sala', err));
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   if (!roomId) {
-    return <div className="flex items-center justify-center h-screen text-white">Cargando...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-white">
+        Cargando sala...
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-900 to-purple-900 p-4 text-white">
-      <h1 className="text-3xl font-bold text-center mb-6">Pictonary</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">🎨 Pictonary</h1>
+
+      {/* Link para compartir */}
+      <div className="text-center mb-4">
+        <p className="text-sm text-white/50">Compartí este link para que adivinen:</p>
+        <code className="text-xs bg-white/10 px-3 py-1 rounded select-all">
+          {typeof window !== 'undefined'
+            ? `${window.location.origin}/pictonary?roomId=${roomId}`
+            : ''}
+        </code>
+      </div>
+
       <SketchBoard roomId={roomId} isDrawer={isDrawer} secretWord={secretWord} />
     </div>
+  );
+}
+
+export default function PictonaryPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen text-white bg-gradient-to-b from-indigo-900 to-purple-900">
+          Cargando...
+        </div>
+      }
+    >
+      <PictonaryContent />
+    </Suspense>
   );
 }
