@@ -109,20 +109,27 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     }
   };
 
-  // Setup canvas for devicePixelRatio and resize
+  // Setup canvas for devicePixelRatio and resize (consistent across tabs/views)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
+      // set backing store size
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
+      // ensure css size matches layout
+      canvas.style.width = `${Math.round(rect.width)}px`;
+      canvas.style.height = `${Math.round(rect.height)}px`;
       const ctx = canvas.getContext('2d')!;
-      ctx.scale(dpr, dpr);
+      // reset transforms then set DPR scale
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
     };
+    // if no explicit CSS size, give a default height
+    if (!canvas.style.height) canvas.style.height = '400px';
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
@@ -224,9 +231,8 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
 
       <canvas
         ref={canvasRef}
-        width={600}
-        height={400}
-        className="border bg-white/10 touch-none"
+        className="border bg-white/10 touch-none w-full"
+        style={{ width: '100%', height: '400px' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

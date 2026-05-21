@@ -69,9 +69,9 @@ function PictonaryContent() {
 
     if (existingRoom) {
       setRoomId(existingRoom);
-      // try to rehydrate drawer/word from localStorage
-      const drawerId = localStorage.getItem(`drawer:${existingRoom}`);
-      const storedWord = localStorage.getItem(`word:${existingRoom}`);
+      // try to rehydrate drawer/word from sessionStorage (per-tab)
+      const drawerId = sessionStorage.getItem(`drawer:${existingRoom}`);
+      const storedWord = sessionStorage.getItem(`word:${existingRoom}`);
       if (drawerId && drawerId === clientId) {
         setIsDrawer(true);
         setSecretWord(storedWord ?? undefined);
@@ -95,8 +95,9 @@ function PictonaryContent() {
           }
           const data = await res.json();
           setRoomId(data.roomId);
-          localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
-          localStorage.setItem(`word:${data.roomId}`, data.word);
+          // store drawer info per-tab so other tabs don't incorrectly show the secret word
+          sessionStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
+          sessionStorage.setItem(`word:${data.roomId}`, data.word);
           setCurrentDrawerId(data.drawerId);
           if (data.drawerId === clientId) {
             setIsDrawer(true);
@@ -125,8 +126,18 @@ function PictonaryContent() {
       const drawerId = meta.drawerId;
       setCurrentDrawerId(drawerId ?? null);
       setIsDrawer(drawerId === clientId);
-      if (meta.word && drawerId === clientId) setSecretWord(meta.word);
-      else if (drawerId !== clientId) setSecretWord(undefined);
+      // Only show the secret word if this tab is the session owner of the drawer role.
+      const isSessionDrawer = sessionStorage.getItem(`drawer:${roomId}`) === clientId;
+      if (meta.word && drawerId === clientId && isSessionDrawer) {
+        setSecretWord(meta.word);
+      } else {
+        setSecretWord(undefined);
+        // if server says someone else is drawer, clear per-tab drawer markers
+        if (drawerId !== clientId) {
+          sessionStorage.removeItem(`drawer:${roomId}`);
+          sessionStorage.removeItem(`word:${roomId}`);
+        }
+      }
     } catch (err) {
       console.error('Failed fetch room state', err);
     }
@@ -207,7 +218,9 @@ function PictonaryContent() {
       // if we are the drawer, server returns the word
       if (json.word && json.drawerId === clientId) {
         setSecretWord(json.word);
-        localStorage.setItem(`word:${roomId}`, json.word);
+        // mark this tab as the session drawer and store the secret word per-tab
+        sessionStorage.setItem(`drawer:${roomId}`, json.drawerId);
+        sessionStorage.setItem(`word:${roomId}`, json.word);
         setIsDrawer(true);
         setCurrentDrawerId(json.drawerId ?? null);
       } else {
@@ -259,8 +272,8 @@ function PictonaryContent() {
                 }
                 const data = await res.json();
                 setRoomId(data.roomId);
-                localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
-                localStorage.setItem(`word:${data.roomId}`, data.word);
+                sessionStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
+                sessionStorage.setItem(`word:${data.roomId}`, data.word);
                 if (data.drawerId === clientId) {
                   setIsDrawer(true);
                   setSecretWord(data.word);
