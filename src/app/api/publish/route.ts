@@ -19,6 +19,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Falta roomId o type' }, { status: 400 });
   }
   try {
+    // helper: ensure events_seq initialized and push an event with seq
+    const seqKey = `events_seq:${roomId}`;
+    const ensureSeq = async () => {
+      const exists = await redis.get(seqKey);
+      if (!exists) {
+        const len = await redis.llen(`events:${roomId}`);
+        await redis.set(seqKey, len ?? 0);
+      }
+    };
+
+    const pushEvent = async (obj: any) => {
+      await ensureSeq();
+      const seq = await redis.incr(seqKey);
+      const toPush = { seq, ...obj };
+      await redis.rpush(`events:${roomId}`, JSON.stringify(toPush));
+      await redis.ltrim(`events:${roomId}`, -500, -1);
+      return toPush;
+    };
+
     // Special handling for guesses: enforce drawer can't guess and score correct answers
     if (type === 'guess') {
       if (!playerId) return NextResponse.json({ error: 'Missing playerId for guess' }, { status: 400 });
@@ -33,18 +52,14 @@ export async function POST(request: Request) {
       }
 
       // publish the guess event so others see it
-      await redis.rpush(`events:${roomId}`, JSON.stringify({ type, payload, ts: Date.now() }));
+      await pushEvent({ type, payload, ts: Date.now() });
 
-      // if guess matches word, increment score and emit correct_guess event
+      // if guess matches word, increment score and emit correct_guess + new_round events
       const guessStr = String(payload ?? '').trim().toLowerCase();
       const wordStr = String(meta.word ?? '').trim().toLowerCase();
       if (guessStr && wordStr && guessStr === wordStr) {
         meta.scores = meta.scores ?? {};
         meta.scores[playerId] = (meta.scores[playerId] ?? 0) + 1;
-        // persist score update
-        await redis.set(`room:${roomId}`, JSON.stringify(meta));
-        await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'correct_guess', payload: { playerId, word: meta.word }, ts: Date.now() }));
-
         // Rotate drawer at random (exclude current drawer if possible)
         const players = meta.players ?? [];
         const playerIds = players.map((p: any) => p.id).filter((id: string) => !!id);
@@ -56,20 +71,19 @@ export async function POST(request: Request) {
         meta.drawerId = newDrawerId;
         // choose a new secret word for the new drawer
         meta.word = randomWord();
+        // persist meta update
         await redis.set(`room:${roomId}`, JSON.stringify(meta));
-        // announce new round (do not reveal the word in the event)
-        await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() }));
+
+        // emit correct_guess and new_round events (they will get their own seq)
+        await pushEvent({ type: 'correct_guess', payload: { playerId, word: meta.word }, ts: Date.now() });
+        await pushEvent({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() });
       }
 
-      // trim events list
-      await redis.ltrim(`events:${roomId}`, -500, -1);
       return NextResponse.json({ ok: true });
     }
 
     // generic event publish (stroke, clear, new_round etc.)
-    const event = JSON.stringify({ type, payload, ts: Date.now() });
-    await redis.rpush(`events:${roomId}`, event);
-    await redis.ltrim(`events:${roomId}`, -500, -1);
+    await pushEvent({ type, payload, ts: Date.now() });
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error('Failed to publish event:', err);
