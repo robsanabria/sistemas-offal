@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
+import { randomWord } from '@/lib/wordPool';
 
 export async function POST(request: Request) {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL ?? process.env.KV_URL;
@@ -40,8 +41,24 @@ export async function POST(request: Request) {
       if (guessStr && wordStr && guessStr === wordStr) {
         meta.scores = meta.scores ?? {};
         meta.scores[playerId] = (meta.scores[playerId] ?? 0) + 1;
+        // persist score update
         await redis.set(`room:${roomId}`, JSON.stringify(meta));
         await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'correct_guess', payload: { playerId, word: meta.word }, ts: Date.now() }));
+
+        // Rotate drawer at random (exclude current drawer if possible)
+        const players = meta.players ?? [];
+        const playerIds = players.map((p: any) => p.id).filter((id: string) => !!id);
+        const candidates = playerIds.filter((id: string) => id !== meta.drawerId);
+        let newDrawerId = meta.drawerId;
+        if (candidates.length > 0) {
+          newDrawerId = candidates[Math.floor(Math.random() * candidates.length)];
+        }
+        meta.drawerId = newDrawerId;
+        // choose a new secret word for the new drawer
+        meta.word = randomWord();
+        await redis.set(`room:${roomId}`, JSON.stringify(meta));
+        // announce new round (do not reveal the word in the event)
+        await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() }));
       }
 
       // trim events list

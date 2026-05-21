@@ -132,7 +132,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   };
   const handleTouchEnd = () => stopDrawing();
 
-  const publish = async (stroke: { x: number; y: number; color?: string; size?: number }, type = 'stroke') => {
+  const publish = async (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean }, type = 'stroke') => {
     await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

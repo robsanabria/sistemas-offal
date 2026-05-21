@@ -10,6 +10,7 @@ function PictonaryContent() {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isDrawer, setIsDrawer] = useState(false);
   const [secretWord, setSecretWord] = useState<string | undefined>();
+  const [currentDrawerId, setCurrentDrawerId] = useState<string | null>(null);
   const [players, setPlayers] = useState<any[]>([]);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0);
@@ -50,6 +51,7 @@ function PictonaryContent() {
         const json = await res.json();
         setPlayers(json.meta.players ?? []);
         setScores(json.meta.scores ?? {});
+        setCurrentDrawerId(json.meta.drawerId ?? null);
       } catch (err) {
         console.error('Error joining room', err);
       }
@@ -63,6 +65,7 @@ function PictonaryContent() {
       if (drawerId && drawerId === clientId) {
         setIsDrawer(true);
         setSecretWord(storedWord ?? undefined);
+        setCurrentDrawerId(drawerId);
       }
       ensureJoin(existingRoom);
     } else {
@@ -78,6 +81,7 @@ function PictonaryContent() {
           setRoomId(data.roomId);
           localStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
           localStorage.setItem(`word:${data.roomId}`, data.word);
+          setCurrentDrawerId(data.drawerId);
           if (data.drawerId === clientId) {
             setIsDrawer(true);
             setSecretWord(data.word);
@@ -104,6 +108,7 @@ function PictonaryContent() {
       setPlayers(meta.players ?? []);
       setScores(meta.scores ?? {});
       const drawerId = meta.drawerId;
+      setCurrentDrawerId(drawerId ?? null);
       setIsDrawer(drawerId === clientId);
       if (meta.word && drawerId === clientId) setSecretWord(meta.word);
       else if (drawerId !== clientId) setSecretWord(undefined);
@@ -160,9 +165,11 @@ function PictonaryContent() {
         setSecretWord(json.word);
         localStorage.setItem(`word:${roomId}`, json.word);
         setIsDrawer(true);
+        setCurrentDrawerId(json.drawerId ?? null);
       } else {
         setSecretWord(undefined);
         setIsDrawer(false);
+        setCurrentDrawerId(json.drawerId ?? null);
       }
       // start timer locally as well
       setTimeLeft(ROUND_SECONDS);
@@ -228,14 +235,23 @@ function PictonaryContent() {
         <aside className="lg:col-span-1 bg-white/5 p-4 rounded">
           <h3 className="font-bold mb-2">Jugadores</h3>
           <ul className="space-y-2">
-            {players.map((p) => (
-              <li key={p.id} className="flex items-center justify-between">
-                <span>{p.name}</span>
-                <span className="font-mono text-sm">{scores[p.id] ?? 0} pts</span>
-              </li>
-            ))}
+            {players.map((p) => {
+              const isCurrentDrawer = currentDrawerId && p.id === currentDrawerId;
+              return (
+                <li key={p.id} className={`flex items-center justify-between px-2 py-1 rounded ${isCurrentDrawer ? 'bg-white/6' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <span>{p.name}</span>
+                    {isCurrentDrawer && (
+                      <span className="text-xs bg-amber-500 text-amber-900 px-2 py-0.5 rounded-full font-semibold">Dibujante</span>
+                    )}
+                  </div>
+                  <span className="font-mono text-sm">{scores[p.id] ?? 0} pts</span>
+                </li>
+              );
+            })}
           </ul>
           <div className="mt-4">
+            <div className="mb-2">Dibujante: <span className="font-semibold">{players.find((p) => p.id === currentDrawerId)?.name ?? '—'}</span></div>
             <div className="mb-2">Tiempo: <span className="font-mono">{timeLeft}s</span></div>
             {isDrawer ? (
               <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
