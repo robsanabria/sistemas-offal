@@ -21,8 +21,11 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   // Poll server for events (strokes, guesses, round events)
   useEffect(() => {
     let mounted = true;
+    let iv: ReturnType<typeof setInterval> | null = null;
     const poll = async () => {
       try {
+        // if tab is hidden, skip polling
+        if (document.hidden) return;
         const res = await fetch(`/api/poll?roomId=${roomId}&cursor=${cursorRef.current}`);
         if (!res.ok) return;
         const json = await res.json();
@@ -35,8 +38,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
             // skip strokes originated from this client (we already draw them locally)
             if (payload?.playerId && payload.playerId === localClientId) continue;
             drawRemote(payload);
-          }
-          else if (type === 'guess') {
+          } else if (type === 'guess') {
             setMessages((prev) => [...prev, payload]);
             if (onGuess) onGuess(payload);
             if (String(payload).toLowerCase() === (secretWord ?? '').toLowerCase()) {
@@ -70,9 +72,27 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
         console.error('Poll error', err);
       }
     };
-    poll();
-    const iv = setInterval(poll, 700);
-    return () => { mounted = false; clearInterval(iv); };
+
+    const startPolling = () => {
+      // run immediate poll then set interval at 1s
+      poll();
+      iv = setInterval(poll, 1000);
+    };
+
+    const stopPolling = () => {
+      if (iv) { clearInterval(iv); iv = null; }
+    };
+
+    // start if visible
+    if (!document.hidden) startPolling();
+
+    const onVisibility = () => {
+      if (document.hidden) stopPolling();
+      else startPolling();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => { mounted = false; stopPolling(); document.removeEventListener('visibilitychange', onVisibility); };
   }, [roomId, secretWord]);
 
   const drawRemote = (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean }) => {

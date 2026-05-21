@@ -141,6 +141,34 @@ function PictonaryContent() {
     return () => { mounted = false; clearInterval(iv); };
   }, [roomId, clientId]);
 
+  // Profile modal shown even before entering/creating a room
+  const ProfileModal = showProfileModal ? (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div className="bg-white/5 p-6 rounded max-w-md w-full">
+        <h3 className="text-xl font-bold mb-2">Elegí un nickname</h3>
+        <p className="text-sm text-white/70 mb-4">Este nombre se usará en la sala.</p>
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          placeholder="Tu nombre"
+          className="w-full px-3 py-2 rounded mb-3 bg-white/10"
+        />
+        <div className="mb-3">
+          <div className="text-sm mb-1">Elige un avatar (emoji)</div>
+          <div className="flex gap-2">
+            {['🎨','😄','🖌️','🐱','🚀'].map((a) => (
+              <button key={a} onClick={() => setPlayerAvatar(a)} className={`p-2 rounded ${playerAvatar===a? 'bg-emerald-600':''}`}>{a}</button>
+            ))}
+          </div>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button onClick={() => { if (playerName.trim()) { localStorage.setItem('playerName', playerName); localStorage.setItem('playerAvatar', playerAvatar); setShowProfileModal(false); } }} className="px-3 py-2 bg-emerald-500 rounded">Continuar</button>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   // handle events from SketchBoard
   const handleNewRound = (payload: any) => {
     // start round timer and refresh room state immediately
@@ -196,40 +224,18 @@ function PictonaryContent() {
 
   if (!roomId) {
     return (
-      <div className="flex items-center justify-center h-screen text-white">
-        Cargando sala...
-      </div>
+      <>
+        {ProfileModal}
+        <div className="flex items-center justify-center h-screen text-white">
+          Cargando sala...
+        </div>
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-900 to-purple-900 p-4 text-white">
-      {showProfileModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white/5 p-6 rounded max-w-md w-full">
-            <h3 className="text-xl font-bold mb-2">Elegí un nickname</h3>
-            <p className="text-sm text-white/70 mb-4">Este nombre se usará en la sala.</p>
-            <input
-              type="text"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              placeholder="Tu nombre"
-              className="w-full px-3 py-2 rounded mb-3 bg-white/10"
-            />
-            <div className="mb-3">
-              <div className="text-sm mb-1">Elige un avatar (emoji)</div>
-              <div className="flex gap-2">
-                {['🎨','😄','🖌️','🐱','🚀'].map((a) => (
-                  <button key={a} onClick={() => setPlayerAvatar(a)} className={`p-2 rounded ${playerAvatar===a? 'bg-emerald-600':''}`}>{a}</button>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2 justify-end">
-              <button onClick={() => { if (playerName.trim()) { localStorage.setItem('playerName', playerName); localStorage.setItem('playerAvatar', playerAvatar); setShowProfileModal(false); } }} className="px-3 py-2 bg-emerald-500 rounded">Continuar</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {ProfileModal}
       <h1 className="text-3xl font-bold text-center mb-6">🎨 Pictonary</h1>
 
       {/* Link para compartir */}
