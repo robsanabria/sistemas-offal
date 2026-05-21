@@ -1,40 +1,60 @@
 import { useEffect, useRef, useState } from 'react';
-import { Redis } from '@upstash/redis';
 
 interface SketchBoardProps {
   roomId: string;
   isDrawer: boolean;
   secretWord?: string;
+  onNewRound?: (payload: any) => void;
+  onPlayerJoin?: (payload: any) => void;
+  onGuess?: (payload: string) => void;
 }
 
-export default function SketchBoard({ roomId, isDrawer, secretWord }: SketchBoardProps) {
+export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, onPlayerJoin, onGuess }: SketchBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [guess, setGuess] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
-  const redisRef = useRef<Redis | null>(null);
+  const cursorRef = useRef(0);
 
-  // Subscribe to channel for receiving strokes and guesses
+  // Poll server for events (strokes, guesses, round events)
   useEffect(() => {
-    const redis = new Redis({
-      url: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL!,
-      token: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN!,
-    });
-    redisRef.current = redis;
-    const channel = `pictonary:${roomId}`;
-    const unsubscribe = (redis as any).subscribe(channel, (msg: string) => {
-      const { type, payload } = JSON.parse(msg as string);
-      if (type === 'stroke') {
-        drawRemote(payload);
-      } else if (type === 'guess') {
-        setMessages((prev) => [...prev, payload]);
-        if (payload.toLowerCase() === (secretWord ?? '').toLowerCase()) {
-          alert('¡Alguien adivinó la palabra!');
+    let mounted = true;
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/poll?roomId=${roomId}&cursor=${cursorRef.current}`);
+        if (!res.ok) return;
+        const json = await res.json();
+        const events = json.events ?? [];
+        const nextCursor = json.nextCursor ?? cursorRef.current;
+        for (const ev of events) {
+          const { type, payload } = ev;
+          if (type === 'stroke') drawRemote(payload);
+          else if (type === 'guess') {
+            setMessages((prev) => [...prev, payload]);
+            if (onGuess) onGuess(payload);
+            if (payload.toLowerCase() === (secretWord ?? '').toLowerCase()) {
+              alert('¡Alguien adivinó la palabra!');
+            }
+          } else if (type === 'new_round') {
+            // clear canvas for new round
+            const ctx = canvasRef.current?.getContext('2d');
+            if (ctx) {
+              const canvas = canvasRef.current!;
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            if (onNewRound) onNewRound(payload);
+          } else if (type === 'player_join') {
+            setMessages((prev) => [...prev, `→ ${payload.name} se unió`]);
+            if (onPlayerJoin) onPlayerJoin(payload);
+          }
         }
+        cursorRef.current = nextCursor;
+      } catch (err) {
+        console.error('Poll error', err);
       }
-    });
-    return () => {
-      unsubscribe();
     };
+    poll();
+    const iv = setInterval(poll, 500);
+    return () => { mounted = false; clearInterval(iv); };
   }, [roomId, secretWord]);
 
   const drawRemote = (stroke: { x: number; y: number; }) => {
