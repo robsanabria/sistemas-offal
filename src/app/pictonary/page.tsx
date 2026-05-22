@@ -59,16 +59,6 @@ function PictonaryContent() {
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId');
     if (!clientId) return; // wait until clientId is available
-                    <div className="mt-3">
-                      <button onClick={async () => {
-                        if (!roomId) return;
-                        try {
-                          const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
-                          if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
-                          await fetchRoomState();
-                        } catch (err) { console.error('reset room error', err); }
-                      }} className="w-full px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
-                    </div>
     if (!playerName) return; // wait until player provides a name
 
     const ensureJoin = async (rId: string) => {
@@ -388,30 +378,29 @@ function PictonaryContent() {
                   </div>
                 );
               }
-              return (
-              (() => {
-                const drawerPresent = players.find((p) => p.id === currentDrawerId);
-                if (!drawerPresent) {
-                  return (
-                    <div className="flex flex-col gap-2">
-                      <div className="text-sm text-zinc-400">No se encuentra el dibujante — cualquiera puede iniciar la ronda.</div>
-                      <div className="flex gap-2">
-                        <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
-                        <button onClick={async () => {
-                          if (!roomId) return;
-                          try {
-                            const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
-                            if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
-                            await fetchRoomState();
-                          } catch (err) { console.error('reset room error', err); }
-                        }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
-                      </div>
+
+              const drawerPresent = players.find((p) => p.id === currentDrawerId);
+              if (!drawerPresent) {
+                return (
+                  <div className="flex flex-col gap-2">
+                    <div className="text-sm text-zinc-400">No se encuentra el dibujante — cualquiera puede iniciar la ronda.</div>
+                    <div className="flex gap-2">
+                      <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+                      <button onClick={async () => {
+                        if (!roomId) return;
+                        try {
+                          const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+                          if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
+                          await fetchRoomState();
+                        } catch (err) { console.error('reset room error', err); }
+                      }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
                     </div>
-                  );
-                }
-                return <div className="text-sm text-zinc-400">Esperando al dibujante...</div>;
-              })()
-            )}
+                  </div>
+                );
+              }
+
+              return <div className="text-sm text-zinc-400">Esperando al dibujante...</div>;
+            })()}
           </div>
         </aside>
 
