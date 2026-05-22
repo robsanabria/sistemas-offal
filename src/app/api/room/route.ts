@@ -16,16 +16,42 @@ export async function POST(request: Request) {
 
   // accept optional playerId/name in request to make creator the drawer
   const body = await request.json().catch(() => ({}));
+  const requestedRoomId = body?.roomId as string | undefined;
   const playerId = body?.playerId as string | undefined;
   const playerName = body?.name as string | undefined;
   const playerAvatar = body?.avatar as string | undefined;
 
-  // Create a new lobby (room)
-  const roomId = uuidv4();
-  const drawerId = playerId ?? uuidv4();
-  const word = randomWord();
+  // allow creating or reusing a specific room id (e.g. 'public')
+  const roomId = requestedRoomId && requestedRoomId.trim() ? requestedRoomId.trim() : uuidv4();
 
   try {
+    // if a room with this id already exists, return it (optionally add creator as player)
+    const existingRaw = await redis.get(`room:${roomId}`);
+    if (existingRaw) {
+      const existingMeta = typeof existingRaw === 'string' ? JSON.parse(existingRaw) : existingRaw;
+      // if caller provided player info and is not already present, add them
+      if (playerId && playerName) {
+        existingMeta.players = existingMeta.players ?? [];
+        existingMeta.scores = existingMeta.scores ?? {};
+        const exists = existingMeta.players.find((p: any) => p.id === playerId);
+        if (!exists) {
+          existingMeta.players.push({ id: playerId, name: playerName, avatar: playerAvatar ?? null });
+          existingMeta.scores[playerId] = 0;
+          await redis.set(`room:${roomId}`, JSON.stringify(existingMeta));
+          await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name: playerName, avatar: playerAvatar ?? null }, ts: Date.now() }));
+        }
+      }
+
+      // Do not leak the secret word unless the requester is the drawer
+      const resp: any = { roomId, drawerId: existingMeta.drawerId };
+      if (playerId && playerId === existingMeta.drawerId) resp.word = existingMeta.word;
+      return NextResponse.json(resp);
+    }
+
+    // Create a new lobby (room)
+    const drawerId = playerId ?? uuidv4();
+    const word = randomWord();
+
     // Build initial meta
     const meta: any = { word, drawerId, players: [], scores: {} };
     if (playerId && playerName) {

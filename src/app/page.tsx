@@ -134,7 +134,23 @@ export default function Home() {
                 <h2 className="text-2xl font-bold mb-4">🎨 Pictonary</h2>
                 <p className="text-zinc-300 mb-4">Sala colaborativa de dibujo — abrí la sala en una nueva página.</p>
                 <button
-                  onClick={() => router.push('/pictonary')}
+                  onClick={async () => {
+                    try {
+                      // ensure public room exists (backend will create or return existing)
+                      const res = await fetch('/api/room', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ roomId: 'public' })
+                      });
+                      if (!res.ok) {
+                        console.error('Failed to ensure public room', await res.text());
+                        // fallback: still navigate to the public URL
+                      }
+                    } catch (err) {
+                      console.error('Error creating public room', err);
+                    }
+                    router.push('/pictonary?roomId=public');
+                  }}
                   className="px-4 py-2 bg-cyan-600 rounded hover:bg-cyan-500"
                 >
                   Ir a Pictonary
