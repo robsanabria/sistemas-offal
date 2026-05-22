@@ -173,6 +173,11 @@ export default function PrankButton() {
     '/pedo.mp3',
     '/mear-sound.mp3',
     '/andas-con-frio-oscar.mp3'
+    '/gracias-conchuda.mp3',
+    '/te-la-reconstruyo.mp3',
+    '/paquetazo.mp3',
+    '/waska-en-la-cara.mp3',
+    '/waska-en-la-cara-2.mp3',
 
 
 

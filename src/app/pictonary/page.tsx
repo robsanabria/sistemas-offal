@@ -319,7 +319,18 @@ function PictonaryContent() {
             {isDrawer ? (
               <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
             ) : (
-              <div className="text-sm text-zinc-400">Esperando al dibujante...</div>
+              (() => {
+                const drawerPresent = players.find((p) => p.id === currentDrawerId);
+                if (!drawerPresent) {
+                  return (
+                    <div className="flex flex-col gap-2">
+                      <div className="text-sm text-zinc-400">No se encuentra el dibujante — cualquiera puede iniciar la ronda.</div>
+                      <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+                    </div>
+                  );
+                }
+                return <div className="text-sm text-zinc-400">Esperando al dibujante...</div>;
+              })()
             )}
           </div>
         </aside>
