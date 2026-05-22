@@ -56,6 +56,10 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
           } else if (type === 'player_join') {
             setMessages((prev) => [...prev, `→ ${payload.name} se unió`]);
             if (onPlayerJoin) onPlayerJoin(payload);
+          } else if (type === 'player_leave') {
+            const who = payload?.name ?? payload?.id ?? 'Alguien';
+            setMessages((prev) => [...prev, `← ${who} se fue`]);
+            // optionally notify parent in future
           } else if (type === 'clear') {
             const ctx = canvasRef.current?.getContext('2d');
             if (ctx) {

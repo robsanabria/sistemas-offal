@@ -22,6 +22,24 @@ function PictonaryContent() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const joinedRef = useRef(false);
 
+  // Call server to leave room (use sendBeacon for unload safety, fallback to fetch keepalive)
+  const leaveRoom = () => {
+    if (!roomId || !clientId || !joinedRef.current) return;
+    const payload = JSON.stringify({ roomId, playerId: clientId });
+    try {
+      if (typeof navigator !== 'undefined' && (navigator as any).sendBeacon) {
+        // sendBeacon expects a URL and body (string/Blob)
+        (navigator as any).sendBeacon('/api/room/leave', payload);
+      } else {
+        // try a keepalive fetch (may be ignored on some browsers during unload)
+        fetch('/api/room/leave', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(() => {});
+      }
+    } catch (err) {
+      // best-effort, do not block unload
+      console.error('leaveRoom failed', err);
+    }
+  };
+
   // ID persistente del cliente
   useEffect(() => {
     let cid = localStorage.getItem('clientId');
@@ -201,6 +219,22 @@ function PictonaryContent() {
     const t = setInterval(() => setTimeLeft((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(t);
   }, [timeLeft]);
+
+  // Notify server when the user closes the tab or navigates away
+  useEffect(() => {
+    if (!roomId) return;
+    const onUnload = () => {
+      leaveRoom();
+    };
+    window.addEventListener('beforeunload', onUnload);
+    window.addEventListener('pagehide', onUnload);
+    return () => {
+      // best-effort leave on component unmount
+      try { leaveRoom(); } catch {}
+      window.removeEventListener('beforeunload', onUnload);
+      window.removeEventListener('pagehide', onUnload);
+    };
+  }, [roomId, clientId]);
 
   const startNextRound = async () => {
     if (!roomId) return;
