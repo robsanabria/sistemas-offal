@@ -59,6 +59,16 @@ function PictonaryContent() {
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId');
     if (!clientId) return; // wait until clientId is available
+                    <div className="mt-3">
+                      <button onClick={async () => {
+                        if (!roomId) return;
+                        try {
+                          const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+                          if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
+                          await fetchRoomState();
+                        } catch (err) { console.error('reset room error', err); }
+                      }} className="w-full px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
+                    </div>
     if (!playerName) return; // wait until player provides a name
 
     const ensureJoin = async (rId: string) => {
@@ -80,6 +90,15 @@ function PictonaryContent() {
         setPlayers(json.meta.players ?? []);
         setScores(json.meta.scores ?? {});
         setCurrentDrawerId(json.meta.drawerId ?? null);
+        // if this player is the drawer, persist per-tab drawer marker so UI stays consistent
+        if (json.meta.drawerId === playerId) {
+          try {
+            sessionStorage.setItem(`drawer:${rId}`, json.meta.drawerId);
+            if (json.meta.word) sessionStorage.setItem(`word:${rId}`, json.meta.word);
+          } catch {}
+          setIsDrawer(true);
+          setSecretWord(json.meta.word ?? undefined);
+        }
       } catch (err) {
         console.error('Error joining room', err);
       }
