@@ -172,7 +172,7 @@ export default function PrankButton() {
     '/la-chabona-cachorra-de-leche.mp3',
     '/pedo.mp3',
     '/mear-sound.mp3',
-    '/andas-con-frio-oscar.mp3'
+    '/andas-con-frio-oscar.mp3',
     '/gracias-conchuda.mp3',
     '/te-la-reconstruyo.mp3',
     '/paquetazo.mp3',
