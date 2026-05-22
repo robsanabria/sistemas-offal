@@ -24,8 +24,17 @@ export async function POST(request: Request) {
 
     const exists = meta.players.find((p: any) => p.id === playerId);
     if (!exists) {
+      const wasEmpty = !meta.players || meta.players.length === 0;
       meta.players.push({ id: playerId, name, avatar: avatar ?? null });
       meta.scores[playerId] = 0;
+
+      // If this is the first player in the room, make them the drawer and ensure a word
+      if (wasEmpty) {
+        meta.drawerId = playerId;
+        meta.currentDrawerIndex = 0;
+        meta.word = meta.word ?? randomWord();
+      }
+
       await redis.set(`room:${roomId}`, JSON.stringify(meta));
       // notify others
       await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name, avatar: avatar ?? null }, ts: Date.now() }));
