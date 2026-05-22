@@ -48,6 +48,7 @@ function PictonaryContent() {
       localStorage.setItem('clientId', cid);
     }
     setClientId(cid);
+    console.debug('[pictonary] clientId set', { cid });
     const storedName = localStorage.getItem('playerName');
     const storedAvatar = localStorage.getItem('playerAvatar');
     if (storedName) setPlayerName(storedName);
@@ -77,6 +78,7 @@ function PictonaryContent() {
           return;
         }
         const json = await res.json();
+        console.debug('[pictonary] join response', { roomId: rId, playerId, meta: json.meta });
         setPlayers(json.meta.players ?? []);
         setScores(json.meta.scores ?? {});
         setCurrentDrawerId(json.meta.drawerId ?? null);
@@ -148,6 +150,7 @@ function PictonaryContent() {
       if (!res.ok) return;
       const json = await res.json();
       const meta = json.meta ?? {};
+      console.debug('[pictonary] fetchRoomState', { roomId, clientId, meta });
       setPlayers(meta.players ?? []);
       setScores(meta.scores ?? {});
       const drawerId = meta.drawerId;
@@ -155,14 +158,14 @@ function PictonaryContent() {
       setIsDrawer(drawerId === clientId);
       // Only show the secret word if this tab is the session owner of the drawer role.
       const isSessionDrawer = sessionStorage.getItem(`drawer:${roomId}`) === clientId;
+      console.debug('[pictonary] fetchRoomState markers', { drawerId, isSessionDrawer, isDrawer: drawerId === clientId });
       if (meta.word && drawerId === clientId && isSessionDrawer) {
         setSecretWord(meta.word);
       } else {
         setSecretWord(undefined);
         // if server says someone else is drawer, clear per-tab drawer markers
         if (drawerId !== clientId) {
-          sessionStorage.removeItem(`drawer:${roomId}`);
-          sessionStorage.removeItem(`word:${roomId}`);
+          try { sessionStorage.removeItem(`drawer:${roomId}`); sessionStorage.removeItem(`word:${roomId}`); } catch {}
         }
       }
     } catch (err) {
