@@ -55,27 +55,33 @@ export async function POST(request: Request) {
       await pushEvent({ type, payload, ts: Date.now() });
 
       // if guess matches word, increment score and emit correct_guess + new_round events
-      const guessStr = String(payload ?? '').trim().toLowerCase();
-      const wordStr = String(meta.word ?? '').trim().toLowerCase();
-      if (guessStr && wordStr && guessStr === wordStr) {
+      const guessStr = String(payload ?? '').trim();
+      const wordStr = String(meta.word ?? '').trim();
+      if (guessStr && wordStr && guessStr.toLowerCase() === wordStr.toLowerCase()) {
         meta.scores = meta.scores ?? {};
         meta.scores[playerId] = (meta.scores[playerId] ?? 0) + 1;
-        // Rotate drawer at random (exclude current drawer if possible)
+
+        // Determine next drawer by advancing currentDrawerIndex (sequential rotation)
         const players = meta.players ?? [];
         const playerIds = players.map((p: any) => p.id).filter((id: string) => !!id);
-        const candidates = playerIds.filter((id: string) => id !== meta.drawerId);
-        let newDrawerId = meta.drawerId;
-        if (candidates.length > 0) {
-          newDrawerId = candidates[Math.floor(Math.random() * candidates.length)];
-        }
+        if (!meta.currentDrawerIndex && meta.currentDrawerIndex !== 0) meta.currentDrawerIndex = playerIds.indexOf(meta.drawerId ?? '') ?? 0;
+        const currentIndex = meta.currentDrawerIndex ?? playerIds.indexOf(meta.drawerId ?? '');
+        const nextIndex = (Number(currentIndex) + 1) % Math.max(1, playerIds.length);
+        const newDrawerId = playerIds.length > 0 ? playerIds[nextIndex] : meta.drawerId;
+
+        // store the guessed word to report in the event BEFORE changing meta.word
+        const guessedWord = meta.word;
+
+        // update meta with new drawer and new secret word
         meta.drawerId = newDrawerId;
-        // choose a new secret word for the new drawer
+        meta.currentDrawerIndex = nextIndex;
         meta.word = randomWord();
+
         // persist meta update
         await redis.set(`room:${roomId}`, JSON.stringify(meta));
 
-        // emit correct_guess and new_round events (they will get their own seq)
-        await pushEvent({ type: 'correct_guess', payload: { playerId, word: meta.word }, ts: Date.now() });
+        // emit correct_guess (reporting who guessed what) and then new_round
+        await pushEvent({ type: 'correct_guess', payload: { playerId, word: guessedWord }, ts: Date.now() });
         await pushEvent({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() });
       }
 

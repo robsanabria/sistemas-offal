@@ -18,6 +18,16 @@ export async function GET(request: Request) {
     const metaRaw = await redis.get(`room:${roomId}`);
     if (!metaRaw) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
     const meta = typeof metaRaw === 'string' ? JSON.parse(metaRaw) : metaRaw;
+    // Don't leak drawer secret word to everyone: only include word if requester provides ?revealTo=<playerId> and matches drawer
+    // If room has no players, reset computed state so first join starts fresh
+    meta.players = meta.players ?? [];
+    if (meta.players.length === 0) {
+      meta.scores = {};
+      delete meta.drawerId;
+      delete meta.currentDrawerIndex;
+      delete meta.word;
+      await redis.set(`room:${roomId}`, JSON.stringify(meta));
+    }
 
     // Don't leak drawer secret word to everyone: only include word if requester provides ?revealTo=<playerId> and matches drawer
     const revealTo = searchParams.get('revealTo');
