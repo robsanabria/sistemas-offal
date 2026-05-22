@@ -351,7 +351,17 @@ function PictonaryContent() {
             <div className="mb-2">Dibujante: <span className="font-semibold">{players.find((p) => p.id === currentDrawerId)?.name ?? '—'}</span></div>
             <div className="mb-2">Tiempo: <span className="font-mono">{timeLeft}s</span></div>
             {isDrawer ? (
-              <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+              <div className="flex gap-2">
+                <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+                <button onClick={async () => {
+                  if (!roomId) return;
+                  try {
+                    const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+                    if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
+                    await fetchRoomState();
+                  } catch (err) { console.error('reset room error', err); }
+                }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
+              </div>
             ) : (
               (() => {
                 const drawerPresent = players.find((p) => p.id === currentDrawerId);
@@ -359,7 +369,17 @@ function PictonaryContent() {
                   return (
                     <div className="flex flex-col gap-2">
                       <div className="text-sm text-zinc-400">No se encuentra el dibujante — cualquiera puede iniciar la ronda.</div>
-                      <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+                      <div className="flex gap-2">
+                        <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
+                        <button onClick={async () => {
+                          if (!roomId) return;
+                          try {
+                            const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+                            if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
+                            await fetchRoomState();
+                          } catch (err) { console.error('reset room error', err); }
+                        }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
+                      </div>
                     </div>
                   );
                 }
