@@ -39,8 +39,8 @@ export default function CoffeeBoard() {
 
     return (
         <div className="glass-card flex flex-col gap-6 relative overflow-hidden group">
-            <div className="absolute -top-4 -right-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                <Coffee size={120} />
+            <div className="absolute top-2 right-2 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+                <Coffee size={80} />
             </div>
 
             <div className="flex items-center justify-between z-10">
