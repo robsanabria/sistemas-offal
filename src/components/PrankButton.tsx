@@ -1,12 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-<<<<<<< Updated upstream
 import { AlertTriangle, Volume2, Skull, Maximize2, Minimize2, Play } from 'lucide-react'
 import { motion } from 'framer-motion'
-=======
-import { AlertTriangle, Volume2, Play, Star } from 'lucide-react'
->>>>>>> Stashed changes
 
 export default function PrankButton() {
   const [clicked, setClicked] = useState(false)
@@ -15,12 +11,10 @@ export default function PrankButton() {
   const [volume, setVolume] = useState(1)
   const [loop, setLoop] = useState(false)
   const [missingAudios, setMissingAudios] = useState<string[]>([])
-  const [favorites, setFavorites] = useState<string[]>([])
 
   const audioRefs = useRef<HTMLAudioElement[]>([])
 
   const sounds = [
-<<<<<<< Updated upstream
     '/aaa-se-ha-detectado-un-boliviano.mp3',
     '/agarrate-los-pantalones.mp3',
     '/ahh-despacito-2.mp3',
@@ -189,131 +183,7 @@ export default function PrankButton() {
 
 
 
-=======
-        '/aaa-se-ha-detectado-un-boliviano.mp3',
-        '/agarrate-los-pantalones.mp3',
-        '/ahh-despacito-2.mp3',
-        '/ahi-lo-tenes-al-pelotudo_TlDTm41.mp3',
-        '/alto-guiso.mp3',
-        '/atrapada-ayuda.mp3',
-        '/ay-despacito.mp3',
-        '/bgc-dramatic-music-tiktok-drama-effect-audio-tiktok-new-trend_LYggtlV.mp3',
-        '/boca-boca-boca-la-faraona.mp3',
-        '/buenas-tardes-grupo.mp3',
-        '/buenos-dias-estrellitas.mp3',
-        '/capusotto-me-da-uno-de-esos-coso.mp3',
-        '/como-llueve.mp3',
-        '/creeeo-que-se-equivoco.mp3',
-        '/esta-chequeado.mp3',
-        '/estoy-cansado-jefe.mp3',
-        '/estoy-como-loquita.mp3',
-        '/eu-bata-1_VwbftjF.mp3',
-        '/eu-bata.mp3',
-        '/fiesta-lalala-.mp3',
-        '/garganta-profunda.mp3',
-        '/gogogo-meme.mp3',
-        '/gogogogogogo.mp3',
-        '/gogogogo_E2sBNDZ.mp3',
-        '/gol-messi-vs-getafe-narrat-per-puyal-full-hd-1080p-audiotrimmer.mp3',
-        '/hermoso-hermoso-.mp3',
-        '/homero-gimiendo.mp3',
-        '/hoy-no-hay-choripan-porque-hay-lluvia-y2save.mp3',
-        '/impacto-bendita.mp3',
-        '/justicia-por-el-padre.mp3',
-        '/le-gustaba-el-fshh-el-chupi-.mp3',
-        '/Lo que hay que ver es la producción de Sandra.mp3',
-        '/lo-dejo-a-tu-criterio-karina-jelinek-.mp3',
-        '/mala-onda-mala-onda.mp3',
-        '/michael-jackson-hee-hee.mp3',
-        '/naaaa-ta-re-loco-full.mp3',
-        '/no-hay-plata.mp3',
-        '/oh-my-god-meme.mp3',
-        '/oh-no-no-no-tik-tok-song-sound-effect.mp3',
-        '/ojhemaflk-omsawt-online-audio-converter.mp3',
-        '/paaraaaaa.mp3',
-        '/peter-capusotto-la-comida-sanajaja-mp3cut.mp3',
-        '/podes-ser-tan-pelotudo-viejo.mp3',
-        '/ponele-voluntad.mp3',
-        '/por-favor-necesito-pito-me-muero.mp3',
-        '/prendo-el-velador-pum-cortocircuito.mp3',
-        '/putooo-capusotto.mp3',
-        '/que-dificil-me-la-pusiste-diablo.mp3',
-        '/que-dios-le-re-bendiga-.mp3',
-        '/que-es-eso-bob-esponja.mp3',
-        '/que-falta-de-comprension-que-teneees-.mp3',
-        '/que-miras-bobo.mp3',
-        '/revivan-el-server-homero.mp3',
-        '/se-lava-las-manos-.mp3',
-        '/tengo-dolares-capusotto.mp3',
-        '/tienen-que-cerrar-el-estadio.mp3',
-        '/tlabaja-chino.mp3',
-        '/tmpsbchnr37.mp3',
-        '/todas-divinas-de-que-viven-oriana-junco.mp3',
-        '/y2mate_1lLaYg7.mp3',
-        '/y2mate_9l5QdzQ (1).mp3',
-        '/y2mate_9l5QdzQ.mp3',
-        '/WhatsApp-Audio-2026-03-18-at-15.11.05.mp3',
-        '/ricardo-fort-miameeeeeeeeeeeeee.mp3',
-        '/fort-le-grita-a-su-madre-con-subtitulos.mp3',
-        '/video-pono-foto-pono.mp3',
-        '/jaja-basta-chicos.mp3',
-        '/MAMA-CORTASTES-TODA-LA-LOOZ.mp3',
-        '/Justin-Bieber-es-de-piscis.mp3',
-        '/andrea-no-te-duermas.mp3',
-        '/andrea-no-te-duermas-2.mp3',
-        '/ay-por-favor.mpg.mp3',
-        '/no-se-inunda-mas.mp3',
-        '/andrea-cafe.mp3',
-        '/diosito.mp3',
-        '/miradequienteburlaste.mp3',
-        '/ha-ha-nelson-burla.mp3',
-        '/grito-de-soraya.mp3',
-        '/que-haces-besando-a-la-lisiada.mp3',
-        '/aristoteles-moria.mp3',
-        '/moria_uV2J33z.mp3',
-        '/eldecorado-moria.mp3',
-        '/que-asco-moria.mp3',
-        '/nelson-callese.mp3',
-        '/zi-zeñoda.mp3',
-        '/pappo-porfavor.mp3',
-        '/pappo-trabajohonesto.mp3',
-        '/nadia-la-cachorra.mp3',
-        '/lachabona-estilo.mp3',
-        '/imaginate-lachabona.mp3',
-        '/lachabona-atodoringtone.mp3',
-        '/me-gusta-el-arte.mp3',
-        '/voy-a-esperar.mp3',
-        '/jovani-desayunaconhuevo.mp3',
-        '/jovani-quisieraserunamosca.mp3',
-        '/trambolico.mp3',
-        '/y-yo-vole.mp3',
-        '/pendejita-de22.mp3',
-        '/10milguarani.mp3',
-        '/megarrodemipelo.mp3',
-        '/faaah.mp3',
-        '/lalocumbia-enserio.mp3',
-        '/pagalaprata.mp3',
-        '/nunca.mp3',
-        '/ciruja.mp3',
-        '/puto-feo-asi.mp3',
-        '/tarao-e.mp3',
-        '/quevasatirar.mp3',
-        '/nico.mp3',
-        '/nico2.mp3',
->>>>>>> Stashed changes
   ]
-
-  // Cargar favoritos al inicio
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('offal-mpc-favorites')
-      if (saved) {
-        setFavorites(JSON.parse(saved))
-      }
-    } catch (e) {
-      console.error("Error loading favorites", e)
-    }
-  }, [])
 
   // 🔎 Detectar audios faltantes
   useEffect(() => {
@@ -336,25 +206,9 @@ export default function PrankButton() {
   }, [])
 
   const validSounds = sounds.filter((s) => !missingAudios.includes(s))
-  
-  // Agrupar audios: Favoritos van primero
-  const favSounds = favorites.filter(s => sounds.includes(s)) // Mantener el orden relativo de los favoritos si es posible
-  const otherSounds = sounds.filter(s => !favSounds.includes(s))
-  const orderedSounds = [...favSounds, ...otherSounds]
 
   const getLabel = (s: string) =>
     s.replace(/\//g, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '').slice(0, 10)
-
-  const toggleFavorite = (s: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    setFavorites(prev => {
-      const isFav = prev.includes(s)
-      const nextFavs = isFav ? prev.filter(f => f !== s) : [...prev, s]
-      // Guardado local instantáneo
-      localStorage.setItem('offal-mpc-favorites', JSON.stringify(nextFavs))
-      return nextFavs
-    })
-  }
 
   const playSound = (src: string) => {
     try {
@@ -370,19 +224,7 @@ export default function PrankButton() {
         audioRefs.current = audioRefs.current.filter((a) => a !== audio)
       }
 
-<<<<<<< Updated upstream
       audio.play().catch(() => { })
-=======
-      audio.play().catch(() => {})
-      
-      // Push event to ticker API
-      fetch('/api/ticker', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: `Pad Activado: ${getLabel(src).toUpperCase()}` })
-      }).catch(() => {})
-      
->>>>>>> Stashed changes
     } catch (err) {
       console.error(err)
     }
@@ -395,26 +237,13 @@ export default function PrankButton() {
     })
     audioRefs.current = []
     setActivePads([])
-    
-    fetch('/api/ticker', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `¡SILENCIO EN LA SALA!` })
-    }).catch(() => {})
   }
 
   const handlePrank = () => {
-<<<<<<< Updated upstream
     setClicked(true)
     const random = sounds[Math.floor(Math.random() * sounds.length)]
     playSound(random)
     setTimeout(() => setClicked(false), 500)
-=======
-    if (validSounds.length > 0) {
-      const random = validSounds[Math.floor(Math.random() * validSounds.length)]
-      playSound(random)
-    }
->>>>>>> Stashed changes
   }
 
   // keyboard: space or enter triggers main prank when focused; also P key shortcut
@@ -431,23 +260,11 @@ export default function PrankButton() {
         e.preventDefault()
         handlePrank()
       }
-      
-      // Teclas 1 al 9 lanzan los atajos favoritos
-      if (e.key >= '1' && e.key <= '9') {
-        const num = parseInt(e.key) - 1
-        if (num < favSounds.length) {
-          e.preventDefault()
-          const targetFav = favSounds[num]
-          if (!missingAudios.includes(targetFav)) {
-            playSound(targetFav)
-          }
-        }
-      }
     }
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [volume, loop, favSounds, missingAudios])
+  }, [volume, loop])
 
   return (
     <div className="glass-card !bg-white/5 border-red-500/20 p-8 rounded-2xl relative overflow-hidden min-h-[600px]">
@@ -479,74 +296,7 @@ export default function PrankButton() {
         </div>
       </div>
 
-<<<<<<< Updated upstream
       <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start">
-=======
-      {/* MPC PAD GRID */}
-      <div className="w-full flex-grow overflow-y-auto pr-2 custom-scrollbar">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 justify-items-center">
-          
-          {orderedSounds.map((s, idx) => {
-            const isActive = activePads.includes(s)
-            const isMissing = missingAudios.includes(s)
-            const isFav = favorites.includes(s)
-            const isFavKey = isFav && idx < 9
-
-            return (
-              <button
-                key={s}
-                onClick={() => !isMissing && playSound(s)}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); !isMissing && playSound(s) } }}
-                aria-label={`Reproducir ${getLabel(s)}`}
-                aria-disabled={isMissing}
-                className={`relative group w-full aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition-all duration-75 outline-none
-                  ${isMissing 
-                    ? 'opacity-20 cursor-not-allowed bg-zinc-900 border-zinc-800' 
-                    : isActive
-                      ? 'bg-gradient-to-br from-cyan-400 to-green-400 border-2 border-white scale-[0.92] shadow-[0_0_25px_rgba(0,242,255,0.8),inset_0_0_15px_rgba(255,255,255,0.6)] z-10 text-black'
-                      : isFav 
-                        ? 'bg-amber-900/40 border border-amber-500/50 hover:bg-amber-800/60 shadow-[0_0_10px_rgba(251,191,36,0.1)] text-amber-100'
-                        : 'bg-zinc-800/80 border border-zinc-700 hover:border-cyan-500/50 hover:bg-zinc-800 hover:shadow-[0_0_15px_rgba(0,242,255,0.3)] shadow-inner text-zinc-400 hover:text-cyan-300 focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(0,242,255,0.5)]'
-                  }
-                `}
-              >
-                {/* Botón Favorito Absoluto */}
-                <div 
-                  onClick={(e) => toggleFavorite(s, e)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFavorite(s, e as any) } }}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
-                  className="absolute top-1 right-1 p-1 z-20 cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-400 rounded-sm"
-                >
-                  <Star 
-                    size={12} 
-                    className={`transition-all ${isFav ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.8)]' : 'text-zinc-600 hover:text-amber-400 opacity-0 group-hover:opacity-100'}`} 
-                  />
-                </div>
-
-                {/* Light Indicator Line at top of pad */}
-                <span className={`absolute top-0 left-[20%] right-[20%] h-1 rounded-b-md transition-all ${isActive ? 'bg-white shadow-[0_0_10px_white]' : isFav ? 'bg-amber-500/50' : 'bg-zinc-700'}`}></span>
-                
-                <Play 
-                  size={isActive ? 28 : 20} 
-                  className={`mt-1 transition-all ${isActive ? 'text-black fill-black' : isMissing ? 'text-zinc-700' : isFav ? 'text-amber-200' : 'text-zinc-500 group-hover:text-cyan-400'}`} 
-                />
-
-                <span className={`text-[10px] sm:text-[11px] text-center px-1 font-semibold leading-tight line-clamp-2 w-full ${isActive ? 'text-black' : ''}`}>
-                  {getLabel(s).toUpperCase()}
-                </span>
-
-                {/* keyboard hint (Only for the first 9 favorites) */}
-                {isFavKey && !isMissing && (
-                  <span className={`absolute bottom-1 right-1 text-[9px] font-bold px-1.5 rounded-sm ${isActive ? 'bg-black/20 text-black' : 'bg-amber-400 text-amber-950 shadow-[0_0_5px_rgba(251,191,36,0.6)]'}`}>{idx + 1}</span>
-                )}
-              </button>
-            )
-          })}
-          
-        </div>
->>>>>>> Stashed changes
         
         {/* BOTON CENTRAL LEFT */}
         <div className="flex flex-col items-center gap-8 shrink-0">
