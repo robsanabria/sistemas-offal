@@ -17,6 +17,7 @@ import PointsBoard from '@/components/PointsBoard'
 import TextToSpeech from '@/components/TextToSpeech'
 import Buscaminas from '@/components/Buscaminas'
 import MorseCoder from '@/components/MorseCoder'
+import Countdown from '@/components/Countdown'
 
 type TabType = 'dashboard' | 'mpc' | 'collab' | 'pictonary' | 'games' | 'morse'
 
@@ -39,6 +40,7 @@ export default function Home() {
           <p className="text-zinc-400 font-medium text-sm md:text-base max-w-2xl">
             Centro de operaciones colaborativas, métricas en tiempo real y entretenimiento sistémico.
           </p>
+          <Countdown />
         </header>
 
         {/* FLOATING NAVIGATION */}

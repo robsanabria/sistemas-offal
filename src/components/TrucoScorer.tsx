@@ -62,6 +62,13 @@ export default function TrucoScorer() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ [team]: newVal })
             })
+            
+            await fetch('/api/ticker', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `TRUCO: La mesa cantó puntos para ${team.toUpperCase()}` })
+            }).catch(()=>null)
+            
         } catch (e) {
             console.error(e)
         }
