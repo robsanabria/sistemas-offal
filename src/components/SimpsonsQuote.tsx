@@ -240,6 +240,12 @@ export default function SimpsonsQuote() {
                                         src={content.data}
                                         alt="Simpsons Moment"
                                         className="max-w-full max-h-full object-contain rounded shadow-2xl"
+                                        onError={() => {
+                                            // Si el GIF no carga (URL caída o hotlink bloqueado),
+                                            // mostramos una frase para no dejar el panel en blanco.
+                                            const i = Math.floor(Math.random() * SIMPSONS_QUOTES.length)
+                                            setContent({ type: 'quote', data: SIMPSONS_QUOTES[i] })
+                                        }}
                                     />
                                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <span className="text-[10px] bg-black/80 text-white px-2 py-1 rounded-full font-mono border border-white/10 uppercase tracking-tighter">
@@ -254,6 +260,7 @@ export default function SimpsonsQuote() {
                                             src={getCharacterImage(content.data.character)}
                                             alt={content.data.character}
                                             className="w-24 h-24 object-contain filter drop-shadow-[0_0_15px_rgba(234,179,8,0.2)] hover:scale-110 transition-transform"
+                                            onError={(e) => { e.currentTarget.style.visibility = 'hidden' }}
                                         />
                                         <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-ping opacity-20" />
                                     </div>
@@ -268,7 +275,7 @@ export default function SimpsonsQuote() {
 
                                         {content.data.image && (
                                             <div className="mt-4 rounded border border-zinc-800 overflow-hidden max-w-[200px]">
-                                                <img src={content.data.image} alt="Context" className="w-full grayscale hover:grayscale-0 transition-all cursor-crosshair" />
+                                                <img src={content.data.image} alt="Context" className="w-full grayscale hover:grayscale-0 transition-all cursor-crosshair" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                                             </div>
                                         )}
 
