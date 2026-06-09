@@ -80,7 +80,13 @@ UPSTASH_REDIS_REST_TOKEN=tu-token
 # Alias que también lee el código (podés repetir los mismos valores)
 KV_REST_API_URL=https://tu-instancia.upstash.io
 KV_REST_API_TOKEN=tu-token
+
+# Giphy — opcional, para los GIFs de los Simpsons en el dashboard
+# (sin esta key se usa una colección curada de GIFs como fallback)
+NEXT_PUBLIC_GIPHY_API_KEY=tu-giphy-api-key
 ```
+
+> En producción (Vercel) acordate de cargar también estas variables en el panel del proyecto (Settings → Environment Variables). Las `NEXT_PUBLIC_*` se inyectan en el build, así que después de agregarlas hay que volver a deployar.
 
 > ⚠️ **Seguridad:** `.env.local` no debe commitearse (ya está en `.gitignore`). Si alguna vez se subió un token, rotalo desde el panel de Upstash.
 
