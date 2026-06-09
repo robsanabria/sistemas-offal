@@ -11,4 +11,5 @@ export const KEYS = {
     SPEED_COUNTER: 'office:speeds:total',
     COFFEE_MAKER: 'office:coffee:maker',
     OFFICE_MATES: 'office:team:members',
+    GLOBAL_TICKER: 'office:global:ticker',
 }
