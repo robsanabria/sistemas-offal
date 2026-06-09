@@ -40,7 +40,10 @@ export async function POST(request: Request) {
       await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_join', payload: { id: playerId, name, avatar: avatar ?? null }, ts: Date.now() }));
     }
 
-    return NextResponse.json({ ok: true, meta });
+    // No filtrar la palabra secreta: solo se incluye si quien pide es el dibujante actual
+    const safeMeta = { ...meta };
+    if (playerId !== meta.drawerId) delete safeMeta.word;
+    return NextResponse.json({ ok: true, meta: safeMeta });
   } catch (err: any) {
     console.error('room/join error', err);
     return NextResponse.json({ error: 'internal' }, { status: 500 });

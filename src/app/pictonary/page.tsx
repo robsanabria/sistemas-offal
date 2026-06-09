@@ -1,46 +1,35 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useRef, Suspense } from 'react';
-import SketchBoard from '@/components/SketchBoard';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, useRef, Suspense, useCallback } from 'react';
+import Link from 'next/link';
+import { Palette, ArrowLeft, Copy, Check, SkipForward, RotateCcw, Crown, Clock, Eye } from 'lucide-react';
+import SketchBoard, { ChatMsg } from '@/components/SketchBoard';
+
+type Player = { id: string; name: string; avatar?: string | null };
+
+const ROUND_SECONDS = 90;
+const AVATARS = ['🎨', '😄', '🖌️', '🐱', '🚀', '🦊', '👾', '🐙'];
 
 function PictonaryContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isDrawer, setIsDrawer] = useState(false);
   const [secretWord, setSecretWord] = useState<string | undefined>();
   const [currentDrawerId, setCurrentDrawerId] = useState<string | null>(null);
-  const [players, setPlayers] = useState<any[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0);
-  const ROUND_SECONDS = 60;
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [clientId, setClientId] = useState<string>('');
   const [playerName, setPlayerName] = useState<string>('');
   const [playerAvatar, setPlayerAvatar] = useState<string>('🎨');
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [copied, setCopied] = useState(false);
   const joinedRef = useRef(false);
+  const chatRef = useRef<HTMLDivElement>(null);
 
-  // Call server to leave room (use sendBeacon for unload safety, fallback to fetch keepalive)
-  const leaveRoom = () => {
-    if (!roomId || !clientId || !joinedRef.current) return;
-    const payload = JSON.stringify({ roomId, playerId: clientId });
-    try {
-      if (typeof navigator !== 'undefined' && (navigator as any).sendBeacon) {
-        // sendBeacon expects a URL and body (string/Blob)
-        (navigator as any).sendBeacon('/api/room/leave', payload);
-      } else {
-        // try a keepalive fetch (may be ignored on some browsers during unload)
-        fetch('/api/room/leave', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(() => {});
-      }
-    } catch (err) {
-      // best-effort, do not block unload
-      console.error('leaveRoom failed', err);
-    }
-  };
-
-  // ID persistente del cliente
+  // ── Identidad persistente del cliente ──────────────────────────
   useEffect(() => {
     let cid = localStorage.getItem('clientId');
     if (!cid) {
@@ -48,7 +37,6 @@ function PictonaryContent() {
       localStorage.setItem('clientId', cid);
     }
     setClientId(cid);
-    console.debug('[pictonary] clientId set', { cid });
     const storedName = localStorage.getItem('playerName');
     const storedAvatar = localStorage.getItem('playerAvatar');
     if (storedName) setPlayerName(storedName);
@@ -56,390 +44,305 @@ function PictonaryContent() {
     if (!storedName) setShowProfileModal(true);
   }, []);
 
-  // Crear o unirse a sala
-  useEffect(() => {
-    const existingRoom = searchParams?.get('roomId');
-    if (!clientId) return; // wait until clientId is available
-    if (!playerName) return; // wait until player provides a name
+  // ── Salir de la sala (best-effort en unload) ───────────────────
+  const leaveRoom = useCallback(() => {
+    if (!roomId || !clientId || !joinedRef.current) return;
+    const payload = JSON.stringify({ roomId, playerId: clientId });
+    try {
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        navigator.sendBeacon('/api/room/leave', payload);
+      } else {
+        fetch('/api/room/leave', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(() => {});
+      }
+      joinedRef.current = false;
+    } catch (err) {
+      console.error('leaveRoom failed', err);
+    }
+  }, [roomId, clientId]);
 
-    const ensureJoin = async (rId: string) => {
-      if (joinedRef.current) return;
-      joinedRef.current = true;
-      const playerId = clientId;
-      const name = playerName || `Player-${playerId.slice(0,6)}`;
+  // ── Unirse a la sala (roomId viene de la URL, normalmente 'public') ──
+  useEffect(() => {
+    const existingRoom = searchParams?.get('roomId') ?? 'public';
+    if (!clientId || !playerName) return;
+    setRoomId(existingRoom);
+
+    if (joinedRef.current) return;
+    joinedRef.current = true;
+    (async () => {
       try {
+        // asegurar que la sala exista
+        await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: existingRoom }) });
         const res = await fetch('/api/room/join', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ roomId: rId, playerId, name, avatar: playerAvatar }),
+          body: JSON.stringify({ roomId: existingRoom, playerId: clientId, name: playerName, avatar: playerAvatar }),
         });
-        if (!res.ok) {
-          console.error('Failed to join room', await res.text());
-          return;
-        }
+        if (!res.ok) { console.error('Failed to join room', await res.text()); joinedRef.current = false; return; }
         const json = await res.json();
-        console.debug('[pictonary] join response', { roomId: rId, playerId, meta: json.meta });
-        setPlayers(json.meta.players ?? []);
-        setScores(json.meta.scores ?? {});
-        setCurrentDrawerId(json.meta.drawerId ?? null);
-        // if this player is the drawer, persist per-tab drawer marker so UI stays consistent
-        if (json.meta.drawerId === playerId) {
-          try {
-            sessionStorage.setItem(`drawer:${rId}`, json.meta.drawerId);
-            if (json.meta.word) sessionStorage.setItem(`word:${rId}`, json.meta.word);
-          } catch {}
-          setIsDrawer(true);
-          setSecretWord(json.meta.word ?? undefined);
-        }
+        setPlayers(json.meta?.players ?? []);
+        setScores(json.meta?.scores ?? {});
+        setCurrentDrawerId(json.meta?.drawerId ?? null);
       } catch (err) {
         console.error('Error joining room', err);
+        joinedRef.current = false;
       }
-    };
+    })();
+  }, [searchParams, clientId, playerName, playerAvatar]);
 
-    if (existingRoom) {
-      setRoomId(existingRoom);
-      // try to rehydrate drawer/word from sessionStorage (per-tab)
-      const drawerId = sessionStorage.getItem(`drawer:${existingRoom}`);
-      const storedWord = sessionStorage.getItem(`word:${existingRoom}`);
-      if (drawerId && drawerId === clientId) {
-        setIsDrawer(true);
-        setSecretWord(storedWord ?? undefined);
-        setCurrentDrawerId(drawerId);
-      }
-      ensureJoin(existingRoom);
-    } else {
-      (async () => {
-        try {
-          const name = playerName || `Player-${clientId.slice(0,6)}`;
-          if (!playerName) {
-            // ask user to pick a name before creating
-            setShowProfileModal(true);
-            return;
-          }
-          const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name, avatar: playerAvatar }) });
-          if (!res.ok) {
-            const text = await res.text();
-            console.error('API /api/room returned non-ok:', res.status, text);
-            return;
-          }
-          const data = await res.json();
-          setRoomId(data.roomId);
-          // store drawer info per-tab so other tabs don't incorrectly show the secret word
-          sessionStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
-          sessionStorage.setItem(`word:${data.roomId}`, data.word);
-          setCurrentDrawerId(data.drawerId);
-          if (data.drawerId === clientId) {
-            setIsDrawer(true);
-            setSecretWord(data.word);
-          }
-          router.replace(`/pictonary?roomId=${data.roomId}`);
-          ensureJoin(data.roomId);
-        } catch (err) {
-          console.error('Error al crear sala (fetch failed):', err);
-        }
-      })();
-    }
-  }, [searchParams, router, clientId, playerName, playerAvatar]);
-
-  // Poll room state helper
-  const fetchRoomState = async () => {
-    if (!roomId) return;
+  // ── Poll del estado de la sala (fuente de verdad) ──────────────
+  const fetchRoomState = useCallback(async () => {
+    if (!roomId || !clientId) return;
     try {
-      const revealTo = clientId;
-      const res = await fetch(`/api/room/state?roomId=${roomId}&revealTo=${revealTo}`);
+      const res = await fetch(`/api/room/state?roomId=${roomId}&revealTo=${clientId}`);
       if (!res.ok) return;
       const json = await res.json();
       const meta = json.meta ?? {};
-      console.debug('[pictonary] fetchRoomState', { roomId, clientId, meta });
       setPlayers(meta.players ?? []);
       setScores(meta.scores ?? {});
-      const drawerId = meta.drawerId;
-      setCurrentDrawerId(drawerId ?? null);
+      const drawerId = meta.drawerId ?? null;
+      setCurrentDrawerId(drawerId);
       setIsDrawer(drawerId === clientId);
-      // Only show the secret word if this tab is the session owner of the drawer role.
-      const isSessionDrawer = sessionStorage.getItem(`drawer:${roomId}`) === clientId;
-      console.debug('[pictonary] fetchRoomState markers', { drawerId, isSessionDrawer, isDrawer: drawerId === clientId });
-      if (meta.word && drawerId === clientId && isSessionDrawer) {
-        setSecretWord(meta.word);
-      } else {
-        setSecretWord(undefined);
-        // if server says someone else is drawer, clear per-tab drawer markers
-        if (drawerId !== clientId) {
-          try { sessionStorage.removeItem(`drawer:${roomId}`); sessionStorage.removeItem(`word:${roomId}`); } catch {}
-        }
-      }
+      // El server solo incluye `word` si somos el dibujante (revealTo === drawerId)
+      setSecretWord(meta.word ?? undefined);
     } catch (err) {
       console.error('Failed fetch room state', err);
     }
-  };
-
+  }, [roomId, clientId]);
 
   useEffect(() => {
     if (!roomId) return;
-    let mounted = true;
     fetchRoomState();
     const iv = setInterval(fetchRoomState, 2000);
-    return () => { mounted = false; clearInterval(iv); };
-  }, [roomId, clientId]);
+    return () => clearInterval(iv);
+  }, [roomId, fetchRoomState]);
 
-  // Profile modal shown even before entering/creating a room
-  const ProfileModal = showProfileModal ? (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-      <div className="bg-white/5 p-6 rounded max-w-md w-full">
-        <h3 className="text-xl font-bold mb-2">Elegí un nickname</h3>
-        <p className="text-sm text-white/70 mb-4">Este nombre se usará en la sala.</p>
-        <input
-          type="text"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-          placeholder="Tu nombre"
-          className="w-full px-3 py-2 rounded mb-3 bg-white/10"
-        />
-        <div className="mb-3">
-          <div className="text-sm mb-1">Elige un avatar (emoji)</div>
-          <div className="flex gap-2">
-            {['🎨','😄','🖌️','🐱','🚀'].map((a) => (
-              <button key={a} onClick={() => setPlayerAvatar(a)} className={`p-2 rounded ${playerAvatar===a? 'bg-emerald-600':''}`}>{a}</button>
-            ))}
-          </div>
-        </div>
-        <div className="flex gap-2 justify-end">
-          <button onClick={() => { if (playerName.trim()) { localStorage.setItem('playerName', playerName); localStorage.setItem('playerAvatar', playerAvatar); setShowProfileModal(false); } }} className="px-3 py-2 bg-emerald-500 rounded">Continuar</button>
-        </div>
-      </div>
-    </div>
-  ) : null;
+  // ── Notificar salida al cerrar / desmontar ─────────────────────
+  useEffect(() => {
+    if (!roomId) return;
+    const onUnload = () => leaveRoom();
+    window.addEventListener('beforeunload', onUnload);
+    window.addEventListener('pagehide', onUnload);
+    return () => {
+      try { leaveRoom(); } catch {}
+      window.removeEventListener('beforeunload', onUnload);
+      window.removeEventListener('pagehide', onUnload);
+    };
+  }, [roomId, leaveRoom]);
 
-  // handle events from SketchBoard
-  const handleNewRound = (payload: any) => {
-    // start round timer and refresh room state immediately
-    setTimeLeft(ROUND_SECONDS);
-    fetchRoomState();
-  };
-
-  const handlePlayerJoin = (payload: any) => {
-    setMessages((prev) => [...prev, `→ ${payload.name} se unió`]);
-  };
-
-  const handleGuess = (payload: string) => {
-    setMessages((prev) => [...prev, payload]);
-  };
-
-  // timer effect
+  // ── Timer de ronda (informativo) ───────────────────────────────
   useEffect(() => {
     if (timeLeft <= 0) return;
     const t = setInterval(() => setTimeLeft((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(t);
   }, [timeLeft]);
 
-  // Notify server when the user closes the tab or navigates away
+  // ── Auto-scroll del chat ───────────────────────────────────────
   useEffect(() => {
-    if (!roomId) return;
-    const onUnload = () => {
-      leaveRoom();
-    };
-    window.addEventListener('beforeunload', onUnload);
-    window.addEventListener('pagehide', onUnload);
-    return () => {
-      // best-effort leave on component unmount
-      try { leaveRoom(); } catch {}
-      window.removeEventListener('beforeunload', onUnload);
-      window.removeEventListener('pagehide', onUnload);
-    };
-  }, [roomId, clientId]);
+    chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' });
+  }, [messages]);
+
+  const pushMessage = useCallback((msg: ChatMsg) => setMessages((prev) => [...prev.slice(-80), msg]), []);
+
+  const handleNewRound = useCallback(() => {
+    setTimeLeft(ROUND_SECONDS);
+    fetchRoomState();
+  }, [fetchRoomState]);
 
   const startNextRound = async () => {
     if (!roomId) return;
     try {
-      const res = await fetch('/api/room/next', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomId }),
-      });
-      if (!res.ok) {
-        console.error('Failed to start next round', await res.text());
-        return;
-      }
-      const json = await res.json();
-      // if we are the drawer, server returns the word
-      if (json.word && json.drawerId === clientId) {
-        setSecretWord(json.word);
-        // mark this tab as the session drawer and store the secret word per-tab
-        sessionStorage.setItem(`drawer:${roomId}`, json.drawerId);
-        sessionStorage.setItem(`word:${roomId}`, json.word);
-        setIsDrawer(true);
-        setCurrentDrawerId(json.drawerId ?? null);
-      } else {
-        setSecretWord(undefined);
-        setIsDrawer(false);
-        setCurrentDrawerId(json.drawerId ?? null);
-      }
-      // start timer locally as well
+      const res = await fetch('/api/room/next', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+      if (!res.ok) { console.error('Failed next round', await res.text()); return; }
       setTimeLeft(ROUND_SECONDS);
+      fetchRoomState();
     } catch (err) {
       console.error('startNextRound error', err);
     }
   };
 
-  if (!roomId) {
-    return (
-      <>
-        {ProfileModal}
-        <div className="flex items-center justify-center h-screen text-white">
-          Cargando sala...
+  const resetRoom = async () => {
+    if (!roomId) return;
+    try {
+      const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
+      if (!res.ok) { console.error('Failed reset', await res.text()); return; }
+      setMessages([]);
+      fetchRoomState();
+    } catch (err) {
+      console.error('reset room error', err);
+    }
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/pictonary?roomId=${roomId}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {}
+  };
+
+  const drawer = players.find((p) => p.id === currentDrawerId);
+  const sortedPlayers = [...players].sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
+
+  // ── Modal de perfil ────────────────────────────────────────────
+  const confirmProfile = () => {
+    if (!playerName.trim()) return;
+    localStorage.setItem('playerName', playerName.trim());
+    localStorage.setItem('playerAvatar', playerAvatar);
+    setShowProfileModal(false);
+  };
+
+  const profileModal = showProfileModal ? (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="glass-card max-w-md w-full">
+        <div className="flex items-center gap-2 text-cyan-400 mb-1">
+          <Palette size={20} />
+          <h3 className="text-xl font-black">Entrá a la sala</h3>
         </div>
-      </>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-900 to-purple-900 p-4 text-white">
-      {ProfileModal}
-      <h1 className="text-3xl font-bold text-center mb-6">🎨 Pictonary</h1>
-
-      {/* Link para compartir */}
-      <div className="text-center mb-4">
-        <p className="text-sm text-white/50">Compartí este link para que adivinen:</p>
-        <code className="text-xs bg-white/10 px-3 py-1 rounded select-all">
-          {typeof window !== 'undefined'
-            ? `${window.location.origin}/pictonary?roomId=${roomId}`
-            : ''}
-        </code>
-        <div className="mt-2">
-          <button
-            onClick={async () => {
-              if (!clientId) return;
-              const name = `Player-${clientId.slice(0,6)}`;
-              try {
-                const res = await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ playerId: clientId, name, avatar: playerAvatar }) });
-                if (!res.ok) {
-                  console.error('Failed to create room', await res.text());
-                  return;
-                }
-                const data = await res.json();
-                setRoomId(data.roomId);
-                sessionStorage.setItem(`drawer:${data.roomId}`, data.drawerId);
-                sessionStorage.setItem(`word:${data.roomId}`, data.word);
-                if (data.drawerId === clientId) {
-                  setIsDrawer(true);
-                  setSecretWord(data.word);
-                }
-                router.replace(`/pictonary?roomId=${data.roomId}`);
-                // ensure we're joined (server already adds player on create, but call join to refresh client state)
-                await fetch('/api/room/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: data.roomId, playerId: clientId, name }) });
-                  await fetch('/api/room/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: data.roomId, playerId: clientId, name, avatar: playerAvatar }) });
-              } catch (err) {
-                console.error('Error creating room', err);
-              }
-            }}
-            className="mt-2 px-3 py-2 bg-emerald-500 rounded text-sm hover:bg-emerald-400"
-          >
-            Crear sala / Ser dibujante
-          </button>
+        <p className="text-sm text-zinc-400 mb-5">Elegí un nombre y un avatar para jugar.</p>
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter' && playerName.trim()) confirmProfile(); }}
+          placeholder="Tu nombre"
+          autoFocus
+          className="w-full px-4 py-3 rounded-xl mb-4 bg-white/5 border border-white/10 focus:outline-none focus:border-cyan-500/50 transition-colors"
+        />
+        <div className="mb-5">
+          <div className="text-xs text-zinc-500 uppercase tracking-widest font-bold mb-2">Avatar</div>
+          <div className="flex flex-wrap gap-2">
+            {AVATARS.map((a) => (
+              <button key={a} onClick={() => setPlayerAvatar(a)} className={`w-11 h-11 text-xl rounded-xl border transition-all ${playerAvatar === a ? 'bg-cyan-500/20 border-cyan-400/50 scale-110' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}>{a}</button>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <aside className="lg:col-span-1 bg-white/5 p-4 rounded">
-          <h3 className="font-bold mb-2">Jugadores</h3>
-          <ul className="space-y-2">
-            {players.map((p) => {
-              const isCurrentDrawer = currentDrawerId && p.id === currentDrawerId;
-              return (
-                <li key={p.id} className={`flex items-center justify-between px-2 py-1 rounded ${isCurrentDrawer ? 'bg-white/6' : ''}`}>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{p.avatar ?? '🎨'}</span>
-                    <span>{p.name}</span>
-                    {isCurrentDrawer && (
-                      <span className="text-xs bg-amber-500 text-amber-900 px-2 py-0.5 rounded-full font-semibold">Dibujante</span>
-                    )}
-                  </div>
-                  <span className="font-mono text-sm">{scores[p.id] ?? 0} pts</span>
-                </li>
-              );
-            })}
-          </ul>
-          <div className="mt-4">
-            <div className="mb-2">Dibujante: <span className="font-semibold">{players.find((p) => p.id === currentDrawerId)?.name ?? '—'}</span></div>
-            <div className="mb-2">Tiempo: <span className="font-mono">{timeLeft}s</span></div>
-            {(() => {
-              // keep button visible if this tab holds the drawer session marker or isDrawer
-              const isSessionDrawer = typeof window !== 'undefined' && roomId ? sessionStorage.getItem(`drawer:${roomId}`) === clientId : false;
-              const showReset = isDrawer || isSessionDrawer;
-              if (showReset) {
-                return (
-                  <div className="flex gap-2">
-                    <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
-                    <button onClick={async () => {
-                      if (!roomId) return;
-                      try {
-                        const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
-                        if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
-                        await fetchRoomState();
-                      } catch (err) { console.error('reset room error', err); }
-                    }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
-                  </div>
-                );
-              }
-
-              const drawerPresent = players.find((p) => p.id === currentDrawerId);
-              if (!drawerPresent) {
-                return (
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm text-zinc-400">No se encuentra el dibujante — cualquiera puede iniciar la ronda.</div>
-                    <div className="flex gap-2">
-                      <button onClick={startNextRound} className="px-3 py-2 bg-cyan-600 rounded">Iniciar Siguiente Ronda</button>
-                      <button onClick={async () => {
-                        if (!roomId) return;
-                        try {
-                          const res = await fetch('/api/room/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId }) });
-                          if (!res.ok) { console.error('Failed to reset room', await res.text()); return; }
-                          await fetchRoomState();
-                        } catch (err) { console.error('reset room error', err); }
-                      }} className="px-3 py-2 bg-rose-600 rounded">Reiniciar Sala</button>
-                    </div>
-                  </div>
-                );
-              }
-
-              return <div className="text-sm text-zinc-400">Esperando al dibujante...</div>;
-            })()}
-          </div>
-        </aside>
-
-        <main className="lg:col-span-3">
-          <SketchBoard
-            roomId={roomId}
-            isDrawer={isDrawer}
-            secretWord={secretWord}
-            onNewRound={handleNewRound}
-            onPlayerJoin={handlePlayerJoin}
-            onGuess={handleGuess}
-          />
-
-          <div className="mt-4 bg-white/5 p-3 rounded max-w-2xl">
-            <h4 className="font-bold mb-2">Chat / Adivinanzas</h4>
-            <div className="h-40 overflow-y-auto space-y-1 text-sm">
-              {messages.map((m, i) => (
-                <div key={i}>📣 {m}</div>
-              ))}
-            </div>
-          </div>
-        </main>
+        <button
+          onClick={confirmProfile}
+          disabled={!playerName.trim()}
+          className="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold transition-colors"
+        >
+          Continuar
+        </button>
       </div>
     </div>
+  ) : null;
+
+  return (
+    <main className="min-h-screen bg-grid text-white p-4 md:p-6">
+      {profileModal}
+      <div className="max-w-6xl mx-auto flex flex-col gap-5">
+
+        {/* HEADER */}
+        <header className="flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm" onClick={() => leaveRoom()}>
+            <ArrowLeft size={16} /> Volver
+          </Link>
+          <div className="flex items-center gap-2">
+            <Palette size={22} className="text-pink-400" />
+            <h1 className="text-2xl font-black tracking-tight">Pictionary</h1>
+          </div>
+          <button onClick={copyLink} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-bold transition-all">
+            {copied ? <><Check size={14} className="text-emerald-400" /> Copiado</> : <><Copy size={14} /> Compartir</>}
+          </button>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+          {/* ASIDE: jugadores + estado */}
+          <aside className="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
+            {/* Estado de ronda */}
+            <div className="cyber-card !p-4">
+              {isDrawer ? (
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-bold mb-1">Te toca dibujar</p>
+                  <p className="text-2xl font-black tracking-tight">{secretWord ?? '…'}</p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1 flex items-center justify-center gap-1"><Eye size={12} /> Adiviná</p>
+                  <p className="text-sm text-zinc-300">Dibuja <span className="font-bold text-pink-400">{drawer?.name ?? '—'}</span></p>
+                </div>
+              )}
+              {timeLeft > 0 && (
+                <div className="mt-3 flex items-center gap-2">
+                  <Clock size={13} className="text-zinc-500 shrink-0" />
+                  <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-cyan-500 to-pink-500 transition-all duration-1000" style={{ width: `${(timeLeft / ROUND_SECONDS) * 100}%` }} />
+                  </div>
+                  <span className="text-[10px] font-mono text-zinc-400 w-7 text-right">{timeLeft}s</span>
+                </div>
+              )}
+            </div>
+
+            {/* Jugadores */}
+            <div className="cyber-card !p-4">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">Jugadores ({players.length})</h3>
+              <ul className="space-y-1.5">
+                {sortedPlayers.map((p) => {
+                  const isCurrentDrawer = p.id === currentDrawerId;
+                  const isMe = p.id === clientId;
+                  return (
+                    <li key={p.id} className={`flex items-center justify-between px-2.5 py-2 rounded-lg ${isCurrentDrawer ? 'bg-amber-400/10 border border-amber-400/20' : 'bg-white/5'}`}>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-lg shrink-0">{p.avatar ?? '🎨'}</span>
+                        <span className="truncate text-sm">{p.name}{isMe && <span className="text-zinc-500"> (vos)</span>}</span>
+                        {isCurrentDrawer && <Crown size={13} className="text-amber-400 shrink-0" />}
+                      </div>
+                      <span className="font-mono text-xs text-zinc-400 shrink-0">{scores[p.id] ?? 0}</span>
+                    </li>
+                  );
+                })}
+                {players.length === 0 && <li className="text-sm text-zinc-500 py-2">Esperando jugadores…</li>}
+              </ul>
+            </div>
+
+            {/* Controles */}
+            <div className="flex flex-col gap-2">
+              <button onClick={startNextRound} className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold transition-colors active:scale-95">
+                <SkipForward size={15} /> Siguiente ronda
+              </button>
+              <button onClick={resetRoom} className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-rose-500/10 hover:border-rose-500/30 hover:text-rose-300 text-zinc-400 text-sm font-bold transition-all active:scale-95">
+                <RotateCcw size={15} /> Reiniciar sala
+              </button>
+            </div>
+          </aside>
+
+          {/* MAIN: canvas + chat */}
+          <section className="lg:col-span-8 xl:col-span-9 flex flex-col gap-4">
+            {roomId && (
+              <SketchBoard
+                roomId={roomId}
+                isDrawer={isDrawer}
+                secretWord={secretWord}
+                onNewRound={handleNewRound}
+                onMessage={pushMessage}
+              />
+            )}
+
+            {/* Chat unificado */}
+            <div className="cyber-card !p-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Chat & adivinanzas</h4>
+              <div ref={chatRef} className="h-40 overflow-y-auto space-y-1 text-sm pr-1 custom-scrollbar">
+                {messages.length === 0 && <p className="text-zinc-600 text-xs italic">Las adivinanzas aparecen acá…</p>}
+                {messages.map((m, i) => {
+                  if (m.kind === 'correct') return <p key={i} className="text-emerald-400 font-semibold">🏆 {m.name} adivinó: <span className="italic">{m.word}</span></p>;
+                  if (m.kind === 'join') return <p key={i} className="text-cyan-400/70 text-xs">→ {m.name} se unió</p>;
+                  if (m.kind === 'leave') return <p key={i} className="text-zinc-500 text-xs">← {m.name} se fue</p>;
+                  if (m.kind === 'system') return <p key={i} className="text-amber-400/70 text-xs italic">{m.text}</p>;
+                  return <p key={i} className="text-zinc-300"><span className="font-bold text-zinc-100">{m.name ?? 'Alguien'}:</span> {m.text}</p>;
+                })}
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
   );
 }
 
 export default function PictonaryPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center h-screen text-white bg-gradient-to-b from-indigo-900 to-purple-900">
-          Cargando...
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="min-h-screen bg-grid flex items-center justify-center text-white">Cargando sala…</div>}>
       <PictonaryContent />
     </Suspense>
   );
