@@ -51,8 +51,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Drawer cannot submit guesses' }, { status: 403 });
       }
 
-      // publish the guess event so others see it
-      await pushEvent({ type, payload, ts: Date.now() });
+      // resolver el nombre del jugador para mostrarlo en el chat
+      const guesser = (meta.players ?? []).find((p: { id: string; name?: string }) => p.id === playerId);
+      const guesserName = guesser?.name ?? 'Alguien';
+
+      // publish the guess event so others see it (con autor)
+      await pushEvent({ type, payload: { playerId, name: guesserName, text: String(payload ?? '') }, ts: Date.now() });
 
       // if guess matches word, increment score and emit correct_guess + new_round events
       const guessStr = String(payload ?? '').trim();
@@ -81,7 +85,7 @@ export async function POST(request: Request) {
         await redis.set(`room:${roomId}`, JSON.stringify(meta));
 
         // emit correct_guess (reporting who guessed what) and then new_round
-        await pushEvent({ type: 'correct_guess', payload: { playerId, word: guessedWord }, ts: Date.now() });
+        await pushEvent({ type: 'correct_guess', payload: { playerId, name: guesserName, word: guessedWord }, ts: Date.now() });
         await pushEvent({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() });
       }
 

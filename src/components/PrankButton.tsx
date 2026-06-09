@@ -1,8 +1,15 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { AlertTriangle, Volume2, Skull, Maximize2, Minimize2, Play } from 'lucide-react'
+import { useState, useRef, useEffect, useMemo } from 'react'
+import {
+  AlertTriangle, Volume2, VolumeX, Maximize2, Minimize2, Play,
+  Search, Star, Keyboard, X, Repeat, Square, Shuffle
+} from 'lucide-react'
 import { motion } from 'framer-motion'
+
+const BIND_KEY = 'botonera:bindings:v1'
+const FAV_KEY = 'botonera:favorites:v1'
+const VOL_KEY = 'botonera:volume:v1'
 
 export default function PrankButton() {
   const [clicked, setClicked] = useState(false)
@@ -11,6 +18,13 @@ export default function PrankButton() {
   const [volume, setVolume] = useState(1)
   const [loop, setLoop] = useState(false)
   const [missingAudios, setMissingAudios] = useState<string[]>([])
+
+  // UX state
+  const [search, setSearch] = useState('')
+  const [showFavOnly, setShowFavOnly] = useState(false)
+  const [favorites, setFavorites] = useState<string[]>([])
+  const [bindings, setBindings] = useState<Record<string, string>>({}) // key -> src
+  const [listeningFor, setListeningFor] = useState<string | null>(null) // src awaiting a key
 
   const audioRefs = useRef<HTMLAudioElement[]>([])
 
@@ -56,7 +70,7 @@ export default function PrankButton() {
     '/oh-no-no-no-tik-tok-song-sound-effect.mp3',
     '/ojhemaflk-omsawt-online-audio-converter.mp3',
     '/paaraaaaa.mp3',
-    '/peter-capusotto-la-comida-sanajaja-mp3cut.mp3',
+    '/peter-capusoto-la-comida-sanajaja-mp3cut.mp3',
     '/podes-ser-tan-pelotudo-viejo.mp3',
     '/ponele-voluntad.mp3',
     '/por-favor-necesito-pito-me-muero.mp3',
@@ -133,7 +147,7 @@ export default function PrankButton() {
     '/van-a-sortear-el-chancho_1wwbxDg.mp3',
     '/oh-my-god-bro-oh-hell-nah-man.mp3',
     '/mercadopago-transferencia-ok.mp3',
-    '/y2mate_7GF5HwI.mp3',
+    '/y2mate_7GF5HwI (1).mp3',
     '/que-rica-cola.mp3',
     '/lo-siento-wilson.mp3',
     '/rizz-sound-effect.mp3',
@@ -155,12 +169,11 @@ export default function PrankButton() {
     '/a-lo-que-yo-vine.mp3',
     '/leche-mucha-leche.mp3',
     '/diego-maradona-eeehhhh.mp3',
-    '/podes-ser-tan-pelotudo-viejo.mp3',
     '/antorcha.mp3',
     '/concha-de-tu-madre-no-soy-yo.mp3',
     '/michael_aaow.mp3',
     '/heeheeee.mp3',
-    '/michael-jackson-auw-mp3',
+    '/michael-jackson-auw.mp3',
     '/oooooohhhh.mp3',
     '/lo-comiste-vos.mp3',
     '/lo-comiste-vos-gordo.mp3',
@@ -178,38 +191,89 @@ export default function PrankButton() {
     '/paquetazo.mp3',
     '/waska-en-la-cara.mp3',
     '/waska-en-la-cara-2.mp3',
-
-
-
-
-
   ]
 
-  // 🔎 Detectar audios faltantes
+  // ── Persistencia ───────────────────────────────────────────────
+  useEffect(() => {
+    try {
+      const b = localStorage.getItem(BIND_KEY)
+      if (b) setBindings(JSON.parse(b))
+      const f = localStorage.getItem(FAV_KEY)
+      if (f) setFavorites(JSON.parse(f))
+      const v = localStorage.getItem(VOL_KEY)
+      if (v !== null) setVolume(Number(v))
+    } catch { /* ignore */ }
+  }, [])
+
+  useEffect(() => {
+    try { localStorage.setItem(BIND_KEY, JSON.stringify(bindings)) } catch {}
+  }, [bindings])
+  useEffect(() => {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(favorites)) } catch {}
+  }, [favorites])
+  useEffect(() => {
+    try { localStorage.setItem(VOL_KEY, String(volume)) } catch {}
+  }, [volume])
+
+  // ── Detectar audios faltantes ──────────────────────────────────
   useEffect(() => {
     const checkAudios = async () => {
       const results = await Promise.all(
         sounds.map(async (s) => {
           try {
-            const res = await fetch(s, { method: 'HEAD' })
+            const res = await fetch(encodeURI(s), { method: 'HEAD' })
             return res.ok ? null : s
           } catch {
             return s
           }
         })
       )
-
       setMissingAudios(results.filter(Boolean) as string[])
     }
-
     checkAudios()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // ── Helpers ────────────────────────────────────────────────────
+  const getLabel = (s: string) => {
+    const base = decodeURIComponent(s)
+      .replace(/^\//, '')
+      .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+    const pretty = base
+      .replace(/_[A-Za-z0-9]{6,}$/g, '')        // colas hash tipo _TlDTm41
+      .replace(/^y2mate[_\s-]*/i, '')
+      .replace(/\b(audiotrimmer|mp3cut|online audio converter|y2save|full hd 1080p)\b/gi, '')
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
+    // si el limpiado agresivo dejó algo vacío, usamos el nombre crudo legible
+    const out = pretty || base.replace(/[_-]+/g, ' ').trim()
+    return out.replace(/^\w/, (c) => c.toUpperCase()) || 'Audio'
+  }
+
+  const prettyKey = (k: string) =>
+    k === ' ' ? 'Space' : k.length === 1 ? k.toUpperCase() : k
+
+  // src -> tecla asignada (para mostrar en el pad)
+  const keyForSound = useMemo(() => {
+    const m: Record<string, string> = {}
+    for (const [k, s] of Object.entries(bindings)) m[s] = k
+    return m
+  }, [bindings])
 
   const validSounds = sounds.filter((s) => !missingAudios.includes(s))
 
-  const getLabel = (s: string) =>
-    s.replace(/\//g, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '').slice(0, 10)
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return sounds.filter((s) => {
+      if (showFavOnly && !favorites.includes(s)) return false
+      if (!q) return true
+      return getLabel(s).toLowerCase().includes(q)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, showFavOnly, favorites, missingAudios])
 
+  // ── Audio ──────────────────────────────────────────────────────
   const playSound = (src: string) => {
     try {
       const audio = new Audio(encodeURI(src))
@@ -224,7 +288,7 @@ export default function PrankButton() {
         audioRefs.current = audioRefs.current.filter((a) => a !== audio)
       }
 
-      audio.play().catch(() => { })
+      audio.play().catch(() => {})
     } catch (err) {
       console.error(err)
     }
@@ -241,165 +305,293 @@ export default function PrankButton() {
 
   const handlePrank = () => {
     setClicked(true)
-    const random = sounds[Math.floor(Math.random() * sounds.length)]
+    const pool = validSounds.length ? validSounds : sounds
+    const random = pool[Math.floor(Math.random() * pool.length)]
     playSound(random)
     setTimeout(() => setClicked(false), 500)
   }
 
-  // keyboard: space or enter triggers main prank when focused; also P key shortcut
+  // ── Favoritos / Teclas ─────────────────────────────────────────
+  const toggleFav = (src: string) =>
+    setFavorites((prev) =>
+      prev.includes(src) ? prev.filter((p) => p !== src) : [...prev, src]
+    )
+
+  const bindKey = (rawKey: string, src: string) => {
+    const key = rawKey.length === 1 ? rawKey.toLowerCase() : rawKey
+    setBindings((prev) => {
+      const next: Record<string, string> = {}
+      // una tecla por sonido y un sonido por tecla
+      for (const [k, s] of Object.entries(prev)) {
+        if (k === key) continue   // libera la tecla de su sonido anterior
+        if (s === src) continue   // libera el sonido de su tecla anterior
+        next[k] = s
+      }
+      next[key] = src
+      return next
+    })
+  }
+
+  const clearBinding = (src: string) =>
+    setBindings((prev) => {
+      const next: Record<string, string> = {}
+      for (const [k, s] of Object.entries(prev)) if (s !== src) next[k] = s
+      return next
+    })
+
+  // ── Teclado global ─────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
-      // Ignore when user is typing in inputs, textareas, selects or contenteditable
       if (target) {
         const tag = target.tagName
         if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable) return
       }
 
-      if (e.key.toLowerCase() === 'p') {
+      // Modo "esperando tecla" para asignar un pad
+      if (listeningFor) {
         e.preventDefault()
-        handlePrank()
+        if (e.key === 'Escape') { setListeningFor(null); return }
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+          clearBinding(listeningFor)
+          setListeningFor(null)
+          return
+        }
+        bindKey(e.key, listeningFor)
+        setListeningFor(null)
+        return
+      }
+
+      // Atajos globales
+      if (e.key === 'Escape') { stopAll(); return }
+
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key
+      const src = bindings[key]
+      if (src && !missingAudios.includes(src)) {
+        e.preventDefault()
+        playSound(src)
       }
     }
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [volume, loop])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bindings, listeningFor, volume, loop, missingAudios])
 
+  // ── UI ─────────────────────────────────────────────────────────
   return (
-    <div className="glass-card !bg-white/5 border-red-500/20 p-8 rounded-2xl relative overflow-hidden min-h-[600px]">
+    <div className={`glass-card !bg-white/5 border-red-500/20 p-5 md:p-8 rounded-2xl relative overflow-hidden ${expanded ? 'min-h-screen' : 'min-h-[600px]'}`}>
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
-      
+
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
         <div className="flex flex-col">
           <div className="flex items-center gap-2 text-red-500 font-black text-xs uppercase tracking-[0.3em] mb-1">
             <AlertTriangle size={16} className="animate-pulse" />
-            <span>MPC Restricted Protocol</span>
+            <span>Botonera MPC</span>
           </div>
-          <p className="text-zinc-500 text-[10px] font-mono">Disparador de frecuencias subsónicas y memes</p>
+          <p className="text-zinc-500 text-[11px] font-mono">
+            Disparador de audios — asigná teclas y reproducí al toque
+          </p>
         </div>
 
-        <div className="flex items-center gap-4">
-           <button
-            onClick={stopAll}
-            className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-[10px] font-black tracking-widest transition-all active:scale-95"
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrank}
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-200 rounded-xl text-[11px] font-black tracking-widest transition-all active:scale-95"
+            title="Reproducir un audio al azar"
           >
-            STOP ALL
+            <Shuffle size={14} /> RANDOM
+          </button>
+          <button
+            onClick={stopAll}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-[11px] font-black tracking-widest transition-all active:scale-95"
+            title="Detener todo (Esc)"
+          >
+            <Square size={13} fill="currentColor" /> STOP
           </button>
           <button
             onClick={() => setExpanded(!expanded)}
             className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-zinc-400 transition-all active:scale-95"
+            title={expanded ? 'Contraer' : 'Expandir'}
           >
             {expanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
           </button>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start">
-        
-        {/* BOTON CENTRAL LEFT */}
-        <div className="flex flex-col items-center gap-8 shrink-0">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handlePrank}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePrank() } }}
-            className="relative cursor-pointer group"
-          >
-            <div className="absolute inset-0 bg-red-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            
-            {clicked && (
-              <>
-                <span className="absolute inset-0 rounded-full border-2 border-red-500/40 animate-ping" />
-                <span className="absolute inset-0 rounded-full border-2 border-red-500/20 animate-ping delay-300" />
-              </>
-            )}
+      {/* TOOLBAR */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        {/* Buscador */}
+        <div className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-xl border border-white/10 flex-grow min-w-[200px] max-w-md focus-within:border-red-500/40 transition-colors">
+          <Search size={15} className="text-zinc-500 shrink-0" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar audio…"
+            className="bg-transparent outline-none text-sm text-zinc-200 placeholder:text-zinc-600 w-full"
+          />
+          {search && (
+            <button onClick={() => setSearch('')} className="text-zinc-500 hover:text-zinc-300">
+              <X size={14} />
+            </button>
+          )}
+        </div>
 
-            <div className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full flex items-center justify-center transition-all duration-500 border-4 shadow-2xl
-              ${clicked
-                ? 'bg-gradient-to-br from-red-500 to-red-900 border-white/40 scale-90 shadow-red-500/50'
-                : 'bg-gradient-to-br from-zinc-800 to-zinc-950 border-white/10 shadow-black group-hover:border-red-500/50'}
-            `}>
-              <div className="absolute inset-4 rounded-full border border-white/5 pointer-events-none" />
-              {clicked
-                ? <Skull size={80} className="text-white drop-shadow-2xl animate-bounce" />
-                : <Volume2 size={70} className="text-red-500/80 group-hover:text-red-500 group-hover:scale-110 transition-all duration-300" />}
-            </div>
-          </motion.div>
+        {/* Favoritos */}
+        <button
+          onClick={() => setShowFavOnly((v) => !v)}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-[11px] font-bold uppercase tracking-widest transition-all ${
+            showFavOnly
+              ? 'bg-amber-400/15 border-amber-400/40 text-amber-300'
+              : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white hover:bg-white/10'
+          }`}
+        >
+          <Star size={14} fill={showFavOnly ? 'currentColor' : 'none'} />
+          {favorites.length > 0 ? `Favoritos (${favorites.length})` : 'Favoritos'}
+        </button>
 
-          <div className="w-full max-w-xs space-y-4">
-             <div className="flex items-center gap-4 px-4 py-3 bg-white/5 rounded-2xl border border-white/10">
-              <Volume2 size={16} className="text-zinc-500" />
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-red-500"
-              />
-              <span className="text-[10px] font-mono text-zinc-500 w-8 text-right">{Math.round(volume * 100)}%</span>
-            </div>
-            
-            <div className="flex justify-between items-center px-4 py-2 bg-white/5 rounded-2xl border border-white/10">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Auto-Loop</span>
+        {/* Volumen */}
+        <div className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-xl border border-white/10 min-w-[160px]">
+          <button onClick={() => setVolume(volume > 0 ? 0 : 1)} className="text-zinc-400 hover:text-white shrink-0">
+            {volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          </button>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-red-500"
+          />
+          <span className="text-[10px] font-mono text-zinc-500 w-8 text-right shrink-0">{Math.round(volume * 100)}%</span>
+        </div>
+
+        {/* Loop */}
+        <button
+          onClick={() => setLoop(!loop)}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-[11px] font-bold uppercase tracking-widest transition-all ${
+            loop
+              ? 'bg-red-500/15 border-red-500/40 text-red-300'
+              : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white hover:bg-white/10'
+          }`}
+          title="Repetir el audio en bucle"
+        >
+          <Repeat size={14} /> Loop
+        </button>
+      </div>
+
+      {/* META LÍNEA */}
+      <div className="flex items-center justify-between mb-4 text-[10px] font-mono">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">
+            {filtered.length} / {sounds.length} audios
+          </span>
+          {Object.keys(bindings).length > 0 && (
+            <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
+              {Object.keys(bindings).length} {Object.keys(bindings).length === 1 ? 'tecla asignada' : 'teclas asignadas'}
+            </span>
+          )}
+          {missingAudios.length > 0 && (
+            <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400">
+              ⚠ {missingAudios.length} offline
+            </span>
+          )}
+        </div>
+        <span className="text-zinc-600 hidden sm:flex items-center gap-1.5">
+          <Keyboard size={12} /> tocá el ⌨ de un pad y apretá una tecla para asignarla
+        </span>
+      </div>
+
+      {/* GRID DE PADS */}
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6 ${expanded ? 'max-h-[calc(100vh-280px)]' : 'max-h-[520px]'}`}>
+        {filtered.map((s) => {
+          const isActive = activePads.includes(s)
+          const isMissing = missingAudios.includes(s)
+          const isFav = favorites.includes(s)
+          const boundKey = keyForSound[s]
+          const isListening = listeningFor === s
+
+          return (
+            <div
+              key={s}
+              className={`group relative rounded-xl border transition-all duration-200 overflow-hidden ${
+                isMissing
+                  ? 'bg-zinc-900/40 border-transparent opacity-25'
+                  : isListening
+                    ? 'bg-cyan-500/15 border-cyan-400/60 ring-2 ring-cyan-400/40'
+                    : isActive
+                      ? 'bg-red-500/20 border-red-500/50 shadow-inner'
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/25 shadow-lg'
+              }`}
+            >
+              {/* Botón principal: reproducir */}
               <button
-                onClick={() => setLoop(!loop)}
-                className={`w-12 h-6 rounded-full transition-all relative ${loop ? 'bg-red-500/40' : 'bg-zinc-800'}`}
+                onClick={() => !isMissing && playSound(s)}
+                disabled={isMissing}
+                className="w-full h-full min-h-[92px] flex flex-col items-center justify-center gap-2 px-2 pt-6 pb-3 disabled:cursor-not-allowed"
+                title={getLabel(s)}
               >
-                <div className={`absolute top-1 w-4 h-4 rounded-full transition-all ${loop ? 'right-1 bg-red-500' : 'left-1 bg-zinc-600'}`} />
+                <Play
+                  size={18}
+                  className={`transition-all ${isActive ? 'text-red-400 scale-125' : 'text-zinc-600 group-hover:text-red-400/80'}`}
+                  fill={isActive ? 'currentColor' : 'none'}
+                />
+                <span className={`text-[10px] leading-tight font-medium text-center line-clamp-2 ${
+                  isActive ? 'text-red-200' : 'text-zinc-400 group-hover:text-zinc-200'
+                }`}>
+                  {getLabel(s)}
+                </span>
               </button>
+
+              {isListening && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-cyan-950/85 backdrop-blur-sm text-center px-2">
+                  <Keyboard size={20} className="text-cyan-300 mb-1 animate-pulse" />
+                  <span className="text-[10px] text-cyan-200 font-bold leading-tight">Apretá una tecla</span>
+                  <span className="text-[8px] text-cyan-400/70 mt-1">Esc cancela · Supr borra</span>
+                </div>
+              )}
+
+              {!isMissing && (
+                <>
+                  {/* Favorito */}
+                  <button
+                    onClick={() => toggleFav(s)}
+                    className={`absolute top-1.5 left-1.5 z-10 p-1 rounded-md transition-all ${
+                      isFav
+                        ? 'text-amber-400'
+                        : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-amber-400'
+                    }`}
+                    title={isFav ? 'Quitar de favoritos' : 'Marcar como favorito'}
+                  >
+                    <Star size={13} fill={isFav ? 'currentColor' : 'none'} />
+                  </button>
+
+                  {/* Asignar / mostrar tecla */}
+                  <button
+                    onClick={() => setListeningFor(isListening ? null : s)}
+                    className={`absolute top-1.5 right-1.5 z-10 min-w-[20px] h-5 px-1 rounded-md text-[10px] font-bold flex items-center justify-center transition-all ${
+                      boundKey
+                        ? 'bg-cyan-500/20 border border-cyan-400/50 text-cyan-300'
+                        : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-cyan-300 border border-transparent'
+                    }`}
+                    title={boundKey ? `Tecla: ${prettyKey(boundKey)} (click para cambiar)` : 'Asignar tecla'}
+                  >
+                    {boundKey ? prettyKey(boundKey) : <Keyboard size={12} />}
+                  </button>
+                </>
+              )}
             </div>
+          )
+        })}
+
+        {filtered.length === 0 && (
+          <div className="col-span-full py-16 text-center text-zinc-500 text-sm">
+            No hay audios que coincidan con “{search}”.
           </div>
-        </div>
-
-        {/* GRID RIGHT */}
-        <div className="flex-grow w-full">
-          <div className="flex items-center justify-between mb-6">
-             <div className="flex items-center gap-3">
-              <h4 className="text-sm font-bold text-zinc-300 uppercase tracking-widest">Sound Library</h4>
-              <span className="px-2 py-0.5 rounded bg-white/5 text-[9px] text-zinc-500 border border-white/5">{validSounds.length} SAMPLES</span>
-            </div>
-            {missingAudios.length > 0 && (
-              <span className="text-[9px] text-amber-500/80 font-mono">⚠️ {missingAudios.length} OFFLINE</span>
-            )}
-          </div>
-
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar pb-10">
-            {sounds.map((s, idx) => {
-              const isActive = activePads.includes(s)
-              const isMissing = missingAudios.includes(s)
-
-              return (
-                <button
-                  key={s}
-                  onClick={() => !isMissing && playSound(s)}
-                  disabled={isMissing}
-                  className={`group relative aspect-square rounded-xl transition-all duration-200 border flex flex-col items-center justify-center gap-2
-                    ${isMissing ? 'bg-zinc-900/40 border-transparent opacity-20 cursor-not-allowed' : 
-                      isActive ? 'bg-red-500/20 border-red-500/50 scale-95 shadow-inner' : 
-                      'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20 active:scale-95 shadow-lg'}
-                  `}
-                >
-                  <Play size={16} className={`${isActive ? 'text-red-400 scale-125' : 'text-zinc-600 group-hover:text-red-400/70'} transition-all`} fill={isActive ? "currentColor" : "none"} />
-                  <span className={`text-[8px] font-mono uppercase tracking-tighter text-center px-1 line-clamp-1 ${isActive ? 'text-red-300 font-bold' : 'text-zinc-600 group-hover:text-zinc-400'}`}>
-                    {getLabel(s)}
-                  </span>
-
-                  {idx < 9 && !isMissing && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-md bg-zinc-800 border border-white/10 text-[8px] flex items-center justify-center text-zinc-500 font-bold">
-                      {idx + 1}
-                    </div>
-                  )}
-                </button>
-              )
-            })}
-          </div>
-        </div>
+        )}
       </div>
 
       {clicked && (
