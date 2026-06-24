@@ -191,6 +191,10 @@ export default function PrankButton() {
     '/paquetazo.mp3',
     '/waska-en-la-cara.mp3',
     '/waska-en-la-cara-2.mp3',
+    '/burp-fart.mp3',
+    '/long-brain-fart.mp3',
+    '/dry-fart.mp3',
+    '/fart-with-reverb.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────

@@ -8,6 +8,15 @@ export type ChatMsg = {
   word?: string;
 };
 
+type Stroke = {
+  nx?: number; ny?: number;   // coordenadas normalizadas 0..1 (preferidas)
+  x?: number; y?: number;     // coordenadas absolutas legacy (fallback)
+  color?: string;
+  size?: number;
+  begin?: boolean;
+  playerId?: string;
+};
+
 interface SketchBoardProps {
   roomId: string;
   isDrawer: boolean;
@@ -89,16 +98,23 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId]);
 
-  const drawRemote = (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean }) => {
-    const ctx = canvasRef.current?.getContext('2d');
-    if (!ctx) return;
+  const drawRemote = (stroke: Stroke) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    // Coordenadas normalizadas (0..1) escaladas al tamaño de ESTE canvas, así
+    // el dibujo se ve igual aunque las ventanas tengan distinto ancho.
+    // Fallback a coords absolutas legacy si el trazo viejo no trae nx/ny.
+    const x = stroke.nx != null ? stroke.nx * rect.width : (stroke.x ?? 0);
+    const y = stroke.ny != null ? stroke.ny * rect.height : (stroke.y ?? 0);
     ctx.strokeStyle = stroke.color ?? '#000';
     ctx.lineWidth = stroke.size ?? 4;
     if (stroke.begin) {
       ctx.beginPath();
-      ctx.moveTo(stroke.x, stroke.y);
+      ctx.moveTo(x, y);
     } else {
-      ctx.lineTo(stroke.x, stroke.y);
+      ctx.lineTo(x, y);
       ctx.stroke();
     }
   };
@@ -132,14 +148,16 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
 
   const startDrawing = (clientX: number, clientY: number) => {
     if (!isDrawer) return;
+    const canvas = canvasRef.current!;
     const { x, y } = getCanvasPos(clientX, clientY);
-    const ctx = canvasRef.current!.getContext('2d')!;
+    const rect = canvas.getBoundingClientRect();
+    const ctx = canvas.getContext('2d')!;
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
     const playerId = localStorage.getItem('clientId') ?? '';
-    publish({ x, y, color, size, begin: true, playerId }, 'stroke');
+    publish({ nx: x / rect.width, ny: y / rect.height, color, size, begin: true, playerId }, 'stroke');
     drawingRef.current = true;
   };
 
@@ -147,12 +165,14 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
 
   const moveDrawing = (clientX: number, clientY: number) => {
     if (!isDrawer || !drawingRef.current) return;
+    const canvas = canvasRef.current!;
     const { x, y } = getCanvasPos(clientX, clientY);
-    const ctx = canvasRef.current!.getContext('2d')!;
+    const rect = canvas.getBoundingClientRect();
+    const ctx = canvas.getContext('2d')!;
     ctx.lineTo(x, y);
     ctx.stroke();
     const playerId = localStorage.getItem('clientId') ?? '';
-    publish({ x, y, color, size, begin: false, playerId }, 'stroke');
+    publish({ nx: x / rect.width, ny: y / rect.height, color, size, begin: false, playerId }, 'stroke');
   };
 
   const handleMouseDown = (e: React.MouseEvent) => startDrawing(e.clientX, e.clientY);
@@ -162,7 +182,7 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   const handleTouchMove = (e: React.TouchEvent) => { if (!e.touches.length) return; e.preventDefault(); moveDrawing(e.touches[0].clientX, e.touches[0].clientY); };
   const handleTouchEnd = () => stopDrawing();
 
-  const publish = async (stroke: { x: number; y: number; color?: string; size?: number; begin?: boolean; playerId?: string }, type = 'stroke') => {
+  const publish = async (stroke: Stroke, type = 'stroke') => {
     await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
