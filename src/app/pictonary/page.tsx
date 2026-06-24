@@ -26,7 +26,7 @@ function PictonaryContent() {
   const [playerAvatar, setPlayerAvatar] = useState<string>('🎨');
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [copied, setCopied] = useState(false);
-  const joinedRef = useRef(false);
+  const leavingRef = useRef(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
   // ── Identidad persistente del cliente ──────────────────────────
@@ -44,9 +44,10 @@ function PictonaryContent() {
     if (!storedName) setShowProfileModal(true);
   }, []);
 
-  // ── Salir de la sala (best-effort en unload) ───────────────────
+  // ── Salir de la sala (SOLO en cierre real de pestaña o al tocar "Volver") ──
   const leaveRoom = useCallback(() => {
-    if (!roomId || !clientId || !joinedRef.current) return;
+    if (!roomId || !clientId) return;
+    leavingRef.current = true;
     const payload = JSON.stringify({ roomId, playerId: clientId });
     try {
       if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
@@ -54,40 +55,38 @@ function PictonaryContent() {
       } else {
         fetch('/api/room/leave', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(() => {});
       }
-      joinedRef.current = false;
     } catch (err) {
       console.error('leaveRoom failed', err);
     }
   }, [roomId, clientId]);
 
-  // ── Unirse a la sala (roomId viene de la URL, normalmente 'public') ──
+  // ── Unirse a la sala (idempotente: el server solo agrega si no estás) ──
+  const ensureJoined = useCallback(async (rId: string) => {
+    if (leavingRef.current || !clientId || !playerName) return;
+    try {
+      await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: rId }) });
+      const res = await fetch('/api/room/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomId: rId, playerId: clientId, name: playerName, avatar: playerAvatar }),
+      });
+      if (!res.ok) { console.error('join failed', await res.text()); return; }
+      const json = await res.json();
+      setPlayers(json.meta?.players ?? []);
+      setScores(json.meta?.scores ?? {});
+      setCurrentDrawerId(json.meta?.drawerId ?? null);
+    } catch (err) {
+      console.error('ensureJoined error', err);
+    }
+  }, [clientId, playerName, playerAvatar]);
+
+  // Determinar la sala desde la URL (normalmente 'public') y entrar
   useEffect(() => {
     const existingRoom = searchParams?.get('roomId') ?? 'public';
     if (!clientId || !playerName) return;
     setRoomId(existingRoom);
-
-    if (joinedRef.current) return;
-    joinedRef.current = true;
-    (async () => {
-      try {
-        // asegurar que la sala exista
-        await fetch('/api/room', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId: existingRoom }) });
-        const res = await fetch('/api/room/join', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ roomId: existingRoom, playerId: clientId, name: playerName, avatar: playerAvatar }),
-        });
-        if (!res.ok) { console.error('Failed to join room', await res.text()); joinedRef.current = false; return; }
-        const json = await res.json();
-        setPlayers(json.meta?.players ?? []);
-        setScores(json.meta?.scores ?? {});
-        setCurrentDrawerId(json.meta?.drawerId ?? null);
-      } catch (err) {
-        console.error('Error joining room', err);
-        joinedRef.current = false;
-      }
-    })();
-  }, [searchParams, clientId, playerName, playerAvatar]);
+    ensureJoined(existingRoom);
+  }, [searchParams, clientId, playerName, ensureJoined]);
 
   // ── Poll del estado de la sala (fuente de verdad) ──────────────
   const fetchRoomState = useCallback(async () => {
@@ -97,17 +96,23 @@ function PictonaryContent() {
       if (!res.ok) return;
       const json = await res.json();
       const meta = json.meta ?? {};
-      setPlayers(meta.players ?? []);
+      const playerList: Player[] = meta.players ?? [];
+      setPlayers(playerList);
       setScores(meta.scores ?? {});
       const drawerId = meta.drawerId ?? null;
       setCurrentDrawerId(drawerId);
       setIsDrawer(drawerId === clientId);
       // El server solo incluye `word` si somos el dibujante (revealTo === drawerId)
       setSecretWord(meta.word ?? undefined);
+      // Auto-reincorporación: si quedé fuera de la sala (StrictMode, reinicio
+      // del server, limpieza de fantasmas), me re-uno solo.
+      if (!leavingRef.current && clientId && !playerList.some((p) => p.id === clientId)) {
+        ensureJoined(roomId);
+      }
     } catch (err) {
       console.error('Failed fetch room state', err);
     }
-  }, [roomId, clientId]);
+  }, [roomId, clientId, ensureJoined]);
 
   useEffect(() => {
     if (!roomId) return;
@@ -122,8 +127,10 @@ function PictonaryContent() {
     const onUnload = () => leaveRoom();
     window.addEventListener('beforeunload', onUnload);
     window.addEventListener('pagehide', onUnload);
+    // OJO: NO llamamos leaveRoom en el cleanup de React. Un desmontaje
+    // (StrictMode, re-render, navegación SPA) no debe sacarte de la sala;
+    // sólo el cierre real de la pestaña o el botón "Volver".
     return () => {
-      try { leaveRoom(); } catch {}
       window.removeEventListener('beforeunload', onUnload);
       window.removeEventListener('pagehide', onUnload);
     };
