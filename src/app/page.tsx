@@ -17,7 +17,6 @@ import PointsBoard from '@/components/PointsBoard'
 import TextToSpeech from '@/components/TextToSpeech'
 import Buscaminas from '@/components/Buscaminas'
 import MorseCoder from '@/components/MorseCoder'
-import Countdown from '@/components/Countdown'
 
 type TabType = 'mpc' | 'office'
 
@@ -60,9 +59,6 @@ export default function Home() {
             Core v2.4
           </div>
         </header>
-
-        {/* Countdown Mundial 2026 */}
-        <Countdown />
 
         {/* NAVIGATION (2 secciones) */}
         <nav className="nav-blur sticky top-4 z-50">
