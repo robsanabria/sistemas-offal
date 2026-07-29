@@ -22,15 +22,14 @@ type TabType = 'mpc' | 'office'
 
 function SectionHeader({ icon: Icon, title, subtitle }: { icon: React.ElementType; title: string; subtitle: string }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <div className="p-2 rounded-xl bg-white/5 border border-white/10 text-cyan-400">
+    <div className="flex items-center gap-3 mb-6">
+      <div className="p-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-cyan-400">
         <Icon size={18} />
       </div>
       <div>
-        <h2 className="text-base font-bold tracking-tight text-zinc-100 uppercase">{title}</h2>
-        <p className="text-[11px] text-zinc-500 font-mono">{subtitle}</p>
+        <h2 className="text-[15px] font-semibold tracking-tight text-zinc-100">{title}</h2>
+        <p className="text-xs text-zinc-500">{subtitle}</p>
       </div>
-      <div className="flex-grow h-px bg-gradient-to-r from-white/10 to-transparent ml-2" />
     </div>
   )
 }
@@ -43,43 +42,50 @@ export default function Home() {
     <main className="min-h-screen bg-grid py-5 px-4 md:px-8 font-sans">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
 
-        {/* HEADER (compacto) */}
-        <header className="flex items-center justify-between gap-4 pt-1">
-          <div className="flex items-center gap-3">
-            <img src="/cow.png" alt="" className="w-9 h-9 rounded-lg object-cover hidden sm:block" />
-            <div>
-              <h1 className="text-2xl md:text-3xl font-black tracking-tightest leading-none">
-                SISTEMICOS <span className="gradient-text">OFFAL</span>
-              </h1>
-              <p className="text-zinc-500 text-[11px] md:text-xs">Botonera y herramientas de oficina</p>
+        {/* TOP BAR (Clean SaaS) */}
+        <header className="sticky top-0 z-50 py-3 backdrop-blur-md bg-[#0d1524]/85 border-b border-white/10 flex items-center justify-between gap-4">
+          {/* Marca */}
+          <div className="flex items-center gap-2.5">
+            <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
+            <div className="leading-tight">
+              <div className="text-[15px] font-bold tracking-tight">
+                Sistémicos <span className="text-cyan-400">Offal</span>
+              </div>
+              <div className="text-zinc-500 text-[10px] hidden sm:block">Herramientas de oficina</div>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-widest text-cyan-400 uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Core v2.4
+
+          {/* Navegación segmentada */}
+          <nav className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10">
+            {[
+              { id: 'mpc', label: 'Botonera', icon: Music },
+              { id: 'office', label: 'Oficina', icon: LayoutGrid },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as TabType)}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                <tab.icon size={16} className={activeTab === tab.id ? 'text-cyan-400' : ''} />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+
+          {/* Estado + avatar */}
+          <div className="flex items-center gap-3">
+            <span className="hidden md:flex items-center gap-1.5 text-[10px] text-zinc-500 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> online
+            </span>
+            <div className="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[11px] font-bold text-zinc-300">
+              RS
+            </div>
           </div>
         </header>
-
-        {/* NAVIGATION (2 secciones) */}
-        <nav className="nav-blur sticky top-4 z-50">
-          {[
-            { id: 'mpc', label: 'Botonera', icon: Music },
-            { id: 'office', label: 'Oficina', icon: LayoutGrid },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as TabType)}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
-                activeTab === tab.id
-                  ? 'bg-white/10 text-white shadow-inner border border-white/20'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
-              }`}
-            >
-              <tab.icon size={18} className={activeTab === tab.id ? 'text-cyan-400' : ''} />
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </nav>
 
         {/* CONTENT */}
         <div className="relative min-h-[60vh] pb-16">
@@ -182,17 +188,12 @@ export default function Home() {
         </div>
 
         {/* FOOTER */}
-        <footer className="py-6 mt-auto border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 opacity-60 hover:opacity-100 transition-opacity">
-          <div className="flex items-center gap-3 text-zinc-400 font-mono text-[11px] uppercase tracking-wider">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Core Protocol Stable</span>
-            <span className="text-zinc-600">|</span>
-            <span>Ref: {new Date().getFullYear()}</span>
+        <footer className="py-6 mt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-3 text-zinc-500 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>Sistémicos Offal · {new Date().getFullYear()}</span>
           </div>
-          <div className="flex gap-6 text-zinc-500 text-[11px] font-mono">
-            <span className="hover:text-cyan-400 transition-colors cursor-default">SISTEMA NOMINAL</span>
-            <span className="text-zinc-700">@ROBSANABRIA</span>
-          </div>
+          <span className="text-zinc-600">@ROBSANABRIA</span>
         </footer>
 
       </div>
