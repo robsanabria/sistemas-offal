@@ -11,6 +11,33 @@ const BIND_KEY = 'botonera:bindings:v1'
 const FAV_KEY = 'botonera:favorites:v1'
 const VOL_KEY = 'botonera:volume:v1'
 
+// ── Categorías (color por tipo de audio) ─────────────────────────
+type Category = { id: string; label: string; color: string }
+
+const CATEGORIES: Record<string, Category> = {
+  frases:  { id: 'frases',  label: 'Frases',  color: '#38bdf8' }, // cyan (default)
+  futbol:  { id: 'futbol',  label: 'Fútbol',  color: '#4ade80' }, // verde
+  famosos: { id: 'famosos', label: 'Famosos', color: '#f472b6' }, // rosa
+  memes:   { id: 'memes',   label: 'Memes',   color: '#fbbf24' }, // ámbar
+  fx:      { id: 'fx',      label: 'FX',      color: '#f87171' }, // rojo
+  oficina: { id: 'oficina', label: 'Oficina', color: '#a78bfa' }, // violeta
+}
+
+// Reglas en orden de prioridad: la primera que matchea gana. El resto cae en "frases".
+const CATEGORY_RULES: { cat: string; kws: RegExp }[] = [
+  { cat: 'fx',      kws: /fart|pedo|mear|burp|aplauso|latigo|antorcha|sirena|impacto|waska|paquetazo|reverb|sound-effect|gemid|troll|rizz/i },
+  { cat: 'futbol',  kws: /boca|river|messi|maradona|\bgol\b|faraona|dibu|getafe/i },
+  { cat: 'oficina', kws: /andrea|oscar|abel|inunda|choripan|revivan-el-server|buenas-tardes-grupo|buenos-dias-estrellitas|andas-con-frio/i },
+  { cat: 'famosos', kws: /fort|ricardo|moria|capusot|pappo|jelinek|milei|oriana|junco|jovani|nadia|chabona|canosa|michael|jackson|bieber|nestor|soraya|nelson|homero|karina|aristoteles|manteca-alonso|pendejita|trambolico|ciruja/i },
+  { cat: 'memes',   kws: /meme|tiktok|oh-my-god|oh-no|gogogo|omg|despacito|bgc|hell-nah|mercadopago|y2mate|nuevo-sonido/i },
+]
+
+function categoryFor(src: string): Category {
+  const s = decodeURIComponent(src).toLowerCase()
+  for (const r of CATEGORY_RULES) if (r.kws.test(s)) return CATEGORIES[r.cat]
+  return CATEGORIES.frases
+}
+
 export default function PrankButton() {
   const [clicked, setClicked] = useState(false)
   const [activePads, setActivePads] = useState<string[]>([])
@@ -195,6 +222,10 @@ export default function PrankButton() {
     '/long-brain-fart.mp3',
     '/dry-fart.mp3',
     '/fart-with-reverb.mp3',
+    '/gano-boca.mp3',
+    '/gano-river.mp3',
+    '/gallinas-de-rodrigo.mp3',
+    '/quiero-drogarme.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────
@@ -509,6 +540,16 @@ export default function PrankButton() {
         </span>
       </div>
 
+      {/* LEYENDA DE CATEGORÍAS */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-4">
+        {Object.values(CATEGORIES).map((c) => (
+          <span key={c.id} className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500">
+            <span className="w-2 h-2 rounded-full" style={{ background: c.color }} />
+            {c.label}
+          </span>
+        ))}
+      </div>
+
       {/* GRID DE PADS */}
       <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6 ${expanded ? 'max-h-[calc(100vh-280px)]' : 'max-h-[520px]'}`}>
         {filtered.map((s) => {
@@ -517,38 +558,73 @@ export default function PrankButton() {
           const isFav = favorites.includes(s)
           const boundKey = keyForSound[s]
           const isListening = listeningFor === s
+          const cat = categoryFor(s)
 
           return (
             <div
               key={s}
+              style={!isMissing ? { borderColor: isActive ? cat.color : undefined } : undefined}
               className={`group relative rounded-xl border transition-all duration-200 overflow-hidden ${
                 isMissing
                   ? 'bg-zinc-900/40 border-transparent opacity-25'
                   : isListening
                     ? 'bg-cyan-500/15 border-cyan-400/60 ring-2 ring-cyan-400/40'
                     : isActive
-                      ? 'bg-red-500/20 border-red-500/50 shadow-inner'
-                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/25 shadow-lg'
+                      ? 'bg-white/[0.07] shadow-inner'
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/25 shadow-lg hover:-translate-y-0.5'
               }`}
             >
+              {/* Franja de color (categoría) */}
+              {!isMissing && (
+                <div
+                  className="absolute top-0 left-0 h-1 w-full z-10"
+                  style={{ background: cat.color, opacity: isActive ? 1 : 0.85 }}
+                />
+              )}
+
+              {/* Glow inferior (categoría) — visible al hover y fijo al reproducir */}
+              {!isMissing && (
+                <div
+                  aria-hidden
+                  className={`absolute inset-0 pointer-events-none transition-opacity duration-200 ${
+                    isActive ? 'opacity-25' : 'opacity-0 group-hover:opacity-20'
+                  }`}
+                  style={{ background: `radial-gradient(120% 55% at 50% 125%, ${cat.color}, transparent 70%)` }}
+                />
+              )}
+
               {/* Botón principal: reproducir */}
               <button
                 onClick={() => !isMissing && playSound(s)}
                 disabled={isMissing}
-                className="w-full h-full min-h-[92px] flex flex-col items-center justify-center gap-2 px-2 pt-6 pb-3 disabled:cursor-not-allowed"
-                title={getLabel(s)}
+                className="relative z-10 w-full h-full min-h-[96px] flex flex-col items-center justify-center gap-2 px-2 pt-6 pb-4 disabled:cursor-not-allowed"
+                title={`${getLabel(s)} · ${cat.label}`}
               >
                 <Play
                   size={18}
-                  className={`transition-all ${isActive ? 'text-red-400 scale-125' : 'text-zinc-600 group-hover:text-red-400/80'}`}
+                  className={`transition-all ${isActive ? 'scale-125' : 'opacity-60 group-hover:opacity-100'}`}
+                  style={{ color: cat.color }}
                   fill={isActive ? 'currentColor' : 'none'}
                 />
                 <span className={`text-[10px] leading-tight font-medium text-center line-clamp-2 ${
-                  isActive ? 'text-red-200' : 'text-zinc-400 group-hover:text-zinc-200'
+                  isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
                 }`}>
                   {getLabel(s)}
                 </span>
               </button>
+
+              {/* LED de categoría */}
+              {!isMissing && (
+                <span
+                  aria-hidden
+                  className="absolute bottom-1.5 left-1.5 z-10 w-1.5 h-1.5 rounded-full transition-all"
+                  style={{
+                    background: cat.color,
+                    boxShadow: isActive ? `0 0 8px ${cat.color}` : 'none',
+                    opacity: isActive ? 1 : 0.55,
+                  }}
+                />
+              )}
 
               {isListening && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-cyan-950/85 backdrop-blur-sm text-center px-2">
@@ -563,7 +639,7 @@ export default function PrankButton() {
                   {/* Favorito */}
                   <button
                     onClick={() => toggleFav(s)}
-                    className={`absolute top-1.5 left-1.5 z-10 p-1 rounded-md transition-all ${
+                    className={`absolute top-1.5 left-1.5 z-20 p-1 rounded-md transition-all ${
                       isFav
                         ? 'text-amber-400'
                         : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-amber-400'
@@ -576,14 +652,17 @@ export default function PrankButton() {
                   {/* Asignar / mostrar tecla */}
                   <button
                     onClick={() => setListeningFor(isListening ? null : s)}
-                    className={`absolute top-1.5 right-1.5 z-10 min-w-[20px] h-5 px-1 rounded-md text-[10px] font-bold flex items-center justify-center transition-all ${
+                    className="absolute top-1.5 right-1.5 z-20 min-w-[20px] h-5 px-1 rounded-md text-[10px] font-bold flex items-center justify-center transition-all border"
+                    style={
                       boundKey
-                        ? 'bg-cyan-500/20 border border-cyan-400/50 text-cyan-300'
-                        : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-cyan-300 border border-transparent'
-                    }`}
+                        ? { color: cat.color, borderColor: cat.color, background: `${cat.color}22` }
+                        : { borderColor: 'transparent' }
+                    }
                     title={boundKey ? `Tecla: ${prettyKey(boundKey)} (click para cambiar)` : 'Asignar tecla'}
                   >
-                    {boundKey ? prettyKey(boundKey) : <Keyboard size={12} />}
+                    <span className={boundKey ? '' : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-cyan-300'}>
+                      {boundKey ? prettyKey(boundKey) : <Keyboard size={12} />}
+                    </span>
                   </button>
                 </>
               )}
