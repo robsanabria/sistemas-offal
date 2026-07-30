@@ -49,6 +49,9 @@ const CATEGORY_OVERRIDES: Record<string, string> = {
   'pistola': 'fx', 'mordisco': 'fx', 'buzzer-error': 'fx', 'celebracion': 'fx',
   'tirar-la-cadena': 'fx', 'pajaritos': 'fx', 'laser-dancehall': 'fx', 'matasuegras': 'fx',
   'amoladora': 'fx',
+  // Frases / memes / famosos (tanda extra)
+  'ejjhe': 'memes', 'ah-basura': 'memes', 'zapla-wacha': 'memes',
+  'respeta-las-figuras': 'famosos', 'gola-de-argentina': 'futbol',
 }
 
 function categoryFor(src: string): Category {
@@ -295,6 +298,11 @@ export default function PrankButton() {
     '/laser-dancehall.mp3',
     '/matasuegras.mp3',
     '/amoladora.mp3',
+    '/ejjhe.mp3',
+    '/ah-basura.mp3',
+    '/respeta-las-figuras.mp3',
+    '/gola-de-argentina.mp3',
+    '/zapla-wacha.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────
