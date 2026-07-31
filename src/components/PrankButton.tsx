@@ -32,8 +32,32 @@ const CATEGORY_RULES: { cat: string; kws: RegExp }[] = [
   { cat: 'memes',   kws: /meme|tiktok|oh-my-god|oh-no|gogogo|omg|despacito|bgc|hell-nah|mercadopago|y2mate|nuevo-sonido/i },
 ]
 
+// Overrides explícitos por nombre de archivo (para la tanda de efectos/memes).
+const CATEGORY_OVERRIDES: Record<string, string> = {
+  // Memes / voces
+  'teletransporte-dragon-ball': 'memes', 'anime-wow': 'memes', 'daddy-chill': 'memes',
+  'alerta-metal-gear': 'memes', 'resbalon-de-goofy': 'memes', 'fierro-cayendo': 'memes',
+  'aughhh': 'memes', 'hey-mujer': 'memes', 'nerd': 'memes', 'okay-vamos': 'memes',
+  // FX / ruidos
+  'alarma-roja': 'fx', 'campana-de-box': 'fx', 'acorde': 'fx', 'risa-malvada': 'fx',
+  'puerta': 'fx', 'escopeta': 'fx', 'escopeta-2': 'fx', 'fanfarria': 'fx',
+  'chicos-festejando': 'fx', 'pedo-con-beso': 'fx', 'desaparecer': 'fx', 'pacman-blinky': 'fx',
+  'toque-caricatura': 'fx', 'notificacion-windows': 'fx', 'ack': 'fx', 'diarrea-nuclear': 'fx',
+  'eructo-con-pedo': 'fx', 'golpe': 'fx', 'boing': 'fx', 'mordida-caricatura': 'fx',
+  'granada-flash': 'fx', 'ak47': 'fx', 'vaca-muu': 'fx', 'aplausos-boton': 'fx',
+  'pedo-meme': 'fx', 'golpean-la-puerta': 'fx', 'suspenso': 'fx', 'risa-de-nena': 'fx',
+  'pistola': 'fx', 'mordisco': 'fx', 'buzzer-error': 'fx', 'celebracion': 'fx',
+  'tirar-la-cadena': 'fx', 'pajaritos': 'fx', 'laser-dancehall': 'fx', 'matasuegras': 'fx',
+  'amoladora': 'fx',
+  // Frases / memes / famosos (tanda extra)
+  'ejjhe': 'memes', 'ah-basura': 'memes', 'zapla-wacha': 'memes',
+  'respeta-las-figuras': 'famosos', 'gola-de-argentina': 'futbol',
+}
+
 function categoryFor(src: string): Category {
   const s = decodeURIComponent(src).toLowerCase()
+  const base = s.replace(/^\//, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
+  if (CATEGORY_OVERRIDES[base]) return CATEGORIES[CATEGORY_OVERRIDES[base]]
   for (const r of CATEGORY_RULES) if (r.kws.test(s)) return CATEGORIES[r.cat]
   return CATEGORIES.frases
 }
@@ -226,6 +250,59 @@ export default function PrankButton() {
     '/gano-river.mp3',
     '/gallinas-de-rodrigo.mp3',
     '/quiero-drogarme.mp3',
+    // Efectos y memes (tanda 2026)
+    '/alarma-roja.mp3',
+    '/campana-de-box.mp3',
+    '/acorde.mp3',
+    '/risa-malvada.mp3',
+    '/puerta.mp3',
+    '/escopeta-2.mp3',
+    '/escopeta.mp3',
+    '/fanfarria.mp3',
+    '/chicos-festejando.mp3',
+    '/pedo-con-beso.mp3',
+    '/teletransporte-dragon-ball.mp3',
+    '/desaparecer.mp3',
+    '/pacman-blinky.mp3',
+    '/toque-caricatura.mp3',
+    '/notificacion-windows.mp3',
+    '/anime-wow.mp3',
+    '/ack.mp3',
+    '/daddy-chill.mp3',
+    '/diarrea-nuclear.mp3',
+    '/eructo-con-pedo.mp3',
+    '/alerta-metal-gear.mp3',
+    '/golpe.mp3',
+    '/boing.mp3',
+    '/mordida-caricatura.mp3',
+    '/granada-flash.mp3',
+    '/ak47.mp3',
+    '/vaca-muu.mp3',
+    '/aplausos-boton.mp3',
+    '/pedo-meme.mp3',
+    '/resbalon-de-goofy.mp3',
+    '/golpean-la-puerta.mp3',
+    '/fierro-cayendo.mp3',
+    '/suspenso.mp3',
+    '/risa-de-nena.mp3',
+    '/pistola.mp3',
+    '/aughhh.mp3',
+    '/mordisco.mp3',
+    '/buzzer-error.mp3',
+    '/celebracion.mp3',
+    '/hey-mujer.mp3',
+    '/nerd.mp3',
+    '/tirar-la-cadena.mp3',
+    '/okay-vamos.mp3',
+    '/pajaritos.mp3',
+    '/laser-dancehall.mp3',
+    '/matasuegras.mp3',
+    '/amoladora.mp3',
+    '/ejjhe.mp3',
+    '/ah-basura.mp3',
+    '/respeta-las-figuras.mp3',
+    '/gola-de-argentina.mp3',
+    '/zapla-wacha.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────
