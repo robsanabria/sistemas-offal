@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect, useMemo, type CSSProperties } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import {
   AlertTriangle, Volume2, VolumeX, Maximize2, Minimize2, Play,
-  Search, Star, Heart, Keyboard, X, Repeat, Square, Shuffle
+  Search, Star, Keyboard, X, Repeat, Square, Shuffle
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -656,7 +656,7 @@ export default function PrankButton() {
       </div>
 
       {/* GRID DE PADS */}
-      <div className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-x-3 gap-y-4 overflow-y-auto pr-2 custom-scrollbar pb-6 ${expanded ? 'max-h-[calc(100vh-280px)]' : 'max-h-[560px]'}`}>
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6 ${expanded ? 'max-h-[calc(100vh-280px)]' : 'max-h-[520px]'}`}>
         {filtered.map((s) => {
           const isActive = activePads.includes(s)
           const isMissing = missingAudios.includes(s)
@@ -666,62 +666,110 @@ export default function PrankButton() {
           const cat = categoryFor(s)
 
           return (
-            <div key={s} className="group flex flex-col items-center gap-2 pt-1">
-              {/* Botón 3D glossy */}
-              <div className="relative w-full max-w-[74px] mx-auto">
-                <button
-                  onClick={() => !isMissing && playSound(s)}
-                  disabled={isMissing}
-                  className={`pad-btn ${isActive ? 'is-playing' : ''} ${isMissing ? 'is-missing' : ''}`}
-                  style={{ '--pc': cat.color } as CSSProperties}
-                  title={`${getLabel(s)} · ${cat.label}`}
-                >
-                  <Play size={22} className="pad-btn-icon" fill="currentColor" />
-                </button>
-
-                {/* Tecla asignada (badge) */}
-                {!isMissing && boundKey && (
-                  <span className="absolute -top-1 -right-1 z-10 min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center bg-zinc-900 text-white border border-white/30 shadow">
-                    {prettyKey(boundKey)}
-                  </span>
-                )}
-
-                {/* Overlay "esperando tecla" */}
-                {isListening && (
-                  <div className="absolute inset-0 z-20 rounded-full flex flex-col items-center justify-center bg-cyan-950/85 backdrop-blur-sm text-center">
-                    <Keyboard size={16} className="text-cyan-300 animate-pulse" />
-                    <span className="text-[8px] text-cyan-200 font-bold leading-none mt-0.5">tecla…</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Nombre */}
-              <span className={`text-[11px] leading-tight font-medium text-center line-clamp-2 max-w-[92px] ${
-                isActive ? 'text-white' : 'text-zinc-300'
-              }`}>
-                {getLabel(s)}
-              </span>
-
-              {/* Acciones (favorito + tecla) */}
+            <div
+              key={s}
+              style={!isMissing ? { borderColor: isActive ? cat.color : undefined } : undefined}
+              className={`group relative rounded-xl border transition-all duration-200 overflow-hidden ${
+                isMissing
+                  ? 'bg-zinc-900/40 border-transparent opacity-25'
+                  : isListening
+                    ? 'bg-cyan-500/15 border-cyan-400/60 ring-2 ring-cyan-400/40'
+                    : isActive
+                      ? 'bg-white/[0.07] shadow-inner'
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/25 shadow-lg hover:-translate-y-0.5'
+              }`}
+            >
+              {/* Franja de color (categoría) */}
               {!isMissing && (
-                <div className="flex items-center gap-1.5">
+                <div
+                  className="absolute top-0 left-0 h-1 w-full z-10"
+                  style={{ background: cat.color, opacity: isActive ? 1 : 0.85 }}
+                />
+              )}
+
+              {/* Glow inferior (categoría) — visible al hover y fijo al reproducir */}
+              {!isMissing && (
+                <div
+                  aria-hidden
+                  className={`absolute inset-0 pointer-events-none transition-opacity duration-200 ${
+                    isActive ? 'opacity-25' : 'opacity-0 group-hover:opacity-20'
+                  }`}
+                  style={{ background: `radial-gradient(120% 55% at 50% 125%, ${cat.color}, transparent 70%)` }}
+                />
+              )}
+
+              {/* Botón principal: reproducir */}
+              <button
+                onClick={() => !isMissing && playSound(s)}
+                disabled={isMissing}
+                className="relative z-10 w-full h-full min-h-[96px] flex flex-col items-center justify-center gap-2 px-2 pt-6 pb-4 disabled:cursor-not-allowed"
+                title={`${getLabel(s)} · ${cat.label}`}
+              >
+                <Play
+                  size={18}
+                  className={`transition-all ${isActive ? 'scale-125' : 'opacity-60 group-hover:opacity-100'}`}
+                  style={{ color: cat.color }}
+                  fill={isActive ? 'currentColor' : 'none'}
+                />
+                <span className={`text-[10px] leading-tight font-medium text-center line-clamp-2 ${
+                  isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
+                }`}>
+                  {getLabel(s)}
+                </span>
+              </button>
+
+              {/* LED de categoría */}
+              {!isMissing && (
+                <span
+                  aria-hidden
+                  className="absolute bottom-1.5 left-1.5 z-10 w-1.5 h-1.5 rounded-full transition-all"
+                  style={{
+                    background: cat.color,
+                    boxShadow: isActive ? `0 0 8px ${cat.color}` : 'none',
+                    opacity: isActive ? 1 : 0.55,
+                  }}
+                />
+              )}
+
+              {isListening && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-cyan-950/85 backdrop-blur-sm text-center px-2">
+                  <Keyboard size={20} className="text-cyan-300 mb-1 animate-pulse" />
+                  <span className="text-[10px] text-cyan-200 font-bold leading-tight">Apretá una tecla</span>
+                  <span className="text-[8px] text-cyan-400/70 mt-1">Esc cancela · Supr borra</span>
+                </div>
+              )}
+
+              {!isMissing && (
+                <>
+                  {/* Favorito */}
                   <button
                     onClick={() => toggleFav(s)}
-                    className="pad-chip"
-                    style={isFav ? { color: '#f87171', borderColor: 'rgba(248,113,113,.5)', background: 'rgba(248,113,113,.14)' } : undefined}
+                    className={`absolute top-1.5 left-1.5 z-20 p-1 rounded-md transition-all ${
+                      isFav
+                        ? 'text-amber-400'
+                        : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-amber-400'
+                    }`}
                     title={isFav ? 'Quitar de favoritos' : 'Marcar como favorito'}
                   >
-                    <Heart size={12} fill={isFav ? 'currentColor' : 'none'} />
+                    <Star size={13} fill={isFav ? 'currentColor' : 'none'} />
                   </button>
+
+                  {/* Asignar / mostrar tecla */}
                   <button
                     onClick={() => setListeningFor(isListening ? null : s)}
-                    className="pad-chip"
-                    style={boundKey ? { color: cat.color, borderColor: cat.color, background: `${cat.color}22` } : undefined}
+                    className="absolute top-1.5 right-1.5 z-20 min-w-[20px] h-5 px-1 rounded-md text-[10px] font-bold flex items-center justify-center transition-all border"
+                    style={
+                      boundKey
+                        ? { color: cat.color, borderColor: cat.color, background: `${cat.color}22` }
+                        : { borderColor: 'transparent' }
+                    }
                     title={boundKey ? `Tecla: ${prettyKey(boundKey)} (click para cambiar)` : 'Asignar tecla'}
                   >
-                    {boundKey ? <span className="text-[10px] font-bold">{prettyKey(boundKey)}</span> : <Keyboard size={12} />}
+                    <span className={boundKey ? '' : 'text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-cyan-300'}>
+                      {boundKey ? prettyKey(boundKey) : <Keyboard size={12} />}
+                    </span>
                   </button>
-                </div>
+                </>
               )}
             </div>
           )
