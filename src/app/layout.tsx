@@ -15,6 +15,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sistémicos Offal",
   description: "Botonera y galería de la oficina de Sistemas Offal",
+  // página interna: que no la indexen los buscadores
+  robots: { index: false, follow: false },
   icons: {
     icon: '/cow.png',
   },

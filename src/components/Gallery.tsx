@@ -3,13 +3,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react'
 
 interface Photo {
     src: string
     width: number
     height: number
     caption?: string
+    video?: boolean
 }
 
 // images served from /public — sumar `caption` para que aparezca el epígrafe
@@ -26,6 +27,13 @@ const IMAGES: Photo[] = [
     { src: '/galeria/pizza.jpg', width: 1200, height: 1600 },
     { src: '/galeria/ecografia.jpg', width: 789, height: 1024 },
     { src: '/galeria/pan.jpg', width: 960, height: 1280 },
+    { src: '/galeria/bano-boca.jpg', width: 1372, height: 1147 },
+    { src: '/galeria/uocra.jpg', width: 1086, height: 1448 },
+    { src: '/galeria/barrida.jpg', width: 1122, height: 1402 },
+    { src: '/galeria/video-1.mp4', width: 464, height: 688, video: true },
+    { src: '/galeria/video-2.mp4', width: 688, height: 464, video: true },
+    { src: '/galeria/video-3.mp4', width: 416, height: 752, video: true },
+    { src: '/galeria/video-4.mp4', width: 480, height: 640, video: true },
 ]
 
 const SWIPE_THRESHOLD = 50
@@ -67,7 +75,7 @@ export default function Gallery({ layout = 'grid' }: { layout?: 'grid' | 'strip'
         <section aria-label="Galería de imágenes">
             <div className={`flex items-baseline justify-between ${strip ? 'mb-3' : 'mb-6'}`}>
                 <h2 className="text-[15px] font-semibold tracking-tight text-zinc-100">Galería</h2>
-                <span className="text-xs text-zinc-500 font-mono">{IMAGES.length} fotos</span>
+                <span className="text-xs text-zinc-500 font-mono">{IMAGES.length} items</span>
             </div>
 
             <div className={strip ? 'flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0' : 'columns-2 md:columns-3 xl:columns-4 gap-4'}>
@@ -75,18 +83,39 @@ export default function Gallery({ layout = 'grid' }: { layout?: 'grid' | 'strip'
                     <button
                         key={photo.src}
                         onClick={() => setOpenIndex(idx)}
-                        aria-label={`Ampliar ${photo.caption ?? `foto ${idx + 1}`}`}
+                        aria-label={`${photo.video ? 'Reproducir' : 'Ampliar'} ${photo.caption ?? `${photo.video ? 'video' : 'foto'} ${idx + 1}`}`}
                         className={`group relative block overflow-hidden ${strip ? 'w-40 shrink-0 lg:w-full' : 'w-full mb-4 break-inside-avoid'} rounded-xl border border-white/10 bg-white/[0.03] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400`}
                     >
-                        <Image
-                            src={photo.src}
-                            alt={photo.caption ?? `Foto ${idx + 1}`}
-                            width={photo.width}
-                            height={photo.height}
-                            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
-                            draggable={false}
-                            className="w-full h-auto block transition-transform duration-300 group-hover:scale-[1.03]"
-                        />
+                        {photo.video ? (
+                            <>
+                                {/* #t=0.1 hace que el navegador muestre el primer cuadro como miniatura */}
+                                <video
+                                    src={`${photo.src}#t=0.1`}
+                                    width={photo.width}
+                                    height={photo.height}
+                                    preload="metadata"
+                                    muted
+                                    playsInline
+                                    tabIndex={-1}
+                                    className="w-full h-auto block pointer-events-none"
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center">
+                                    <span className="w-11 h-11 rounded-full bg-black/60 border border-white/30 flex items-center justify-center transition-transform group-hover:scale-110">
+                                        <Play size={18} className="text-white ml-0.5" fill="currentColor" />
+                                    </span>
+                                </span>
+                            </>
+                        ) : (
+                            <Image
+                                src={photo.src}
+                                alt={photo.caption ?? `Foto ${idx + 1}`}
+                                width={photo.width}
+                                height={photo.height}
+                                sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+                                draggable={false}
+                                className="w-full h-auto block transition-transform duration-300 group-hover:scale-[1.03]"
+                            />
+                        )}
                         {photo.caption && (
                             <span className="absolute inset-x-0 bottom-0 px-3 pt-6 pb-2 text-left text-xs font-medium text-white bg-gradient-to-t from-black/70 to-transparent">
                                 {photo.caption}
@@ -129,16 +158,29 @@ export default function Gallery({ layout = 'grid' }: { layout?: 'grid' | 'strip'
                         <ChevronLeft size={22} />
                     </button>
 
-                    <Image
-                        src={IMAGES[openIndex].src}
-                        alt={IMAGES[openIndex].caption ?? `Foto ${openIndex + 1} ampliada`}
-                        width={IMAGES[openIndex].width}
-                        height={IMAGES[openIndex].height}
-                        sizes="100vw"
-                        priority
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-auto h-auto max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-                    />
+                    {IMAGES[openIndex].video ? (
+                        <video
+                            key={IMAGES[openIndex].src}
+                            src={IMAGES[openIndex].src}
+                            controls
+                            autoPlay
+                            loop
+                            playsInline
+                            onClick={(e) => e.stopPropagation()}
+                            className="max-w-full max-h-full rounded-lg shadow-2xl"
+                        />
+                    ) : (
+                        <Image
+                            src={IMAGES[openIndex].src}
+                            alt={IMAGES[openIndex].caption ?? `Foto ${openIndex + 1} ampliada`}
+                            width={IMAGES[openIndex].width}
+                            height={IMAGES[openIndex].height}
+                            sizes="100vw"
+                            priority
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-auto h-auto max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                        />
+                    )}
 
                     <button
                         aria-label="Siguiente"
