@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 
@@ -95,7 +96,8 @@ export default function Gallery({ layout = 'grid' }: { layout?: 'grid' | 'strip'
                 ))}
             </div>
 
-            {openIndex !== null && (
+            {/* Portal al body: dentro de un contenedor sticky el z-index queda encerrado y los pads lo tapan */}
+            {openIndex !== null && createPortal(
                 <div
                     role="dialog"
                     aria-modal="true"
@@ -150,7 +152,8 @@ export default function Gallery({ layout = 'grid' }: { layout?: 'grid' | 'strip'
                         {IMAGES[openIndex].caption && <span className="text-zinc-200">{IMAGES[openIndex].caption} · </span>}
                         {openIndex + 1} / {IMAGES.length}
                     </span>
-                </div>
+                </div>,
+                document.body
             )}
         </section>
     )
