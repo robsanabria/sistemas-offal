@@ -331,6 +331,7 @@ export default function PrankButton() {
     '/jorge-suspenso.mp3',
     '/la-cola-no.mp3',
     '/morning.mp3',
+    '/no-te-hagas-la-pa.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────
