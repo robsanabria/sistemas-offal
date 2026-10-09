@@ -332,6 +332,10 @@ export default function PrankButton() {
     '/la-cola-no.mp3',
     '/morning.mp3',
     '/no-te-hagas-la-pa.mp3',
+    '/pefeeto-pefeeto.mp3',
+    '/lo-tamo-llamando-del-macdonald.mp3',
+    '/ckiel-aca-te-habla-dilolo.mp3',
+    '/tobias-aca-te-habla-dilolo.mp3',
   ]
 
   // ── Persistencia ───────────────────────────────────────────────
