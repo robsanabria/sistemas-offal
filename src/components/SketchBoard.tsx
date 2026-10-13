@@ -34,6 +34,11 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   const [size, setSize] = useState<number>(4);
   const cursorRef = useRef(0);
   const drawingRef = useRef(false);
+  // Buffer de trazos pendientes de enviar. Dibujar genera un evento por
+  // mousemove (~60/s): mandarlos de a uno era un POST por evento y ~4 comandos
+  // de Redis cada uno. Se agrupan y se mandan en un solo request.
+  const pendientesRef = useRef<{ type: string; payload?: unknown }[]>([]);
+  const flushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearCanvas = () => {
     const ctx = canvasRef.current?.getContext('2d');
@@ -161,7 +166,11 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
     drawingRef.current = true;
   };
 
-  const stopDrawing = () => { drawingRef.current = false; };
+  const stopDrawing = () => {
+    drawingRef.current = false;
+    // Al levantar el dedo/mouse mandamos lo que quede sin esperar el timer.
+    void flushPendientes();
+  };
 
   const moveDrawing = (clientX: number, clientY: number) => {
     if (!isDrawer || !drawingRef.current) return;
@@ -182,19 +191,61 @@ export default function SketchBoard({ roomId, isDrawer, secretWord, onNewRound, 
   const handleTouchMove = (e: React.TouchEvent) => { if (!e.touches.length) return; e.preventDefault(); moveDrawing(e.touches[0].clientX, e.touches[0].clientY); };
   const handleTouchEnd = () => stopDrawing();
 
-  const publish = async (stroke: Stroke, type = 'stroke') => {
-    await fetch('/api/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ roomId, type, payload: stroke }),
-    });
+  // Vacía el buffer: un request con todos los eventos acumulados.
+  const flushPendientes = async () => {
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
+    }
+    const lote = pendientesRef.current;
+    if (lote.length === 0) return;
+    pendientesRef.current = [];
+    try {
+      await fetch('/api/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomId, events: lote }),
+      });
+    } catch (err) {
+      console.error('Publish batch error', err);
+    }
+  };
+
+  const publish = (stroke: Stroke, type = 'stroke') => {
+    pendientesRef.current.push({ type, payload: stroke });
+    // 60 es el tope que acepta el server por request.
+    if (pendientesRef.current.length >= 50) {
+      void flushPendientes();
+      return;
+    }
+    if (!flushTimerRef.current) {
+      flushTimerRef.current = setTimeout(() => void flushPendientes(), 100);
+    }
   };
 
   const clearAndBroadcast = () => {
     clearCanvas();
-    const playerId = localStorage.getItem('clientId') ?? '';
-    fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roomId, type: 'clear', playerId }) });
+    // Se encola para que el clear no se adelante a los trazos pendientes, y se
+    // manda enseguida.
+    pendientesRef.current.push({ type: 'clear' });
+    void flushPendientes();
   };
+
+  // Al desmontar no dejamos un timer colgado ni trazos sin mandar.
+  useEffect(() => {
+    return () => {
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+      const lote = pendientesRef.current;
+      if (lote.length === 0) return;
+      pendientesRef.current = [];
+      fetch('/api/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomId, events: lote }),
+        keepalive: true,
+      }).catch(() => {});
+    };
+  }, [roomId]);
 
   const sendGuess = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -83,12 +83,29 @@ KV_REST_API_TOKEN=tu-token
 
 # Giphy — opcional, para los GIFs de los Simpsons en el dashboard
 # (sin esta key se usa una colección curada de GIFs como fallback)
-NEXT_PUBLIC_GIPHY_API_KEY=tu-giphy-api-key
+GIPHY_API_KEY=tu-giphy-api-key
+
+# Debug — opcional. Sin esta variable, /api/debug/events responde 404.
+# Con ella, hay que mandar el mismo valor en el header x-debug-token.
+DEBUG_TOKEN=un-valor-largo-y-random
 ```
 
-> En producción (Vercel) acordate de cargar también estas variables en el panel del proyecto (Settings → Environment Variables). Las `NEXT_PUBLIC_*` se inyectan en el build, así que después de agregarlas hay que volver a deployar.
+> En producción (Vercel) acordate de cargar también estas variables en el panel del proyecto (Settings → Environment Variables).
+
+> ⚠️ **Nunca uses el prefijo `NEXT_PUBLIC_` para un token.** Next inyecta esas variables en el bundle que baja el browser: cualquiera que abra el DevTools las lee. Las de acá son todas server-side a propósito — el GIF de Giphy se pide desde `/api/giphy`, no desde el componente.
 
 > ⚠️ **Seguridad:** `.env.local` no debe commitearse (ya está en `.gitignore`). Si alguna vez se subió un token, rotalo desde el panel de Upstash.
+
+### 🚦 Rate limiting
+
+Todas las rutas bajo `/api` pasan por `src/proxy.ts`, que aplica un límite por IP
+(ver los presupuestos en `src/lib/rateLimit.ts`). Hay dos capas: un contador en
+memoria para todos los métodos y, solo para los que escriben, un contador en
+Redis compartido entre instancias. Cuando se pasa, responde `429` con
+`Retry-After`.
+
+Si agregás una ruta nueva bajo `/api`, queda cubierta por el presupuesto genérico
+sin tocar nada; si necesita uno propio, agregalo a `ROUTE_BUDGETS`.
 
 ---
 
