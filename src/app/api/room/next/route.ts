@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { randomWord } from '@/lib/wordPool';
+import { TTL_SALA_SEG } from '@/lib/kv';
+import { id as validarId } from '@/lib/validate';
 
 const getRedis = () => {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL ?? process.env.KV_URL;
@@ -11,8 +13,9 @@ const getRedis = () => {
 
 export async function POST(request: Request) {
   try {
-    const { roomId } = await request.json();
-    if (!roomId) return NextResponse.json({ error: 'Missing roomId' }, { status: 400 });
+    const body = await request.json().catch(() => ({}));
+    const roomId = validarId(body?.roomId);
+    if (!roomId) return NextResponse.json({ error: 'Falta roomId o es inválido' }, { status: 400 });
 
     const redis = getRedis();
     const metaRaw = await redis.get(`room:${roomId}`);
@@ -28,14 +31,16 @@ export async function POST(request: Request) {
     meta.drawerId = drawer.id;
     meta.word = randomWord();
 
-    await redis.set(`room:${roomId}`, JSON.stringify(meta));
+    await redis.set(`room:${roomId}`, JSON.stringify(meta), { ex: TTL_SALA_SEG });
 
     // push event that a new round started (do not include the secret word in event)
     await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() }));
 
-    // return drawer and secret word to caller (caller should be server or drawer)
-    return NextResponse.json({ ok: true, drawerId: meta.drawerId, word: meta.word });
-  } catch (err: any) {
+    // Solo se devuelve quién dibuja. La palabra la pide el dibujante por
+    // /api/room/state?revealTo=<su id>: antes volvía acá, así que cualquiera que
+    // llamara a este endpoint se la llevaba.
+    return NextResponse.json({ ok: true, drawerId: meta.drawerId });
+  } catch (err) {
     console.error('room/next error', err);
     return NextResponse.json({ error: 'internal' }, { status: 500 });
   }

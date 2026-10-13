@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { randomWord } from '@/lib/wordPool';
+import { TTL_SALA_SEG } from '@/lib/kv';
+import { id as validarId } from '@/lib/validate';
 
 const getRedis = () => {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL ?? process.env.KV_URL;
@@ -11,7 +13,9 @@ const getRedis = () => {
 
 export async function POST(request: Request) {
   try {
-    const { roomId, playerId } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const roomId = validarId(body?.roomId);
+    const playerId = validarId(body?.playerId);
     if (!roomId || !playerId) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
     const redis = getRedis();
@@ -22,7 +26,7 @@ export async function POST(request: Request) {
     meta.players = meta.players ?? [];
     meta.scores = meta.scores ?? {};
 
-    const idx = meta.players.findIndex((p: any) => p.id === playerId);
+    const idx = meta.players.findIndex((p: { id: string }) => p.id === playerId);
     const removed = idx >= 0 ? meta.players.splice(idx, 1)[0] : null;
     if (meta.scores && meta.scores[playerId] !== undefined) delete meta.scores[playerId];
 
@@ -33,7 +37,7 @@ export async function POST(request: Request) {
         meta.drawerId = players[0].id;
         meta.currentDrawerIndex = 0;
         meta.word = meta.word ?? randomWord();
-        await redis.set(`room:${roomId}`, JSON.stringify(meta));
+        await redis.set(`room:${roomId}`, JSON.stringify(meta), { ex: TTL_SALA_SEG });
         await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_leave', payload: { id: playerId, name: removed?.name ?? null }, ts: Date.now() }));
         await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'new_round', payload: { drawerId: meta.drawerId }, ts: Date.now() }));
       } else {
@@ -41,17 +45,20 @@ export async function POST(request: Request) {
         meta.drawerId = null;
         meta.currentDrawerIndex = 0;
         meta.word = null;
-        await redis.set(`room:${roomId}`, JSON.stringify(meta));
+        await redis.set(`room:${roomId}`, JSON.stringify(meta), { ex: TTL_SALA_SEG });
         await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_leave', payload: { id: playerId, name: removed?.name ?? null }, ts: Date.now() }));
       }
     } else {
       // normal leave
-      await redis.set(`room:${roomId}`, JSON.stringify(meta));
+      await redis.set(`room:${roomId}`, JSON.stringify(meta), { ex: TTL_SALA_SEG });
       await redis.rpush(`events:${roomId}`, JSON.stringify({ type: 'player_leave', payload: { id: playerId, name: removed?.name ?? null }, ts: Date.now() }));
     }
 
-    return NextResponse.json({ ok: true, meta });
-  } catch (err: any) {
+    // No devolvemos meta crudo: incluía la palabra secreta de la ronda en curso.
+    const safeMeta = { ...meta };
+    delete safeMeta.word;
+    return NextResponse.json({ ok: true, meta: safeMeta });
+  } catch (err) {
     console.error('room/leave error', err);
     return NextResponse.json({ error: 'internal' }, { status: 500 });
   }

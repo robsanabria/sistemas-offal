@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { kv, KEYS } from '@/lib/kv'
+import { entero } from '@/lib/validate'
+
+const MAX_DELTA = 1_000
 
 export async function GET() {
     try {
@@ -23,6 +26,7 @@ export async function GET() {
 
         return NextResponse.json({ days })
     } catch (error) {
+        console.error('counters/andrea: falló la lectura', error)
         return NextResponse.json({ days: 0, error: 'KV Connection failed' }, { status: 500 })
     }
 }
@@ -30,7 +34,7 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const body = await req.json().catch(() => ({}));
-        const { delta, reset } = body;
+        const { reset } = body;
         const today = new Date().toISOString().slice(0, 10)
 
         if (reset) {
@@ -39,11 +43,19 @@ export async function POST(req: Request) {
             return NextResponse.json({ days: 0 })
         }
 
-        const newDays = await kv.incrby(KEYS.ANDREA_ABSENCE, delta || 0)
+        // delta iba crudo a INCRBY: un string o un número fuera de rango dejaba
+        // el contador en un valor del que no se vuelve.
+        const delta = entero(body?.delta, -MAX_DELTA, MAX_DELTA)
+        if (delta === null) {
+            return NextResponse.json({ error: 'delta tiene que ser un número' }, { status: 400 })
+        }
+
+        const newDays = await kv.incrby(KEYS.ANDREA_ABSENCE, delta)
         // update last seen so automatic increments start from today
         await kv.set(KEYS.ANDREA_LAST, today)
         return NextResponse.json({ days: newDays })
     } catch (error) {
+        console.error('counters/andrea: falló la escritura', error)
         return NextResponse.json({ error: 'Update failed' }, { status: 500 })
     }
 }

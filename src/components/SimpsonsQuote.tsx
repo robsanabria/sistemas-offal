@@ -138,20 +138,16 @@ export default function SimpsonsQuote() {
     const randomSpecialGif = () => SPECIAL_GIFS[Math.floor(Math.random() * SPECIAL_GIFS.length)]
 
     const fetchGiphyGif = async () => {
-        const apiKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY
-        // Sin API key usamos directamente la colección curada (no tiene sentido fallar el request)
-        if (!apiKey) return randomSpecialGif()
+        // Va contra nuestro propio proxy: la API key de Giphy se queda en el
+        // server. Si no hay key configurada el proxy responde { url: null } y
+        // caemos en la colección curada.
         try {
-            const res = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=the-simpsons&rating=g`)
+            const res = await fetch('/api/giphy')
+            if (!res.ok) return randomSpecialGif()
             const json = await res.json()
-
-            if (json.data && json.data.images && json.data.images.original) {
-                return json.data.images.original.url
-            }
-            throw new Error("Invalid Giphy response structure")
+            return typeof json?.url === 'string' ? json.url : randomSpecialGif()
         } catch (e) {
-            console.error("Giphy fetch failed", e)
-            // Fallback a la colección curada
+            console.error('Giphy fetch failed', e)
             return randomSpecialGif()
         }
     }
