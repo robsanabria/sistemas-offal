@@ -3,9 +3,11 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import {
   AlertTriangle, Volume2, VolumeX, Maximize2, Minimize2, Play,
-  Search, Star, Keyboard, X, Repeat, Square, Shuffle
+  Search, Star, Keyboard, X, Repeat, Square, Shuffle, Trash2
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Recorder from './Recorder'
+import { useRecordedSounds, REC_PREFIX } from './recordedSounds'
 
 const BIND_KEY = 'botonera:bindings:v1'
 const FAV_KEY = 'botonera:favorites:v1'
@@ -21,6 +23,7 @@ const CATEGORIES: Record<string, Category> = {
   memes:   { id: 'memes',   label: 'Memes',   color: '#fbbf24' }, // ámbar
   fx:      { id: 'fx',      label: 'FX',      color: '#f87171' }, // rojo
   oficina: { id: 'oficina', label: 'Oficina', color: '#a78bfa' }, // violeta
+  grabado: { id: 'grabado', label: 'Grabados', color: '#c6f135' }, // lima — grabados con el mic (solo este navegador)
 }
 
 // Reglas en orden de prioridad: la primera que matchea gana. El resto cae en "frases".
@@ -61,6 +64,7 @@ const CATEGORY_OVERRIDES: Record<string, string> = {
 }
 
 function categoryFor(src: string): Category {
+  if (src.startsWith(REC_PREFIX)) return CATEGORIES.grabado
   const s = decodeURIComponent(src).toLowerCase()
   const base = s.replace(/^\//, '').replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
   if (CATEGORY_OVERRIDES[base]) return CATEGORIES[CATEGORY_OVERRIDES[base]]
@@ -84,6 +88,10 @@ export default function PrankButton() {
   const [listeningFor, setListeningFor] = useState<string | null>(null) // src awaiting a key
 
   const audioRefs = useRef<HTMLAudioElement[]>([])
+
+  // Grabados con el micrófono: van primero y su clave es `rec:<id>`
+  const { recorded, addRecorded, removeRecorded } = useRecordedSounds()
+  const recordedBySrc = useMemo(() => Object.fromEntries(recorded.map((r) => [r.src, r])), [recorded])
 
   const sounds = [
     '/aaa-se-ha-detectado-un-boliviano.mp3',
@@ -337,6 +345,7 @@ export default function PrankButton() {
     '/ckiel-aca-te-habla-dilolo.mp3',
     '/tobias-aca-te-habla-dilolo.mp3',
   ]
+  const allSounds = useMemo(() => [...recorded.map((r) => r.src), ...sounds], [recorded]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Persistencia ───────────────────────────────────────────────
   useEffect(() => {
@@ -381,6 +390,7 @@ export default function PrankButton() {
 
   // ── Helpers ────────────────────────────────────────────────────
   const getLabel = (s: string) => {
+    if (recordedBySrc[s]) return recordedBySrc[s].name
     const base = decodeURIComponent(s)
       .replace(/^\//, '')
       .replace(/\.(mp3|mpeg|wav|ogg)$/i, '')
@@ -406,22 +416,22 @@ export default function PrankButton() {
     return m
   }, [bindings])
 
-  const validSounds = sounds.filter((s) => !missingAudios.includes(s))
+  const validSounds = allSounds.filter((s) => !missingAudios.includes(s))
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return sounds.filter((s) => {
+    return allSounds.filter((s) => {
       if (showFavOnly && !favorites.includes(s)) return false
       if (!q) return true
       return getLabel(s).toLowerCase().includes(q)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, showFavOnly, favorites, missingAudios])
+  }, [search, showFavOnly, favorites, missingAudios, allSounds])
 
   // ── Audio ──────────────────────────────────────────────────────
   const playSound = (src: string) => {
     try {
-      const audio = new Audio(encodeURI(src))
+      const audio = new Audio(recordedBySrc[src]?.url ?? encodeURI(src))
       audio.volume = volume
       audio.loop = loop
 
@@ -433,7 +443,11 @@ export default function PrankButton() {
         audioRefs.current = audioRefs.current.filter((a) => a !== audio)
       }
 
-      audio.play().catch(() => {})
+      audio.play().catch(() => {
+        // si el navegador bloquea la reproducción, no dejar el pad encendido
+        setActivePads((prev) => prev.filter((p) => p !== src))
+        audioRefs.current = audioRefs.current.filter((a) => a !== audio)
+      })
     } catch (err) {
       console.error(err)
     }
@@ -450,7 +464,7 @@ export default function PrankButton() {
 
   const handlePrank = () => {
     setClicked(true)
-    const pool = validSounds.length ? validSounds : sounds
+    const pool = validSounds.length ? validSounds : allSounds
     const random = pool[Math.floor(Math.random() * pool.length)]
     playSound(random)
     setTimeout(() => setClicked(false), 500)
@@ -521,7 +535,7 @@ export default function PrankButton() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bindings, listeningFor, volume, loop, missingAudios])
+  }, [bindings, listeningFor, volume, loop, missingAudios, recordedBySrc])
 
   // ── UI ─────────────────────────────────────────────────────────
   return (
@@ -626,13 +640,16 @@ export default function PrankButton() {
         >
           <Repeat size={14} /> Loop
         </button>
+
+        {/* Grabar con el micrófono */}
+        <Recorder onSave={addRecorded} />
       </div>
 
       {/* META LÍNEA */}
       <div className="flex items-center justify-between mb-4 text-[10px] font-mono">
         <div className="flex items-center gap-2 text-zinc-500">
           <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">
-            {filtered.length} / {sounds.length} audios
+            {filtered.length} / {allSounds.length} audios
           </span>
           {Object.keys(bindings).length > 0 && (
             <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
@@ -774,6 +791,17 @@ export default function PrankButton() {
                       {boundKey ? prettyKey(boundKey) : <Keyboard size={12} />}
                     </span>
                   </button>
+
+                  {/* Borrar grabado */}
+                  {recordedBySrc[s] && (
+                    <button
+                      onClick={() => { clearBinding(s); setFavorites((prev) => prev.filter((p) => p !== s)); removeRecorded(recordedBySrc[s].id) }}
+                      className="absolute bottom-1.5 right-1.5 z-20 p-1 rounded-md text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all"
+                      title="Borrar esta grabación"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  )}
                 </>
               )}
             </div>
