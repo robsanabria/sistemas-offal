@@ -61,6 +61,7 @@ const CATEGORY_OVERRIDES: Record<string, string> = {
   'mucha-ropa': 'memes', 'papoi': 'memes', 'gemidinho': 'memes',
   'jorge-suspenso': 'memes', 'la-cola-no': 'memes',
   'piuw': 'fx', 'sonido-de-grillo': 'fx', 'ronquidos': 'fx', 'dame-un-eructo': 'fx',
+  'gunshot': 'fx',
 }
 
 function categoryFor(src: string): Category {
@@ -347,6 +348,7 @@ export default function PrankButton() {
     '/safirus.mp3',
     '/jason-sound-effect.mp3',
     '/pobre-mi-gatito.mp3',
+    '/gunshot.mp3',
   ]
   const allSounds = useMemo(() => [...recorded.map((r) => r.src), ...sounds], [recorded]) // eslint-disable-line react-hooks/exhaustive-deps
 
