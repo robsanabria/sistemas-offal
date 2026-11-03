@@ -346,6 +346,7 @@ export default function PrankButton() {
     '/tobias-aca-te-habla-dilolo.mp3',
     '/safirus.mp3',
     '/jason-sound-effect.mp3',
+    '/pobre-mi-gatito.mp3',
   ]
   const allSounds = useMemo(() => [...recorded.map((r) => r.src), ...sounds], [recorded]) // eslint-disable-line react-hooks/exhaustive-deps
 
