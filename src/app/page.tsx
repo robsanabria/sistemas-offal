@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import PrankButton from '@/components/PrankButton'
 import Gallery from '@/components/Gallery'
 import Countdown from '@/components/Countdown'
+import FeriadosRestantes from '@/components/FeriadosRestantes'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -13,6 +14,8 @@ const BG = '#110a1f'
 const ACCENT = '#c6f135'
 const GLOW = 'rgba(139,92,246,0.14)'
 
+// Visita del Papa León XIV: llega el domingo 8/11/2026 a las 16:30 (Aeroparque)
+const VISITA_PAPA = new Date(2026, 10, 8, 16, 30, 0).getTime()
 // Lanzamiento de GTA VI: 19/11/2026, medianoche hora local
 const GTA_VI_RELEASE = new Date(2026, 10, 19, 0, 0, 0).getTime()
 // Cumpleaños de Tobias: 4 días antes, 15/11/2026
@@ -34,17 +37,21 @@ export default function Home() {
     <div className={`${inter.className} arcade-pads min-h-screen text-zinc-100`} style={THEME}>
       <style>{ARCADE_PADS_CSS}</style>
 
-      {/* Marca a la izquierda y cuentas regresivas centradas (apiladas en pantallas chicas) */}
-      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 grid grid-cols-1 xl:grid-cols-[1fr_auto_1fr] items-start gap-4">
-        <div className="flex items-center gap-2.5">
-          <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
-          <h1 className="text-[15px] font-bold tracking-tight">
-            Sistémicos <span style={{ color: ACCENT }}>Offal</span>
-          </h1>
+      {/* Marca + feriados arriba; cuentas regresivas centradas debajo, en orden cronológico */}
+      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
+            <h1 className="text-[15px] font-bold tracking-tight">
+              Sistémicos <span style={{ color: ACCENT }}>Offal</span>
+            </h1>
+          </div>
+          <FeriadosRestantes />
         </div>
-        <div className="justify-self-center flex flex-wrap justify-center gap-x-8 gap-y-4">
-          <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+          <Countdown label="Visita del Papa" target={VISITA_PAPA} doneText="¡Ya llegó!" accent="#fbbf24" />
           <Countdown label="Cumple Tobias" target={CUMPLE_TOBIAS} doneText="¡Feliz cumple!" accent="#f472b6" />
+          <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
         </div>
       </header>
 
