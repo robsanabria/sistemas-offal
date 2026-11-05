@@ -33,23 +33,30 @@ export default function Countdown({ label, target, doneText = '¡Ya salió!', ac
   const minutes = Math.floor((diff / (1000 * 60)) % 60)
   const seconds = Math.floor((diff / 1000) % 60)
 
+  const units = [
+    { value: ready ? String(days) : '–', label: days === 1 ? 'día' : 'días' },
+    { value: ready ? pad(hours) : '--', label: 'horas' },
+    { value: ready ? pad(minutes) : '--', label: 'min' },
+    { value: ready ? pad(seconds) : '--', label: 'seg' },
+  ]
+
   return (
-    <div
-      role="timer"
-      aria-label={`Cuenta regresiva: ${label}`}
-      className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 whitespace-nowrap"
-    >
-      <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: accent }}>{label}</span>
+    <div role="timer" aria-label={`Cuenta regresiva: ${label}`} className="flex flex-col items-center gap-2">
+      <span className="text-sm font-black uppercase tracking-[0.3em]" style={{ color: accent }}>{label}</span>
       {done ? (
-        <span className="text-sm font-bold text-zinc-100">{doneText}</span>
+        <span className="text-3xl md:text-4xl font-extrabold text-zinc-100">{doneText}</span>
       ) : (
-        <span className="flex items-baseline gap-1.5 tabular-nums">
-          <span className="text-lg font-extrabold leading-none text-zinc-100">{ready ? days : '–'}</span>
-          <span className="text-[11px] text-zinc-400">{days === 1 ? 'día' : 'días'}</span>
-          <span className="text-sm font-mono text-zinc-300">
-            {ready ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}` : '--:--:--'}
-          </span>
-        </span>
+        <div className="flex items-stretch gap-2 md:gap-3">
+          {units.map((u) => (
+            <div
+              key={u.label}
+              className="flex flex-col items-center justify-center min-w-[64px] md:min-w-[84px] px-3 py-2 md:py-3 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <span className="text-3xl md:text-5xl font-extrabold leading-none tabular-nums text-zinc-100">{u.value}</span>
+              <span className="mt-1.5 text-[10px] md:text-[11px] font-semibold uppercase tracking-widest text-zinc-400">{u.label}</span>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   )
