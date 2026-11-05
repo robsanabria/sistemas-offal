@@ -42,17 +42,17 @@ export default function Countdown({ label, target, doneText = '¡Ya salió!', ac
 
   return (
     <div role="timer" aria-label={`Cuenta regresiva: ${label}`} className="flex flex-col items-center gap-2">
-      <span className="text-sm font-black uppercase tracking-[0.3em]" style={{ color: accent }}>{label}</span>
+      <span className="text-[13px] font-black uppercase tracking-[0.25em]" style={{ color: accent }}>{label}</span>
       {done ? (
         <span className="text-3xl md:text-4xl font-extrabold text-zinc-100">{doneText}</span>
       ) : (
-        <div className="flex items-stretch gap-2 md:gap-3">
+        <div className="flex items-stretch gap-2">
           {units.map((u) => (
             <div
               key={u.label}
-              className="flex flex-col items-center justify-center min-w-[64px] md:min-w-[84px] px-3 py-2 md:py-3 rounded-2xl bg-white/5 border border-white/10"
+              className="flex flex-col items-center justify-center min-w-[64px] md:min-w-[68px] px-2 py-2 md:py-2.5 rounded-2xl bg-white/5 border border-white/10"
             >
-              <span className="text-3xl md:text-5xl font-extrabold leading-none tabular-nums text-zinc-100">{u.value}</span>
+              <span className="text-3xl md:text-4xl font-extrabold leading-none tabular-nums text-zinc-100">{u.value}</span>
               <span className="mt-1.5 text-[10px] md:text-[11px] font-semibold uppercase tracking-widest text-zinc-400">{u.label}</span>
             </div>
           ))}
