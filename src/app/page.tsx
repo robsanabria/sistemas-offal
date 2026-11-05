@@ -15,6 +15,8 @@ const GLOW = 'rgba(139,92,246,0.14)'
 
 // Lanzamiento de GTA VI: 19/11/2026, medianoche hora local
 const GTA_VI_RELEASE = new Date(2026, 10, 19, 0, 0, 0).getTime()
+// Cumpleaños de Tobias: 4 días antes, 15/11/2026
+const CUMPLE_TOBIAS = new Date(2026, 10, 15, 0, 0, 0).getTime()
 
 // Tailwind v4 expone los colores como variables: pisar la escala cyan retiñe
 // los controles de la botonera sin tocar el componente.
@@ -32,16 +34,17 @@ export default function Home() {
     <div className={`${inter.className} arcade-pads min-h-screen text-zinc-100`} style={THEME}>
       <style>{ARCADE_PADS_CSS}</style>
 
-      {/* Marca a la izquierda y cuenta regresiva centrada (apiladas en mobile) */}
-      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-start gap-4">
+      {/* Marca a la izquierda y cuentas regresivas centradas (apiladas en pantallas chicas) */}
+      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 grid grid-cols-1 xl:grid-cols-[1fr_auto_1fr] items-start gap-4">
         <div className="flex items-center gap-2.5">
           <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
           <h1 className="text-[15px] font-bold tracking-tight">
             Sistémicos <span style={{ color: ACCENT }}>Offal</span>
           </h1>
         </div>
-        <div className="justify-self-center">
+        <div className="justify-self-center flex flex-wrap justify-center gap-x-8 gap-y-4">
           <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
+          <Countdown label="Cumple Tobias" target={CUMPLE_TOBIAS} doneText="¡Feliz cumple!" accent="#f472b6" />
         </div>
       </header>
 
