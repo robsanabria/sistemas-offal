@@ -16,6 +16,8 @@ const GLOW = 'rgba(139,92,246,0.14)'
 
 // Visita del Papa León XIV: llega el domingo 8/11/2026 a las 16:30 (Aeroparque)
 const VISITA_PAPA = new Date(2026, 10, 8, 16, 30, 0).getTime()
+// Se va el miércoles 11/11/2026: vuelo a Lima a las 14:00 desde Ezeiza
+const SALIDA_PAPA = new Date(2026, 10, 11, 14, 0, 0).getTime()
 // Lanzamiento de GTA VI: 19/11/2026, medianoche hora local
 const GTA_VI_RELEASE = new Date(2026, 10, 19, 0, 0, 0).getTime()
 // Cumpleaños de Tobias: 4 días antes, 15/11/2026
@@ -48,8 +50,9 @@ export default function Home() {
           </div>
           <FeriadosRestantes />
         </div>
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-          <Countdown label="Visita del Papa" target={VISITA_PAPA} doneText="¡Ya llegó!" accent="#fbbf24" />
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
+          <Countdown label="Llega el Papa" target={VISITA_PAPA} doneText="¡Ya llegó!" accent="#fbbf24" />
+          <Countdown label="Se va el Papa" target={SALIDA_PAPA} doneText="¡Ya se fue!" accent="#fb923c" />
           <Countdown label="Cumple Tobias" target={CUMPLE_TOBIAS} doneText="¡Feliz cumple!" accent="#f472b6" />
           <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
         </div>
