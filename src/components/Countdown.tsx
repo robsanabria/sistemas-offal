@@ -6,37 +6,51 @@ function pad(n: number) {
   return n.toString().padStart(2, '0')
 }
 
-export default function Countdown() {
-  // FIFA World Cup 2026 starts on June 11, 2026 (UTC)
-  const target = new Date(Date.UTC(2026, 5, 11, 0, 0, 0)).getTime()
+interface CountdownProps {
+  label: string
+  target: number        // timestamp en ms
+  doneText?: string     // se muestra cuando llega a cero
+  accent?: string
+}
+
+export default function Countdown({ label, target, doneText = '¡Ya salió!', accent = '#c6f135' }: CountdownProps) {
   // Arranca en null: el server y el primer render del cliente muestran el
   // mismo placeholder, evitando un mismatch de hidratación (React #418).
   const [now, setNow] = useState<number | null>(null)
 
   useEffect(() => {
-    setNow(Date.now())
-    const t = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(t)
+    const tick = () => setNow(Date.now())
+    const first = setTimeout(tick, 0)
+    const t = setInterval(tick, 1000)
+    return () => { clearTimeout(first); clearInterval(t) }
   }, [])
 
   const ready = now !== null
   const diff = ready ? Math.max(0, target - now) : 0
+  const done = ready && diff === 0
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
   const minutes = Math.floor((diff / (1000 * 60)) % 60)
   const seconds = Math.floor((diff / 1000) % 60)
 
   return (
-    <div className="mt-4 flex items-center justify-center">
-      <div className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-700/20 via-cyan-800/10 to-transparent border border-white/5 text-center">
-        <div className="text-xs text-zinc-400 uppercase font-mono tracking-wide">FIFA World Cup 2026</div>
-        <div className="flex items-baseline gap-3 mt-1">
-          <div className="text-3xl font-extrabold">{ready ? days : '–'}</div>
-          <div className="text-sm text-zinc-400">días</div>
-          <div className="ml-4 text-sm font-medium text-zinc-200">{ready ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}` : '--:--:--'}</div>
-        </div>
-        <div className="text-[11px] text-zinc-500 mt-1">Comienza el 11 de junio de 2026 (UTC)</div>
-      </div>
+    <div
+      role="timer"
+      aria-label={`Cuenta regresiva: ${label}`}
+      className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 whitespace-nowrap"
+    >
+      <span className="text-[11px] font-black uppercase tracking-widest" style={{ color: accent }}>{label}</span>
+      {done ? (
+        <span className="text-sm font-bold text-zinc-100">{doneText}</span>
+      ) : (
+        <span className="flex items-baseline gap-1.5 tabular-nums">
+          <span className="text-lg font-extrabold leading-none text-zinc-100">{ready ? days : '–'}</span>
+          <span className="text-[11px] text-zinc-400">{days === 1 ? 'día' : 'días'}</span>
+          <span className="text-sm font-mono text-zinc-300">
+            {ready ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}` : '--:--:--'}
+          </span>
+        </span>
+      )}
     </div>
   )
 }

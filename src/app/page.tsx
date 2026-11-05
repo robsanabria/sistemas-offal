@@ -3,6 +3,7 @@
 import { Inter } from 'next/font/google'
 import PrankButton from '@/components/PrankButton'
 import Gallery from '@/components/Gallery'
+import Countdown from '@/components/Countdown'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -11,6 +12,9 @@ const inter = Inter({ subsets: ['latin'] })
 const BG = '#110a1f'
 const ACCENT = '#c6f135'
 const GLOW = 'rgba(139,92,246,0.14)'
+
+// Lanzamiento de GTA VI: 19/11/2026, medianoche hora local
+const GTA_VI_RELEASE = new Date(2026, 10, 19, 0, 0, 0).getTime()
 
 // Tailwind v4 expone los colores como variables: pisar la escala cyan retiñe
 // los controles de la botonera sin tocar el componente.
@@ -28,11 +32,14 @@ export default function Home() {
     <div className={`${inter.className} arcade-pads min-h-screen text-zinc-100`} style={THEME}>
       <style>{ARCADE_PADS_CSS}</style>
 
-      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 flex items-center gap-2.5">
-        <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
-        <h1 className="text-[15px] font-bold tracking-tight">
-          Sistémicos <span style={{ color: ACCENT }}>Offal</span>
-        </h1>
+      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
+          <h1 className="text-[15px] font-bold tracking-tight">
+            Sistémicos <span style={{ color: ACCENT }}>Offal</span>
+          </h1>
+        </div>
+        <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
       </header>
 
       {/* Página única: botonera + tira de fotos (lateral en desktop, debajo en mobile) */}
