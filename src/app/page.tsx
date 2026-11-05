@@ -32,14 +32,17 @@ export default function Home() {
     <div className={`${inter.className} arcade-pads min-h-screen text-zinc-100`} style={THEME}>
       <style>{ARCADE_PADS_CSS}</style>
 
-      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 flex flex-wrap items-center justify-between gap-3">
+      {/* Marca a la izquierda y cuenta regresiva centrada (apiladas en mobile) */}
+      <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-start gap-4">
         <div className="flex items-center gap-2.5">
           <img src="/cow.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
           <h1 className="text-[15px] font-bold tracking-tight">
             Sistémicos <span style={{ color: ACCENT }}>Offal</span>
           </h1>
         </div>
-        <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
+        <div className="justify-self-center">
+          <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
+        </div>
       </header>
 
       {/* Página única: botonera + tira de fotos (lateral en desktop, debajo en mobile) */}
