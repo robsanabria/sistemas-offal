@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { kv, KEYS } from '@/lib/kv'
 import { entero } from '@/lib/validate'
 import {
-    PERSONAS, RACHA_INICIAL, MAX_DIAS, hoyAR, diasSinFaltar, rachaValida,
+    PERSONAS, rachaInicial, MAX_DIAS, hoyAR, diasSinFaltar, rachaValida,
     type PersonaId, type Racha,
 } from '@/lib/asistencia'
 
@@ -14,7 +14,7 @@ async function leerTodo() {
     return PERSONAS.map((p) => ({
         id: p.id,
         nombre: p.nombre,
-        dias: diasSinFaltar(rachaValida(guardado[p.id], RACHA_INICIAL[p.id]), hoy),
+        dias: diasSinFaltar(rachaValida(guardado[p.id], rachaInicial(p.id)), hoy),
     }))
 }
 
