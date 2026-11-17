@@ -7,6 +7,7 @@ import DiasSinFaltar from '@/components/DiasSinFaltar'
 import FeriadosRestantes from '@/components/FeriadosRestantes'
 import ModoRomper from '@/components/ModoRomper'
 import Clima from '@/components/Clima'
+import Aguinaldo from '@/components/Aguinaldo'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -44,6 +45,7 @@ export default function Home() {
           <Clima />
           <div className="flex flex-wrap items-center gap-2">
             <ModoRomper />
+            <Aguinaldo />
             <FeriadosRestantes />
           </div>
         </div>
