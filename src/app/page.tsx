@@ -6,6 +6,7 @@ import Gallery from '@/components/Gallery'
 import DiasSinFaltar from '@/components/DiasSinFaltar'
 import FeriadosRestantes from '@/components/FeriadosRestantes'
 import ModoRomper from '@/components/ModoRomper'
+import Clima from '@/components/Clima'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -40,6 +41,7 @@ export default function Home() {
               Sistémicos <span style={{ color: ACCENT }}>Offal</span>
             </h1>
           </div>
+          <Clima />
           <div className="flex flex-wrap items-center gap-2">
             <ModoRomper />
             <FeriadosRestantes />

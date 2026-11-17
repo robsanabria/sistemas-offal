@@ -45,7 +45,7 @@ export default function FeriadosRestantes({ accent = '#a78bfa' }: { accent?: str
       </span>
       <span className="text-[11px] text-zinc-400">
         {restantes.length === 1 ? 'queda' : 'quedan'}
-        {proximo && <span className="hidden sm:inline"> · próximo {fmt(proximo.date)} ({proximo.name})</span>}
+        {proximo && <span className="hidden 2xl:inline"> · próximo {fmt(proximo.date)} ({proximo.name})</span>}
       </span>
     </div>
   )
