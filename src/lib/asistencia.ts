@@ -6,7 +6,7 @@
 export const PERSONAS = [
     { id: 'tobias', nombre: 'Tobias' },
     { id: 'andrea', nombre: 'Andrea' },
-    { id: 'norberto', nombre: 'Norberto' },
+    { id: 'norberto', nombre: 'Norber' },
     { id: 'matias', nombre: 'Matias' },
     { id: 'moto', nombre: 'Moto' },
     { id: 'rober', nombre: 'Rober' },
