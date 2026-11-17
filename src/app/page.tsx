@@ -3,7 +3,7 @@
 import { Inter } from 'next/font/google'
 import PrankButton from '@/components/PrankButton'
 import Gallery from '@/components/Gallery'
-import Countdown from '@/components/Countdown'
+import DiasSinFaltar from '@/components/DiasSinFaltar'
 import FeriadosRestantes from '@/components/FeriadosRestantes'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
@@ -13,15 +13,6 @@ const inter = Inter({ subsets: ['latin'] })
 const BG = '#110a1f'
 const ACCENT = '#c6f135'
 const GLOW = 'rgba(139,92,246,0.14)'
-
-// Visita del Papa León XIV: llega el domingo 8/11/2026 a las 16:30 (Aeroparque)
-const VISITA_PAPA = new Date(2026, 10, 8, 16, 30, 0).getTime()
-// Se va el miércoles 11/11/2026: vuelo a Lima a las 14:00 desde Ezeiza
-const SALIDA_PAPA = new Date(2026, 10, 11, 14, 0, 0).getTime()
-// Lanzamiento de GTA VI: 19/11/2026, medianoche hora local
-const GTA_VI_RELEASE = new Date(2026, 10, 19, 0, 0, 0).getTime()
-// Cumpleaños de Tobias: 4 días antes, 15/11/2026
-const CUMPLE_TOBIAS = new Date(2026, 10, 15, 0, 0, 0).getTime()
 
 // Tailwind v4 expone los colores como variables: pisar la escala cyan retiñe
 // los controles de la botonera sin tocar el componente.
@@ -39,7 +30,7 @@ export default function Home() {
     <div className={`${inter.className} arcade-pads min-h-screen text-zinc-100`} style={THEME}>
       <style>{ARCADE_PADS_CSS}</style>
 
-      {/* Marca + feriados arriba; cuentas regresivas centradas debajo, en orden cronológico */}
+      {/* Marca + feriados arriba; contadores de días sin faltar y ranking centrados debajo */}
       <header className="max-w-[1600px] mx-auto px-4 md:px-8 pt-5 flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
@@ -50,12 +41,7 @@ export default function Home() {
           </div>
           <FeriadosRestantes />
         </div>
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
-          <Countdown label="Llega el Papa" target={VISITA_PAPA} doneText="¡Ya llegó!" accent="#fbbf24" />
-          <Countdown label="Se va el Papa" target={SALIDA_PAPA} doneText="¡Ya se fue!" accent="#fb923c" />
-          <Countdown label="Cumple Tobias" target={CUMPLE_TOBIAS} doneText="¡Feliz cumple!" accent="#f472b6" />
-          <Countdown label="GTA VI" target={GTA_VI_RELEASE} accent={ACCENT} />
-        </div>
+        <DiasSinFaltar />
       </header>
 
       {/* Página única: botonera + tira de fotos (lateral en desktop, debajo en mobile) */}

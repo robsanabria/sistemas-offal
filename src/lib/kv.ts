@@ -23,4 +23,5 @@ export const KEYS = {
     COFFEE_MAKER: 'office:coffee:maker',
     OFFICE_MATES: 'office:team:members',
     GLOBAL_TICKER: 'office:global:ticker',
+    ASISTENCIA: 'office:asistencia:v1', // hash persona -> { base, desde }
 }
