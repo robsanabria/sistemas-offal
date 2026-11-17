@@ -5,6 +5,7 @@ import PrankButton from '@/components/PrankButton'
 import Gallery from '@/components/Gallery'
 import DiasSinFaltar from '@/components/DiasSinFaltar'
 import FeriadosRestantes from '@/components/FeriadosRestantes'
+import ModoRomper from '@/components/ModoRomper'
 import { ARCADE_PADS_CSS } from '@/components/arcadePads'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,7 +40,10 @@ export default function Home() {
               Sistémicos <span style={{ color: ACCENT }}>Offal</span>
             </h1>
           </div>
-          <FeriadosRestantes />
+          <div className="flex flex-wrap items-center gap-2">
+            <ModoRomper />
+            <FeriadosRestantes />
+          </div>
         </div>
         <DiasSinFaltar />
       </header>
