@@ -2,9 +2,18 @@
 // los días se calculan al leer, sumando los días hábiles transcurridos. Así el
 // GET no escribe nada y el contador avanza solo.
 
+// Todo el equipo de Sistemas
 export const PERSONAS = [
     { id: 'tobias', nombre: 'Tobias' },
     { id: 'andrea', nombre: 'Andrea' },
+    { id: 'norberto', nombre: 'Norberto' },
+    { id: 'matias', nombre: 'Matias' },
+    { id: 'moto', nombre: 'Moto' },
+    { id: 'rober', nombre: 'Rober' },
+    { id: 'eze', nombre: 'Eze' },
+    { id: 'luis', nombre: 'Luis' },
+    { id: 'miguel', nombre: 'Miguel' },
+    { id: 'nico', nombre: 'Nico' },
 ] as const
 
 export type PersonaId = (typeof PERSONAS)[number]['id']
@@ -14,10 +23,15 @@ export interface Racha {
     desde: string  // YYYY-MM-DD (hora Argentina)
 }
 
-// Valores iniciales, hasta que alguien toque el contador
-export const RACHA_INICIAL: Record<PersonaId, Racha> = {
-    tobias: { base: 7, desde: '2026-11-17' },
-    andrea: { base: 0, desde: '2026-11-17' },
+// Valores iniciales, hasta que alguien toque el contador. Quien no figura acá
+// arranca en 0 el día que se empezó a llevar la cuenta.
+const INICIO_DE_LA_CUENTA = '2026-11-17'
+const RACHAS_CONOCIDAS: Partial<Record<PersonaId, Racha>> = {
+    tobias: { base: 7, desde: INICIO_DE_LA_CUENTA },
+}
+
+export function rachaInicial(persona: PersonaId): Racha {
+    return RACHAS_CONOCIDAS[persona] ?? { base: 0, desde: INICIO_DE_LA_CUENTA }
 }
 
 export const MAX_DIAS = 9_999
